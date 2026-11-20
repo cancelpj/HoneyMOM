@@ -37,8 +37,13 @@ Set-Location $repo
 
 function Say($msg, $color = 'Gray') { Write-Host $msg -ForegroundColor $color }
 
-function Git($argsList) {
-    $out = & git @argsList 2>&1
+# 注意：函数名不能叫 Git —— PowerShell 命令名不区分大小写，函数体内的 `git` 会解析到
+# 这个函数自己，形成无限递归（"调用深度溢出"）。这里用绝对路径调用真正的 git.exe。
+$GIT = (Get-Command git -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1).Source
+if (-not $GIT) { throw '找不到 git.exe，请确认 Git 已安装并在 PATH 中' }
+
+function Invoke-Git($argsList) {
+    $out = & $GIT @argsList 2>&1
     if ($LASTEXITCODE -ne 0) { throw "git $($argsList -join ' ') 失败：`n$($out -join "`n")" }
     return $out
 }
@@ -46,51 +51,58 @@ function Git($argsList) {
 Say "仓库：$repo" 'DarkGray'
 
 # ── 0. 前置检查 ───────────────────────────────────────────────
-$dirty = & git status --porcelain
+$dirty = & $GIT status --porcelain
 if ($dirty -and -not $AllowDirty) {
     Say '工作区有未提交的改动，本次跳过同步（没有改动任何东西）。' 'Yellow'
     Say '  定时任务遇到这种情况会安静跳过；手动同步请先提交或 stash。' 'DarkGray'
     Say ($dirty | Select-Object -First 10) 'DarkGray'
     exit 0
 }
-if (-not (git remote | Where-Object { $_ -eq $Remote })) {
+if (-not (& $GIT remote | Where-Object { $_ -eq $Remote })) {
     Say "没有远程 $Remote，先执行：git remote add $Remote https://github.com/HoneyMeta/HoneyMOM.git" 'Red'
     exit 1
 }
 
 # ── 1. 拉取上游 ───────────────────────────────────────────────
-Say "`n[1/4] 拉取 $Remote ..." 'Cyan'
-Git @('fetch', $Remote, '--tags')
 $up = "refs/remotes/$Remote/$UpstreamBranch"
-$before = (& git rev-parse $up).Trim()
-Say "  $Remote/$UpstreamBranch = $($before.Substring(0,10))" 'DarkGray'
+$before = ''
+& $GIT show-ref --verify --quiet $up
+if ($LASTEXITCODE -eq 0) { $before = (& $GIT rev-parse $up).Trim() }
+Say "`n[1/4] 拉取 $Remote ..." 'Cyan'
+Invoke-Git @('fetch', $Remote, '--tags')
+$after = (& $GIT rev-parse $up).Trim()
+Say "  $Remote/$UpstreamBranch = $($after.Substring(0,10))" 'DarkGray'
+if ($before -and $before -eq $after) { Say '  上游没有新提交。' 'Green' }
+elseif ($before) { Say "  上游有新提交：$($before.Substring(0,10)) → $($after.Substring(0,10))" 'Green' }
 
 # ── 2. 更新 sync 分支（只快进）────────────────────────────────
+# 用 update-ref 直接移动分支指针：不切换分支、不动工作区。
+# （早前用 `git merge --ff-only` 的写法会在当前分支上执行，等于把上游合进了 main。）
 Say "`n[2/4] 更新同步分支 $SyncBranch ..." 'Cyan'
-if (-not (git show-ref --verify --quiet "refs/heads/$SyncBranch")) {
-    Git @('branch', $SyncBranch, $up)
-    Say "  新建 $SyncBranch" 'Green'
-} else {
+& $GIT show-ref --verify --quiet "refs/heads/$SyncBranch"
+$syncExists = ($LASTEXITCODE -eq 0)
+if ($syncExists) {
     # 只允许快进：sync 分支不应该有自己的提交
-    $syncHead = (& git rev-parse "refs/heads/$SyncBranch").Trim()
-    & git merge --ff-only $up
+    & $GIT merge-base --is-ancestor "refs/heads/$SyncBranch" $up
     if ($LASTEXITCODE -ne 0) {
-        Say "  $SyncBranch 无法快进到上游（它有独立提交），请人工检查" 'Red'
+        Say "  $SyncBranch 上有独立提交，无法快进到上游，请人工检查" 'Red'
         exit 2
     }
-    Say "  $SyncBranch：$($syncHead.Substring(0,10)) → $((& git rev-parse "refs/heads/$SyncBranch").Trim().Substring(0,10))" 'DarkGray'
+    $syncHead = (& $GIT rev-parse "refs/heads/$SyncBranch").Trim()
+    Invoke-Git @('update-ref', "refs/heads/$SyncBranch", $up)
+    Say "  $SyncBranch：$($syncHead.Substring(0,10)) → $($after.Substring(0,10))" 'DarkGray'
+} else {
+    Invoke-Git @('branch', '--track', $SyncBranch, $up)
+    Say "  新建 $SyncBranch → $($after.Substring(0,10))" 'Green'
 }
-$newUp = (& git rev-parse "refs/heads/$SyncBranch").Trim()
-
-if ($newUp -eq $before) { Say '  上游没有新提交，无需同步。' 'Green' }
-else { Say "  上游有新提交：$($before.Substring(0,10)) → $($newUp.Substring(0,10))" 'Green' }
+$newUp = (& $GIT rev-parse "refs/heads/$SyncBranch").Trim()
 
 if ($DryRun) {
     Say "`n--dry-run：只报告不改动 --" 'Yellow'
     Say "  待合并到 $MainBranch 的提交：" 'Gray'
-    & git log --oneline "$MainBranch..$SyncBranch" | Select-Object -First 30 | ForEach-Object { Say "    $_" 'DarkGray' }
+    & $GIT log --oneline "$MainBranch..$SyncBranch" | Select-Object -First 30 | ForEach-Object { Say "    $_" 'DarkGray' }
     Say "  受影响文件：" 'Gray'
-    & git diff --stat "$MainBranch...$SyncBranch" | Select-Object -First 30 | ForEach-Object { Say "    $_" 'DarkGray' }
+    & $GIT diff --stat "$MainBranch...$SyncBranch" | Select-Object -First 30 | ForEach-Object { Say "    $_" 'DarkGray' }
     exit 0
 }
 
@@ -98,24 +110,24 @@ if ($NoMerge) { Say "`n[跳过] 按要求只更新了 $SyncBranch，未合并到
 
 # ── 3. 合并到主分支 ───────────────────────────────────────────
 Say "`n[3/4] 合并到 $MainBranch ..." 'Cyan'
-& git checkout $MainBranch 2>&1 | Out-Null
+& $GIT checkout $MainBranch 2>&1 | Out-Null
 if ($LASTEXITCODE -ne 0) { Say "  切换到 $MainBranch 失败" 'Red'; exit 1 }
 
-& git merge --no-edit $SyncBranch
+& $GIT merge --no-edit $SyncBranch
 if ($LASTEXITCODE -ne 0) {
     Say "  合并有冲突，已暂停（解决后 git add ... && git commit，或 git merge --abort 放弃）" 'Red'
     Say '  冲突文件：' 'Yellow'
-    & git diff --name-only --diff-filter=U | ForEach-Object { Say "    $_" 'Yellow' }
+    & $GIT diff --name-only --diff-filter=U | ForEach-Object { Say "    $_" 'Yellow' }
     exit 2
 }
-Say "  $MainBranch 现在位于 $((& git rev-parse HEAD).Trim().Substring(0,10))" 'Green'
+Say "  $MainBranch 现在位于 $((& $GIT rev-parse HEAD).Trim().Substring(0,10))" 'Green'
 
 # ── 4. 推送 ───────────────────────────────────────────────────
 if ($Push) {
     Say "`n[4/4] 推送到 origin ..." 'Cyan'
-    & git push origin $MainBranch
+    & $GIT push origin $MainBranch
     if ($LASTEXITCODE -ne 0) { Say '  推送主分支失败' 'Red'; exit 1 }
-    & git push origin $SyncBranch
+    & $GIT push origin $SyncBranch
     if ($LASTEXITCODE -ne 0) { Say '  推送同步分支失败' 'Red'; exit 1 }
     Say '  已推送 main 和 sync/upstream' 'Green'
 } else {
