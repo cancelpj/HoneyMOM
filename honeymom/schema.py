@@ -144,7 +144,7 @@ ENTITIES: list[E] = [
         EN('status', '状态', {'wip': '在制', 'good': '检验合格', 'fg': '成品入库', 'shipped': '已发运', 'scrap': '报废', 'raw_store': '毛坯库', 'rework': '返修中', 'hold': '冻结'}),
         S('station', '当前位置'), S('heat', '炉次/批次', search=True), S('ladle', '浇包', list=False), S('mold', '砂型', list=False), I('cavity', '型腔', list=False),
         N('pour_temp', '浇注温度'), N('mg', '残镁 %', list=False), N('sand_moisture', '型砂水分 %', list=False), N('compactability', '紧实率', list=False),
-        N('ce', '碳当量', list=False), S('machine', '加工机床'), I('rework_count', '返修次数', default=0), S('scrap_cause', '报废原因'),
+        N('ce', '碳当量', list=False), S('machine', '加工机床', hint='加工机床的设备编码（如 CNC1），对应 equipment.code，不要和 equipment.id 关联'), I('rework_count', '返修次数', default=0), S('scrap_cause', '报废原因'),
         DT('born_at', '投产时间'), DT('finished_at', '完成时间', list=False)], internal=True, order='-id'),
     E('part_event', '零件事件', '生产管理', [S('sn', '零件码', search=True), DT('t', '时间'), S('station', '工位'), S('event', '事件'), J('data', '数据')],
       internal=True, menu=False),

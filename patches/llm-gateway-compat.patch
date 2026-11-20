@@ -1,0 +1,65 @@
+diff --git a/honeymom/schema.py b/honeymom/schema.py
+index c2a2753..9c307d0 100644
+--- a/honeymom/schema.py
++++ b/honeymom/schema.py
+@@ -144,7 +144,7 @@ ENTITIES: list[E] = [
+         EN('status', '状态', {'wip': '在制', 'good': '检验合格', 'fg': '成品入库', 'shipped': '已发运', 'scrap': '报废', 'raw_store': '毛坯库', 'rework': '返修中', 'hold': '冻结'}),
+         S('station', '当前位置'), S('heat', '炉次/批次', search=True), S('ladle', '浇包', list=False), S('mold', '砂型', list=False), I('cavity', '型腔', list=False),
+         N('pour_temp', '浇注温度'), N('mg', '残镁 %', list=False), N('sand_moisture', '型砂水分 %', list=False), N('compactability', '紧实率', list=False),
+-        N('ce', '碳当量', list=False), S('machine', '加工机床'), I('rework_count', '返修次数', default=0), S('scrap_cause', '报废原因'),
++        N('ce', '碳当量', list=False), S('machine', '加工机床', hint='加工机床的设备编码（如 CNC1），对应 equipment.code，不要和 equipment.id 关联'), I('rework_count', '返修次数', default=0), S('scrap_cause', '报废原因'),
+         DT('born_at', '投产时间'), DT('finished_at', '完成时间', list=False)], internal=True, order='-id'),
+     E('part_event', '零件事件', '生产管理', [S('sn', '零件码', search=True), DT('t', '时间'), S('station', '工位'), S('event', '事件'), J('data', '数据')],
+       internal=True, menu=False),
+diff --git a/honeymom/services/ai.py b/honeymom/services/ai.py
+index c97266d..6bd2a7c 100644
+--- a/honeymom/services/ai.py
++++ b/honeymom/services/ai.py
+@@ -62,9 +62,27 @@ LLM_CALLS = {'n': 0}
+ 
+ 
+ def with_lang(messages):
+-    """Every model call ends its system context with the UI-language instruction (honeymom/i18n.py)."""
++    """Every model call carries the UI-language instruction (honeymom/i18n.py).
++
++    All system messages are merged into a single leading system message: some OpenAI-compatible
++    gateways (LiteLLM, ...) reject a system message that appears after a user message
++    ("System message must be at the beginning"), and the app appends such trailing system
++    messages (the language instruction here, the assistant's format reminder in assistant.py).
++    """
+     from .. import i18n
+-    return list(messages) + [{'role': 'system', 'content': i18n.llm_instruction()}]
++    instr = i18n.llm_instruction()
++    sys_parts = []
++    rest = []
++    for m in messages:
++        if m.get('role') == 'system':
++            c = (m.get('content') or '').strip()
++            if c:
++                sys_parts.append(c)
++        else:
++            rest.append(m)
++    sys_parts.append(instr)
++    head = {'role': 'system', 'content': '\n'.join(sys_parts)}
++    return [head] + list(rest)
+ 
+ 
+ def _post(messages, tools=None, temperature=0.2):
+@@ -129,7 +147,7 @@ def schema_text():
+     for e in ENTITIES:
+         if e.name in HIDDEN:
+             continue
+-        cols = ', '.join(f"{f.name}({f.label}{'→' + f.ref if f.ref else ''}{'=' + '/'.join(f'{k}:{v}' for k, v in list(f.enum.items())[:8]) if f.enum else ''})"
++        cols = ', '.join(f"{f.name}({f.label}{'→' + f.ref if f.ref else ''}{'=' + '/'.join(f'{k}:{v}' for k, v in list(f.enum.items())[:8]) if f.enum else ''}{'; ' + f.hint if f.hint else ''})"
+                          for f in e.fields)
+         from ..impl.cf import schema_hint as _cf_hint          # M3：自定义字段（ext 列）
+         lines.append(_tr('{name}【{label}】: id, {cols}, created_at{v}', name=e.name, label=e.label, cols=cols, v=_cf_hint(e.name)))
+@@ -283,7 +301,7 @@ def _ask(q, hist, user):
+         return {'answer': ans, 'sqls': [], 'llm': False}
+     msgs = [{'role': 'system', 'content': system_prompt()}] + [m for m in hist[-6:] if m.get('role') in ('user', 'assistant')] + [{'role': 'user', 'content': q}]
+     try:
+-        for _ in range(6):
++        for _ in range(12):
+             r = _post(msgs, TOOLS)
+             m = r['choices'][0]['message']
+             calls = m.get('tool_calls') or []

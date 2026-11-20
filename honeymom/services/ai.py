@@ -62,9 +62,27 @@ LLM_CALLS = {'n': 0}
 
 
 def with_lang(messages):
-    """Every model call ends its system context with the UI-language instruction (honeymom/i18n.py)."""
+    """Every model call carries the UI-language instruction (honeymom/i18n.py).
+
+    All system messages are merged into a single leading system message: some OpenAI-compatible
+    gateways (LiteLLM, ...) reject a system message that appears after a user message
+    ("System message must be at the beginning"), and the app appends such trailing system
+    messages (the language instruction here, the assistant's format reminder in assistant.py).
+    """
     from .. import i18n
-    return list(messages) + [{'role': 'system', 'content': i18n.llm_instruction()}]
+    instr = i18n.llm_instruction()
+    sys_parts = []
+    rest = []
+    for m in messages:
+        if m.get('role') == 'system':
+            c = (m.get('content') or '').strip()
+            if c:
+                sys_parts.append(c)
+        else:
+            rest.append(m)
+    sys_parts.append(instr)
+    head = {'role': 'system', 'content': '\n'.join(sys_parts)}
+    return [head] + list(rest)
 
 
 def _post(messages, tools=None, temperature=0.2):
@@ -129,7 +147,7 @@ def schema_text():
     for e in ENTITIES:
         if e.name in HIDDEN:
             continue
-        cols = ', '.join(f"{f.name}({f.label}{'→' + f.ref if f.ref else ''}{'=' + '/'.join(f'{k}:{v}' for k, v in list(f.enum.items())[:8]) if f.enum else ''})"
+        cols = ', '.join(f"{f.name}({f.label}{'→' + f.ref if f.ref else ''}{'=' + '/'.join(f'{k}:{v}' for k, v in list(f.enum.items())[:8]) if f.enum else ''}{'; ' + f.hint if f.hint else ''})"
                          for f in e.fields)
         from ..impl.cf import schema_hint as _cf_hint          # M3：自定义字段（ext 列）
         lines.append(_tr('{name}【{label}】: id, {cols}, created_at{v}', name=e.name, label=e.label, cols=cols, v=_cf_hint(e.name)))
@@ -263,7 +281,7 @@ TOOLS = [
 
 
 def system_prompt():
-    return _tr('你是"蜂元智能 MOM"的问数助手，服务于一家铸造 + 机加工厂。用户用中文问生产、质量、设备、能耗、库存的问题。\n做法：先想清楚要查哪些表，用 query_sql 查（{dialect_hint}），\n必要时多查几次，然后用简洁中文回答，给出关键数字和原因判断，不要编造数据。\n如果适合画图，在回答末尾附一个代码块，语言标记写 chart，内容是 JSON：{{"type":"bar"|"line"|"pie","title":"...","x":[...],"series":[{{"name":"...","data":[...]}}]}}。\n当前数据时钟：{now:%Y-%m-%d %H:%M}（"今天""昨天"按这个算）。\n数据表：\n{schema_text}', dialect_hint=dialect_hint(), now=clock.now(), schema_text=schema_text())
+    return _tr('你是"智能制造 MOM"的问数助手，服务于一家铸造 + 机加工厂。用户用中文问生产、质量、设备、能耗、库存的问题。\n做法：先想清楚要查哪些表，用 query_sql 查（{dialect_hint}），\n必要时多查几次，然后用简洁中文回答，给出关键数字和原因判断，不要编造数据。\n如果适合画图，在回答末尾附一个代码块，语言标记写 chart，内容是 JSON：{{"type":"bar"|"line"|"pie","title":"...","x":[...],"series":[{{"name":"...","data":[...]}}]}}。\n当前数据时钟：{now:%Y-%m-%d %H:%M}（"今天""昨天"按这个算）。\n数据表：\n{schema_text}', dialect_hint=dialect_hint(), now=clock.now(), schema_text=schema_text())
 
 
 @router.post('/api/ai/ask')
@@ -283,7 +301,7 @@ def _ask(q, hist, user):
         return {'answer': ans, 'sqls': [], 'llm': False}
     msgs = [{'role': 'system', 'content': system_prompt()}] + [m for m in hist[-6:] if m.get('role') in ('user', 'assistant')] + [{'role': 'user', 'content': q}]
     try:
-        for _ in range(6):
+        for _ in range(12):
             r = _post(msgs, TOOLS)
             m = r['choices'][0]['message']
             calls = m.get('tool_calls') or []
