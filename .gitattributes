@@ -1,0 +1,4 @@
+# 本体产物必须保持字节稳定:TTL 的 SHA-256 会写进离线 HTML 的页脚,
+# 若 checkout 时发生换行转换,两者会对不上。
+*.ttl text eol=lf
+*.html -text

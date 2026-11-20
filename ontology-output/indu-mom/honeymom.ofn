@@ -1,0 +1,3056 @@
+Prefix(:=<https://example.org/ontology/honeymom#>)
+Prefix(owl:=<http://www.w3.org/2002/07/owl#>)
+Prefix(rdf:=<http://www.w3.org/1999/02/22-rdf-syntax-ns#>)
+Prefix(xml:=<http://www.w3.org/XML/1998/namespace>)
+Prefix(xsd:=<http://www.w3.org/2001/XMLSchema#>)
+Prefix(rdfs:=<http://www.w3.org/2000/01/rdf-schema#>)
+
+
+Ontology(<https://example.org/ontology/honeymom>
+Annotation(rdfs:comment "HoneyMOM 离散制造 MES / MOM 系统的业务本体。对象类型对应业务概念,链接类型对应业务关联,数据属性对应业务属性。建模依据来自源码 honeymom/schema*.py 的实体定义与 honeymom/services/ 中的实际业务规则,不是数据库表的机械镜像。")
+Annotation(rdfs:label "HoneyMOM 制造运营本体")
+Annotation(owl:versionInfo "0.1.0 — 基于 Indu-mom 仓库 main 分支抽取,2026-11-16")
+
+Declaration(Class(rdfs:Resource))
+Declaration(Class(:Alarm))
+Declaration(Class(:Andon))
+Declaration(Class(:Attendance))
+Declaration(Class(:AuxiliaryMaterial))
+Declaration(Class(:BillOfMaterials))
+Declaration(Class(:Changeover))
+Declaration(Class(:Consumable))
+Declaration(Class(:Customer))
+Declaration(Class(:DataSource))
+Declaration(Class(:DefectCode))
+Declaration(Class(:DeliverySchedule))
+Declaration(Class(:DemandForecast))
+Declaration(Class(:DowntimePlan))
+Declaration(Class(:Employee))
+Declaration(Class(:Equipment))
+Declaration(Class(:EquipmentStateRecord))
+Declaration(Class(:FinalInspection))
+Declaration(Class(:FinishedProduct))
+Declaration(Class(:FirstArticleInspection))
+Declaration(Class(:FirstArticleRelease))
+Declaration(Class(:Gauge))
+Declaration(Class(:GaugeCalibration))
+Declaration(Class(:InProcessInspection))
+Declaration(Class(:IncomingInspection))
+Declaration(Class(:InspectionItem))
+Declaration(Class(:InspectionRecord))
+Declaration(Class(:InspectionTemplate))
+Declaration(Class(:InspectionValue))
+Declaration(Class(:KittingRecord))
+Declaration(Class(:LotHold))
+Declaration(Class(:MaintenancePlan))
+Declaration(Class(:MaintenanceRecord))
+Declaration(Class(:Material))
+Declaration(Class(:MaterialIssue))
+Declaration(Class(:MaterialPlan))
+Declaration(Class(:MaterialRequest))
+Declaration(Class(:MrpRun))
+Declaration(Class(:MrpSuggestion))
+Declaration(Class(:NonconformanceReport))
+Declaration(Class(:OperatorSkill))
+Declaration(Class(:Part))
+Declaration(Class(:PartEvent))
+Declaration(Class(:PatrolInspection))
+Declaration(Class(:Plant))
+Declaration(Class(:Process))
+Declaration(Class(:ProductionLine))
+Declaration(Class(:ProductionReport))
+Declaration(Class(:PurchaseOrder))
+Declaration(Class(:PurchaseOrderLine))
+Declaration(Class(:PurchaseRequisition))
+Declaration(Class(:Quotation))
+Declaration(Class(:RawMaterial))
+Declaration(Class(:RepairOrder))
+Declaration(Class(:ReworkOrder))
+Declaration(Class(:Routing))
+Declaration(Class(:RoutingStep))
+Declaration(Class(:SalesOrder))
+Declaration(Class(:SalesOrderLine))
+Declaration(Class(:ScheduleProposal))
+Declaration(Class(:SemiFinishedMaterial))
+Declaration(Class(:Shift))
+Declaration(Class(:Shipment))
+Declaration(Class(:Stock))
+Declaration(Class(:StockTransaction))
+Declaration(Class(:StorageLocation))
+Declaration(Class(:Supplier))
+Declaration(Class(:TagPoint))
+Declaration(Class(:Team))
+Declaration(Class(:Tooling))
+Declaration(Class(:UserAccount))
+Declaration(Class(:Warehouse))
+Declaration(Class(:WorkOrder))
+Declaration(Class(:WorkOrderOperation))
+Declaration(Class(:Workshop))
+Declaration(Class(:Workstation))
+Declaration(ObjectProperty(:alarmOnEquipment))
+Declaration(ObjectProperty(:appliesToEquipment))
+Declaration(ObjectProperty(:appliesToProduct))
+Declaration(ObjectProperty(:attendanceInShift))
+Declaration(ObjectProperty(:attendanceOfEmployee))
+Declaration(ObjectProperty(:belongsToRouting))
+Declaration(ObjectProperty(:belongsToTeam))
+Declaration(ObjectProperty(:belongsToWorkOrder))
+Declaration(ObjectProperty(:bomComponent))
+Declaration(ObjectProperty(:bomProduct))
+Declaration(ObjectProperty(:calibrationForGauge))
+Declaration(ObjectProperty(:changeoverFromProduct))
+Declaration(ObjectProperty(:changeoverToProduct))
+Declaration(ObjectProperty(:classifiedByDefect))
+Declaration(ObjectProperty(:containsLine))
+Declaration(ObjectProperty(:containsWorkshop))
+Declaration(ObjectProperty(:containsWorkstation))
+Declaration(ObjectProperty(:coversProcess))
+Declaration(ObjectProperty(:defectOwnedByProcess))
+Declaration(ObjectProperty(:derivedFromQuotation))
+Declaration(ObjectProperty(:downtimeAffectsEquipment))
+Declaration(ObjectProperty(:equipmentOnLine))
+Declaration(ObjectProperty(:eventOfPart))
+Declaration(ObjectProperty(:faiEvidencedBy))
+Declaration(ObjectProperty(:faiForOperation))
+Declaration(ObjectProperty(:faiForProcess))
+Declaration(ObjectProperty(:faiForWorkOrder))
+Declaration(ObjectProperty(:faiOnEquipment))
+Declaration(ObjectProperty(:followsRouting))
+Declaration(ObjectProperty(:forecastForMaterial))
+Declaration(ObjectProperty(:forecastFromCustomer))
+Declaration(ObjectProperty(:fulfilledAtPlant))
+Declaration(ObjectProperty(:fulfillsSalesOrder))
+Declaration(ObjectProperty(:hasOperation))
+Declaration(ObjectProperty(:heldByEmployee))
+Declaration(ObjectProperty(:holdAppliesToMaterial))
+Declaration(ObjectProperty(:hostsEquipment))
+Declaration(ObjectProperty(:inspectedBy))
+Declaration(ObjectProperty(:issueAgainstWorkOrder))
+Declaration(ObjectProperty(:issueHandledBy))
+Declaration(ObjectProperty(:issuedFromWarehouse))
+Declaration(ObjectProperty(:issuesMaterial))
+Declaration(ObjectProperty(:itemBelongsToTemplate))
+Declaration(ObjectProperty(:kittingForMaterial))
+Declaration(ObjectProperty(:kittingForWorkOrder))
+Declaration(ObjectProperty(:lineBelongsToOrder))
+Declaration(ObjectProperty(:lineForMaterial))
+Declaration(ObjectProperty(:lineProducedByWorkOrder))
+Declaration(ObjectProperty(:locationInsideWarehouse))
+Declaration(ObjectProperty(:materialPlanDefaultSupplier))
+Declaration(ObjectProperty(:materialPlanDefaultWarehouse))
+Declaration(ObjectProperty(:materialPlanForMaterial))
+Declaration(ObjectProperty(:measuredWithGauge))
+Declaration(ObjectProperty(:ncrAgainstWorkOrder))
+Declaration(ObjectProperty(:ncrByDefect))
+Declaration(ObjectProperty(:ncrOfMaterial))
+Declaration(ObjectProperty(:operationAssignedTo))
+Declaration(ObjectProperty(:operationCoversProcess))
+Declaration(ObjectProperty(:orderPlacedWithSupplier))
+Declaration(ObjectProperty(:orderReceivedAtPlant))
+Declaration(ObjectProperty(:partBelongsToWorkOrder))
+Declaration(ObjectProperty(:partIsProduct))
+Declaration(ObjectProperty(:performedBy))
+Declaration(ObjectProperty(:performsProcess))
+Declaration(ObjectProperty(:placedByCustomer))
+Declaration(ObjectProperty(:planForEquipment))
+Declaration(ObjectProperty(:planOwnedBy))
+Declaration(ObjectProperty(:poLineBelongsToOrder))
+Declaration(ObjectProperty(:poLineForMaterial))
+Declaration(ObjectProperty(:poLineFromRequisition))
+Declaration(ObjectProperty(:producesProduct))
+Declaration(ObjectProperty(:proposesForWorkOrder))
+Declaration(ObjectProperty(:quotationIssuedTo))
+Declaration(ObjectProperty(:raisedOnEquipment))
+Declaration(ObjectProperty(:recordAgainstWorkOrder))
+Declaration(ObjectProperty(:recordExecutedBy))
+Declaration(ObjectProperty(:recordFulfillsPlan))
+Declaration(ObjectProperty(:recordOnEquipment))
+Declaration(ObjectProperty(:recordUsesTemplate))
+Declaration(ObjectProperty(:repairAssignedTo))
+Declaration(ObjectProperty(:repairForEquipment))
+Declaration(ObjectProperty(:reportForProcess))
+Declaration(ObjectProperty(:reportedDuringShift))
+Declaration(ObjectProperty(:reportedOnEquipment))
+Declaration(ObjectProperty(:reportsOnOperation))
+Declaration(ObjectProperty(:reportsOnWorkOrder))
+Declaration(ObjectProperty(:requestForWorkOrder))
+Declaration(ObjectProperty(:requestFromWarehouse))
+Declaration(ObjectProperty(:requestsMaterial))
+Declaration(ObjectProperty(:requiresProcess))
+Declaration(ObjectProperty(:requisitionConvertedToOrder))
+Declaration(ObjectProperty(:requisitionRequestsMaterial))
+Declaration(ObjectProperty(:requisitionSuggestedSupplier))
+Declaration(ObjectProperty(:reworkPerformedBy))
+Declaration(ObjectProperty(:reworkRecheckedBy))
+Declaration(ObjectProperty(:reworkRemediates))
+Declaration(ObjectProperty(:scheduleForOrderLine))
+Declaration(ObjectProperty(:scheduledOnLine))
+Declaration(ObjectProperty(:shipmentOfWorkOrder))
+Declaration(ObjectProperty(:stateOfEquipment))
+Declaration(ObjectProperty(:stockAtLocation))
+Declaration(ObjectProperty(:stockHoldsMaterial))
+Declaration(ObjectProperty(:stockInWarehouse))
+Declaration(ObjectProperty(:suggestionForMaterial))
+Declaration(ObjectProperty(:suggestionFromRun))
+Declaration(ObjectProperty(:suggestionGeneratesPurchaseOrder))
+Declaration(ObjectProperty(:suggestionGeneratesRequisition))
+Declaration(ObjectProperty(:suggestionGeneratesWorkOrder))
+Declaration(ObjectProperty(:suggestionToSupplier))
+Declaration(ObjectProperty(:tagFromDataSource))
+Declaration(ObjectProperty(:tagOnEquipment))
+Declaration(ObjectProperty(:templateAppliesToMaterial))
+Declaration(ObjectProperty(:templateAppliesToProcess))
+Declaration(ObjectProperty(:toolingForProcess))
+Declaration(ObjectProperty(:toolingForProduct))
+Declaration(ObjectProperty(:toolingOnEquipment))
+Declaration(ObjectProperty(:txnAtLocation))
+Declaration(ObjectProperty(:txnFromWarehouse))
+Declaration(ObjectProperty(:txnMovesMaterial))
+Declaration(ObjectProperty(:txnToWarehouse))
+Declaration(ObjectProperty(:userLinkedToEmployee))
+Declaration(ObjectProperty(:valueBelongsToRecord))
+Declaration(ObjectProperty(:valueForItem))
+Declaration(ObjectProperty(:valueMeasuredWithGauge))
+Declaration(ObjectProperty(:worksInShift))
+Declaration(DataProperty(:actualEndTime))
+Declaration(DataProperty(:actualStartTime))
+Declaration(DataProperty(:alarmDurationSeconds))
+Declaration(DataProperty(:alarmMessage))
+Declaration(DataProperty(:alarmStartTime))
+Declaration(DataProperty(:andonDescription))
+Declaration(DataProperty(:andonRaisedAt))
+Declaration(DataProperty(:andonSource))
+Declaration(DataProperty(:andonStatus))
+Declaration(DataProperty(:andonType))
+Declaration(DataProperty(:attendanceTime))
+Declaration(DataProperty(:bomQuantity))
+Declaration(DataProperty(:calibrationCode))
+Declaration(DataProperty(:calibrationDate))
+Declaration(DataProperty(:calibrationResult))
+Declaration(DataProperty(:changeoverMinutes))
+Declaration(DataProperty(:completedAt))
+Declaration(DataProperty(:creditLimit))
+Declaration(DataProperty(:customerName))
+Declaration(DataProperty(:dataSourceEndpoint))
+Declaration(DataProperty(:dataSourceProtocol))
+Declaration(DataProperty(:decidedAt))
+Declaration(DataProperty(:defectCategory))
+Declaration(DataProperty(:defectSeverity))
+Declaration(DataProperty(:downtimeEndTime))
+Declaration(DataProperty(:downtimeKind))
+Declaration(DataProperty(:downtimeStartTime))
+Declaration(DataProperty(:dueDate))
+Declaration(DataProperty(:equipmentCode))
+Declaration(DataProperty(:equipmentInstallDate))
+Declaration(DataProperty(:equipmentName))
+Declaration(DataProperty(:equipmentStateName))
+Declaration(DataProperty(:equipmentStatus))
+Declaration(DataProperty(:equipmentType))
+Declaration(DataProperty(:equipmentVendor))
+Declaration(DataProperty(:estimatedArrivalTime))
+Declaration(DataProperty(:firstArticleCode))
+Declaration(DataProperty(:firstArticleStatus))
+Declaration(DataProperty(:firstArticleTrigger))
+Declaration(DataProperty(:forecastDueDate))
+Declaration(DataProperty(:forecastQty))
+Declaration(DataProperty(:gaugeCalibrationDue))
+Declaration(DataProperty(:gaugeCode))
+Declaration(DataProperty(:gaugeName))
+Declaration(DataProperty(:gaugeType))
+Declaration(DataProperty(:idealCycleSeconds))
+Declaration(DataProperty(:inspectionCode))
+Declaration(DataProperty(:inspectionNgQty))
+Declaration(DataProperty(:inspectionResult))
+Declaration(DataProperty(:inspectionSampleQty))
+Declaration(DataProperty(:inspectionTime))
+Declaration(DataProperty(:inspectionType))
+Declaration(DataProperty(:inspectionValueNumber))
+Declaration(DataProperty(:inspectionValueOk))
+Declaration(DataProperty(:inspectionValueText))
+Declaration(DataProperty(:isMakeToOrder))
+Declaration(DataProperty(:issueKind))
+Declaration(DataProperty(:issueQty))
+Declaration(DataProperty(:itemCharacteristicCode))
+Declaration(DataProperty(:itemIsKeyCharacteristic))
+Declaration(DataProperty(:itemLowerLimit))
+Declaration(DataProperty(:itemName))
+Declaration(DataProperty(:itemSpecialCharacteristic))
+Declaration(DataProperty(:itemUpperLimit))
+Declaration(DataProperty(:kittingQtyNeeded))
+Declaration(DataProperty(:kittingQtyReady))
+Declaration(DataProperty(:kittingStatus))
+Declaration(DataProperty(:leadTimeDays))
+Declaration(DataProperty(:lineCode))
+Declaration(DataProperty(:lineName))
+Declaration(DataProperty(:lineQty))
+Declaration(DataProperty(:lineQtyShipped))
+Declaration(DataProperty(:locationCapacity))
+Declaration(DataProperty(:locationCode))
+Declaration(DataProperty(:lotCode))
+Declaration(DataProperty(:lotHoldCode))
+Declaration(DataProperty(:lotHoldReason))
+Declaration(DataProperty(:lotHoldStatus))
+Declaration(DataProperty(:lotHoldedAt))
+Declaration(DataProperty(:lotMultiple))
+Declaration(DataProperty(:lotReleasedAt))
+Declaration(DataProperty(:maintenanceCycleDays))
+Declaration(DataProperty(:maintenanceNextDue))
+Declaration(DataProperty(:maintenanceResult))
+Declaration(DataProperty(:maintenanceType))
+Declaration(DataProperty(:makeOrBuy))
+Declaration(DataProperty(:materialCode))
+Declaration(DataProperty(:materialName))
+Declaration(DataProperty(:materialSpec))
+Declaration(DataProperty(:materialType))
+Declaration(DataProperty(:materialUnit))
+Declaration(DataProperty(:minimumLotQty))
+Declaration(DataProperty(:mrpHorizonDays))
+Declaration(DataProperty(:mrpRunAt))
+Declaration(DataProperty(:mrpRunCode))
+Declaration(DataProperty(:mrpRunStatus))
+Declaration(DataProperty(:ncrCode))
+Declaration(DataProperty(:ncrCorrectiveAction))
+Declaration(DataProperty(:ncrDisposition))
+Declaration(DataProperty(:ncrFoundAt))
+Declaration(DataProperty(:ncrQty))
+Declaration(DataProperty(:ncrRootCause))
+Declaration(DataProperty(:ncrStatus))
+Declaration(DataProperty(:needDate))
+Declaration(DataProperty(:operationGoodQty))
+Declaration(DataProperty(:operationNgQty))
+Declaration(DataProperty(:operationPlannedQty))
+Declaration(DataProperty(:operationStatus))
+Declaration(DataProperty(:orderAmount))
+Declaration(DataProperty(:partCurrentStation))
+Declaration(DataProperty(:partEventTime))
+Declaration(DataProperty(:partEventType))
+Declaration(DataProperty(:partHeatNumber))
+Declaration(DataProperty(:partPourTemperature))
+Declaration(DataProperty(:partResidualMagnesium))
+Declaration(DataProperty(:partReworkCount))
+Declaration(DataProperty(:partSerialNumber))
+Declaration(DataProperty(:partStatus))
+Declaration(DataProperty(:plannedStartTime))
+Declaration(DataProperty(:plantAddress))
+Declaration(DataProperty(:plantCode))
+Declaration(DataProperty(:plantName))
+Declaration(DataProperty(:poLineQty))
+Declaration(DataProperty(:poLineQtyAccepted))
+Declaration(DataProperty(:poLineQtyReceived))
+Declaration(DataProperty(:poLineQtyRejected))
+Declaration(DataProperty(:processCode))
+Declaration(DataProperty(:processName))
+Declaration(DataProperty(:processType))
+Declaration(DataProperty(:proposalStatus))
+Declaration(DataProperty(:purchaseOrderCode))
+Declaration(DataProperty(:purchaseOrderStatus))
+Declaration(DataProperty(:quotationCode))
+Declaration(DataProperty(:ratedPowerKw))
+Declaration(DataProperty(:recheckResult))
+Declaration(DataProperty(:releaseDate))
+Declaration(DataProperty(:releasedAt))
+Declaration(DataProperty(:repairDowntimeMinutes))
+Declaration(DataProperty(:repairFault))
+Declaration(DataProperty(:repairLevel))
+Declaration(DataProperty(:repairStatus))
+Declaration(DataProperty(:reportCode))
+Declaration(DataProperty(:reportEndTime))
+Declaration(DataProperty(:reportGoodQty))
+Declaration(DataProperty(:reportIdempotencyKey))
+Declaration(DataProperty(:reportNgQty))
+Declaration(DataProperty(:reportSource))
+Declaration(DataProperty(:reportStartTime))
+Declaration(DataProperty(:requestQty))
+Declaration(DataProperty(:requisitionCode))
+Declaration(DataProperty(:requisitionQty))
+Declaration(DataProperty(:requisitionStatus))
+Declaration(DataProperty(:reworkMethod))
+Declaration(DataProperty(:reworkResult))
+Declaration(DataProperty(:routingStatus))
+Declaration(DataProperty(:routingVersion))
+Declaration(DataProperty(:safetyStock))
+Declaration(DataProperty(:salesOrderCode))
+Declaration(DataProperty(:salesOrderDate))
+Declaration(DataProperty(:salesOrderStatus))
+Declaration(DataProperty(:scheduleDueDate))
+Declaration(DataProperty(:scheduleQty))
+Declaration(DataProperty(:scrapRatePct))
+Declaration(DataProperty(:shiftActive))
+Declaration(DataProperty(:shiftEndTime))
+Declaration(DataProperty(:shiftStartTime))
+Declaration(DataProperty(:shipmentCode))
+Declaration(DataProperty(:shipmentQty))
+Declaration(DataProperty(:shipmentTime))
+Declaration(DataProperty(:skillLevel))
+Declaration(DataProperty(:skillValidUntil))
+Declaration(DataProperty(:standardCycleSeconds))
+Declaration(DataProperty(:stateDurationSeconds))
+Declaration(DataProperty(:stateEndTime))
+Declaration(DataProperty(:stateStartTime))
+Declaration(DataProperty(:stepInstruction))
+Declaration(DataProperty(:stepIsInspectionPoint))
+Declaration(DataProperty(:stepReportMode))
+Declaration(DataProperty(:stepRequiresFirstArticle))
+Declaration(DataProperty(:stepSequence))
+Declaration(DataProperty(:stockQty))
+Declaration(DataProperty(:suggestionKind))
+Declaration(DataProperty(:suggestionLevel))
+Declaration(DataProperty(:suggestionQty))
+Declaration(DataProperty(:suggestionStatus))
+Declaration(DataProperty(:supplierName))
+Declaration(DataProperty(:supplierQualification))
+Declaration(DataProperty(:supplierRating))
+Declaration(DataProperty(:tagAddress))
+Declaration(DataProperty(:tagAlarmLower))
+Declaration(DataProperty(:tagAlarmUpper))
+Declaration(DataProperty(:tagConfirmed))
+Declaration(DataProperty(:tagName))
+Declaration(DataProperty(:tagPeriodMs))
+Declaration(DataProperty(:tagRole))
+Declaration(DataProperty(:templateCode))
+Declaration(DataProperty(:templateName))
+Declaration(DataProperty(:toolingAvailableFrom))
+Declaration(DataProperty(:toolingLifeShots))
+Declaration(DataProperty(:toolingShots))
+Declaration(DataProperty(:toolingStatus))
+Declaration(DataProperty(:toolingType))
+Declaration(DataProperty(:transactionQty))
+Declaration(DataProperty(:transactionTime))
+Declaration(DataProperty(:transactionType))
+Declaration(DataProperty(:unitPrice))
+Declaration(DataProperty(:unitWeightKg))
+Declaration(DataProperty(:userDisplayName))
+Declaration(DataProperty(:userRoles))
+Declaration(DataProperty(:username))
+Declaration(DataProperty(:warehouseType))
+Declaration(DataProperty(:workOrderCode))
+Declaration(DataProperty(:workOrderPriority))
+Declaration(DataProperty(:workOrderQty))
+Declaration(DataProperty(:workOrderQtyDone))
+Declaration(DataProperty(:workOrderQtyScrap))
+Declaration(DataProperty(:workOrderStatus))
+Declaration(DataProperty(:workshopType))
+Declaration(DataProperty(:workstationGroup))
+Declaration(Datatype(xsd:date))
+
+############################
+#   Object Properties
+############################
+
+# Object Property: :alarmOnEquipment (报警设备)
+
+AnnotationAssertion(rdfs:label :alarmOnEquipment "报警设备")
+ObjectPropertyDomain(:alarmOnEquipment :Alarm)
+ObjectPropertyRange(:alarmOnEquipment :Equipment)
+
+# Object Property: :appliesToEquipment (适用设备)
+
+AnnotationAssertion(rdfs:label :appliesToEquipment "适用设备")
+ObjectPropertyDomain(:appliesToEquipment :OperatorSkill)
+ObjectPropertyRange(:appliesToEquipment :Equipment)
+
+# Object Property: :appliesToProduct (适用产品)
+
+AnnotationAssertion(rdfs:comment :appliesToProduct "工艺路线适用的产品(与 BOM 的产品语义一致,但分属不同主数据:一个是物料结构,一个是工艺结构)。")
+AnnotationAssertion(rdfs:label :appliesToProduct "适用产品")
+ObjectPropertyDomain(:appliesToProduct :Routing)
+ObjectPropertyRange(:appliesToProduct :Material)
+
+# Object Property: :attendanceInShift (出勤班次)
+
+AnnotationAssertion(rdfs:label :attendanceInShift "出勤班次")
+ObjectPropertyDomain(:attendanceInShift :Attendance)
+ObjectPropertyRange(:attendanceInShift :Shift)
+
+# Object Property: :attendanceOfEmployee (出勤员工)
+
+AnnotationAssertion(rdfs:label :attendanceOfEmployee "出勤员工")
+ObjectPropertyDomain(:attendanceOfEmployee :Attendance)
+ObjectPropertyRange(:attendanceOfEmployee :Employee)
+
+# Object Property: :belongsToRouting (所属工艺路线)
+
+AnnotationAssertion(rdfs:label :belongsToRouting "所属工艺路线")
+ObjectPropertyDomain(:belongsToRouting :RoutingStep)
+ObjectPropertyRange(:belongsToRouting :Routing)
+
+# Object Property: :belongsToTeam (所属班组)
+
+AnnotationAssertion(rdfs:label :belongsToTeam "所属班组")
+ObjectPropertyDomain(:belongsToTeam :Employee)
+ObjectPropertyRange(:belongsToTeam :Team)
+
+# Object Property: :belongsToWorkOrder (所属工单)
+
+AnnotationAssertion(rdfs:label :belongsToWorkOrder "所属工单")
+InverseObjectProperties(:belongsToWorkOrder :hasOperation)
+ObjectPropertyDomain(:belongsToWorkOrder :WorkOrderOperation)
+ObjectPropertyRange(:belongsToWorkOrder :WorkOrder)
+
+# Object Property: :bomComponent (BOM 子件)
+
+AnnotationAssertion(rdfs:label :bomComponent "BOM 子件")
+InverseObjectProperties(:bomComponent :bomProduct)
+ObjectPropertyDomain(:bomComponent :BillOfMaterials)
+ObjectPropertyRange(:bomComponent :Material)
+
+# Object Property: :bomProduct (BOM 产品)
+
+AnnotationAssertion(rdfs:comment :bomProduct "BOM 的父件方向,与 bomComponent 互为逆关系。")
+AnnotationAssertion(rdfs:label :bomProduct "BOM 产品")
+ObjectPropertyDomain(:bomProduct :BillOfMaterials)
+ObjectPropertyRange(:bomProduct :Material)
+
+# Object Property: :calibrationForGauge (校准对象)
+
+AnnotationAssertion(rdfs:label :calibrationForGauge "校准对象")
+ObjectPropertyDomain(:calibrationForGauge :GaugeCalibration)
+ObjectPropertyRange(:calibrationForGauge :Gauge)
+
+# Object Property: :changeoverFromProduct (换型前产品)
+
+AnnotationAssertion(rdfs:label :changeoverFromProduct "换型前产品")
+ObjectPropertyDomain(:changeoverFromProduct :Changeover)
+ObjectPropertyRange(:changeoverFromProduct :Material)
+
+# Object Property: :changeoverToProduct (换型后产品)
+
+AnnotationAssertion(rdfs:label :changeoverToProduct "换型后产品")
+ObjectPropertyDomain(:changeoverToProduct :Changeover)
+ObjectPropertyRange(:changeoverToProduct :Material)
+
+# Object Property: :classifiedByDefect (缺陷分类)
+
+AnnotationAssertion(rdfs:label :classifiedByDefect "缺陷分类")
+ObjectPropertyDomain(:classifiedByDefect :ProductionReport)
+ObjectPropertyRange(:classifiedByDefect :DefectCode)
+
+# Object Property: :containsLine (包含产线)
+
+AnnotationAssertion(rdfs:label :containsLine "包含产线")
+ObjectPropertyDomain(:containsLine :Workshop)
+ObjectPropertyRange(:containsLine :ProductionLine)
+
+# Object Property: :containsWorkshop (包含车间)
+
+AnnotationAssertion(rdfs:comment :containsWorkshop "工厂组织车间。")
+AnnotationAssertion(rdfs:label :containsWorkshop "包含车间")
+ObjectPropertyDomain(:containsWorkshop :Plant)
+ObjectPropertyRange(:containsWorkshop :Workshop)
+
+# Object Property: :containsWorkstation (包含工位)
+
+AnnotationAssertion(rdfs:label :containsWorkstation "包含工位")
+ObjectPropertyDomain(:containsWorkstation :ProductionLine)
+ObjectPropertyRange(:containsWorkstation :Workstation)
+
+# Object Property: :coversProcess (覆盖工序)
+
+AnnotationAssertion(rdfs:label :coversProcess "覆盖工序")
+ObjectPropertyDomain(:coversProcess :OperatorSkill)
+ObjectPropertyRange(:coversProcess :Process)
+
+# Object Property: :defectOwnedByProcess (责任工序)
+
+AnnotationAssertion(rdfs:label :defectOwnedByProcess "责任工序")
+ObjectPropertyDomain(:defectOwnedByProcess :DefectCode)
+ObjectPropertyRange(:defectOwnedByProcess :Process)
+
+# Object Property: :derivedFromQuotation (源自报价单)
+
+AnnotationAssertion(rdfs:label :derivedFromQuotation "源自报价单")
+ObjectPropertyDomain(:derivedFromQuotation :SalesOrder)
+ObjectPropertyRange(:derivedFromQuotation :Quotation)
+
+# Object Property: :downtimeAffectsEquipment (停机设备)
+
+AnnotationAssertion(rdfs:label :downtimeAffectsEquipment "停机设备")
+ObjectPropertyDomain(:downtimeAffectsEquipment :DowntimePlan)
+ObjectPropertyRange(:downtimeAffectsEquipment :Equipment)
+
+# Object Property: :equipmentOnLine (所属产线)
+
+AnnotationAssertion(rdfs:label :equipmentOnLine "所属产线")
+ObjectPropertyDomain(:equipmentOnLine :Equipment)
+ObjectPropertyRange(:equipmentOnLine :ProductionLine)
+
+# Object Property: :eventOfPart (零件事件归属)
+
+AnnotationAssertion(rdfs:label :eventOfPart "零件事件归属")
+ObjectPropertyDomain(:eventOfPart :PartEvent)
+ObjectPropertyRange(:eventOfPart :Part)
+
+# Object Property: :faiEvidencedBy (首检证据)
+
+AnnotationAssertion(rdfs:label :faiEvidencedBy "首检证据")
+ObjectPropertyDomain(:faiEvidencedBy :FirstArticleRelease)
+ObjectPropertyRange(:faiEvidencedBy :InspectionRecord)
+
+# Object Property: :faiForOperation (首检工序)
+
+AnnotationAssertion(rdfs:label :faiForOperation "首检工序")
+ObjectPropertyDomain(:faiForOperation :FirstArticleRelease)
+ObjectPropertyRange(:faiForOperation :WorkOrderOperation)
+
+# Object Property: :faiForProcess (首检作业)
+
+AnnotationAssertion(rdfs:label :faiForProcess "首检作业")
+ObjectPropertyDomain(:faiForProcess :FirstArticleRelease)
+ObjectPropertyRange(:faiForProcess :Process)
+
+# Object Property: :faiForWorkOrder (首检工单)
+
+AnnotationAssertion(rdfs:label :faiForWorkOrder "首检工单")
+ObjectPropertyDomain(:faiForWorkOrder :FirstArticleRelease)
+ObjectPropertyRange(:faiForWorkOrder :WorkOrder)
+
+# Object Property: :faiOnEquipment (首检设备)
+
+AnnotationAssertion(rdfs:label :faiOnEquipment "首检设备")
+ObjectPropertyDomain(:faiOnEquipment :FirstArticleRelease)
+ObjectPropertyRange(:faiOnEquipment :Equipment)
+
+# Object Property: :followsRouting (遵循工艺路线)
+
+AnnotationAssertion(rdfs:label :followsRouting "遵循工艺路线")
+ObjectPropertyDomain(:followsRouting :WorkOrder)
+ObjectPropertyRange(:followsRouting :Routing)
+
+# Object Property: :forecastForMaterial (预测物料)
+
+AnnotationAssertion(rdfs:label :forecastForMaterial "预测物料")
+ObjectPropertyDomain(:forecastForMaterial :DemandForecast)
+ObjectPropertyRange(:forecastForMaterial :Material)
+
+# Object Property: :forecastFromCustomer (预测客户)
+
+AnnotationAssertion(rdfs:label :forecastFromCustomer "预测客户")
+ObjectPropertyDomain(:forecastFromCustomer :DemandForecast)
+ObjectPropertyRange(:forecastFromCustomer :Customer)
+
+# Object Property: :fulfilledAtPlant (履行工厂)
+
+AnnotationAssertion(rdfs:label :fulfilledAtPlant "履行工厂")
+ObjectPropertyDomain(:fulfilledAtPlant :SalesOrder)
+ObjectPropertyRange(:fulfilledAtPlant :Plant)
+
+# Object Property: :fulfillsSalesOrder (履行销售订单)
+
+AnnotationAssertion(rdfs:comment :fulfillsSalesOrder "按单生产(MTO)时建立:该工单是为这张销售订单生产的。")
+AnnotationAssertion(rdfs:label :fulfillsSalesOrder "履行销售订单")
+ObjectPropertyDomain(:fulfillsSalesOrder :WorkOrder)
+ObjectPropertyRange(:fulfillsSalesOrder :SalesOrder)
+
+# Object Property: :hasOperation (包含工序)
+
+AnnotationAssertion(rdfs:label :hasOperation "包含工序")
+ObjectPropertyDomain(:hasOperation :WorkOrder)
+ObjectPropertyRange(:hasOperation :WorkOrderOperation)
+
+# Object Property: :heldByEmployee (技能持有人)
+
+AnnotationAssertion(rdfs:label :heldByEmployee "技能持有人")
+ObjectPropertyDomain(:heldByEmployee :OperatorSkill)
+ObjectPropertyRange(:heldByEmployee :Employee)
+
+# Object Property: :holdAppliesToMaterial (冻结物料)
+
+AnnotationAssertion(rdfs:label :holdAppliesToMaterial "冻结物料")
+ObjectPropertyDomain(:holdAppliesToMaterial :LotHold)
+ObjectPropertyRange(:holdAppliesToMaterial :Material)
+
+# Object Property: :hostsEquipment (承载设备)
+
+AnnotationAssertion(rdfs:label :hostsEquipment "承载设备")
+ObjectPropertyDomain(:hostsEquipment :Workstation)
+ObjectPropertyRange(:hostsEquipment :Equipment)
+
+# Object Property: :inspectedBy (检验员)
+
+AnnotationAssertion(rdfs:label :inspectedBy "检验员")
+ObjectPropertyDomain(:inspectedBy :InspectionRecord)
+ObjectPropertyRange(:inspectedBy :Employee)
+
+# Object Property: :issueAgainstWorkOrder (领退对应工单)
+
+AnnotationAssertion(rdfs:label :issueAgainstWorkOrder "领退对应工单")
+ObjectPropertyDomain(:issueAgainstWorkOrder :MaterialIssue)
+ObjectPropertyRange(:issueAgainstWorkOrder :WorkOrder)
+
+# Object Property: :issueHandledBy (经办人)
+
+AnnotationAssertion(rdfs:label :issueHandledBy "经办人")
+ObjectPropertyDomain(:issueHandledBy :MaterialIssue)
+ObjectPropertyRange(:issueHandledBy :Employee)
+
+# Object Property: :issuedFromWarehouse (出入仓库)
+
+AnnotationAssertion(rdfs:label :issuedFromWarehouse "出入仓库")
+ObjectPropertyDomain(:issuedFromWarehouse :MaterialIssue)
+ObjectPropertyRange(:issuedFromWarehouse :Warehouse)
+
+# Object Property: :issuesMaterial (领退物料)
+
+AnnotationAssertion(rdfs:label :issuesMaterial "领退物料")
+ObjectPropertyDomain(:issuesMaterial :MaterialIssue)
+ObjectPropertyRange(:issuesMaterial :Material)
+
+# Object Property: :itemBelongsToTemplate (所属检验模板)
+
+AnnotationAssertion(rdfs:label :itemBelongsToTemplate "所属检验模板")
+ObjectPropertyDomain(:itemBelongsToTemplate :InspectionItem)
+ObjectPropertyRange(:itemBelongsToTemplate :InspectionTemplate)
+
+# Object Property: :kittingForMaterial (齐套物料)
+
+AnnotationAssertion(rdfs:label :kittingForMaterial "齐套物料")
+ObjectPropertyDomain(:kittingForMaterial :KittingRecord)
+ObjectPropertyRange(:kittingForMaterial :Material)
+
+# Object Property: :kittingForWorkOrder (齐套工单)
+
+AnnotationAssertion(rdfs:label :kittingForWorkOrder "齐套工单")
+ObjectPropertyDomain(:kittingForWorkOrder :KittingRecord)
+ObjectPropertyRange(:kittingForWorkOrder :WorkOrder)
+
+# Object Property: :lineBelongsToOrder (所属销售订单)
+
+AnnotationAssertion(rdfs:label :lineBelongsToOrder "所属销售订单")
+ObjectPropertyDomain(:lineBelongsToOrder :SalesOrderLine)
+ObjectPropertyRange(:lineBelongsToOrder :SalesOrder)
+
+# Object Property: :lineForMaterial (订单物料)
+
+AnnotationAssertion(rdfs:label :lineForMaterial "订单物料")
+ObjectPropertyDomain(:lineForMaterial :SalesOrderLine)
+ObjectPropertyRange(:lineForMaterial :Material)
+
+# Object Property: :lineProducedByWorkOrder (由工单生产)
+
+AnnotationAssertion(rdfs:label :lineProducedByWorkOrder "由工单生产")
+ObjectPropertyDomain(:lineProducedByWorkOrder :SalesOrderLine)
+ObjectPropertyRange(:lineProducedByWorkOrder :WorkOrder)
+
+# Object Property: :locationInsideWarehouse (所在仓库)
+
+AnnotationAssertion(rdfs:label :locationInsideWarehouse "所在仓库")
+ObjectPropertyDomain(:locationInsideWarehouse :StorageLocation)
+ObjectPropertyRange(:locationInsideWarehouse :Warehouse)
+
+# Object Property: :materialPlanDefaultSupplier (默认供应商)
+
+AnnotationAssertion(rdfs:label :materialPlanDefaultSupplier "默认供应商")
+ObjectPropertyDomain(:materialPlanDefaultSupplier :MaterialPlan)
+ObjectPropertyRange(:materialPlanDefaultSupplier :Supplier)
+
+# Object Property: :materialPlanDefaultWarehouse (默认仓库)
+
+AnnotationAssertion(rdfs:label :materialPlanDefaultWarehouse "默认仓库")
+ObjectPropertyDomain(:materialPlanDefaultWarehouse :MaterialPlan)
+ObjectPropertyRange(:materialPlanDefaultWarehouse :Warehouse)
+
+# Object Property: :materialPlanForMaterial (计划物料)
+
+AnnotationAssertion(rdfs:label :materialPlanForMaterial "计划物料")
+ObjectPropertyDomain(:materialPlanForMaterial :MaterialPlan)
+ObjectPropertyRange(:materialPlanForMaterial :Material)
+
+# Object Property: :measuredWithGauge (使用量具)
+
+AnnotationAssertion(rdfs:comment :measuredWithGauge "检验记录的主量具。检验项目声明量具类型,录入时必须选一把同类型且在校准有效期内的量具。")
+AnnotationAssertion(rdfs:label :measuredWithGauge "使用量具")
+ObjectPropertyDomain(:measuredWithGauge :InspectionRecord)
+ObjectPropertyRange(:measuredWithGauge :Gauge)
+
+# Object Property: :ncrAgainstWorkOrder (不合格工单)
+
+AnnotationAssertion(rdfs:label :ncrAgainstWorkOrder "不合格工单")
+ObjectPropertyDomain(:ncrAgainstWorkOrder :NonconformanceReport)
+ObjectPropertyRange(:ncrAgainstWorkOrder :WorkOrder)
+
+# Object Property: :ncrByDefect (缺陷分类)
+
+AnnotationAssertion(rdfs:label :ncrByDefect "缺陷分类")
+ObjectPropertyDomain(:ncrByDefect :NonconformanceReport)
+ObjectPropertyRange(:ncrByDefect :DefectCode)
+
+# Object Property: :ncrOfMaterial (不合格物料)
+
+AnnotationAssertion(rdfs:label :ncrOfMaterial "不合格物料")
+ObjectPropertyDomain(:ncrOfMaterial :NonconformanceReport)
+ObjectPropertyRange(:ncrOfMaterial :Material)
+
+# Object Property: :operationAssignedTo (派工给)
+
+AnnotationAssertion(rdfs:label :operationAssignedTo "派工给")
+ObjectPropertyDomain(:operationAssignedTo :WorkOrderOperation)
+ObjectPropertyRange(:operationAssignedTo :Employee)
+
+# Object Property: :operationCoversProcess (工序对应作业)
+
+AnnotationAssertion(rdfs:label :operationCoversProcess "工序对应作业")
+ObjectPropertyDomain(:operationCoversProcess :WorkOrderOperation)
+ObjectPropertyRange(:operationCoversProcess :Process)
+
+# Object Property: :orderPlacedWithSupplier (采购供应商)
+
+AnnotationAssertion(rdfs:label :orderPlacedWithSupplier "采购供应商")
+ObjectPropertyDomain(:orderPlacedWithSupplier :PurchaseOrder)
+ObjectPropertyRange(:orderPlacedWithSupplier :Supplier)
+
+# Object Property: :orderReceivedAtPlant (收货工厂)
+
+AnnotationAssertion(rdfs:label :orderReceivedAtPlant "收货工厂")
+ObjectPropertyDomain(:orderReceivedAtPlant :PurchaseOrder)
+ObjectPropertyRange(:orderReceivedAtPlant :Plant)
+
+# Object Property: :partBelongsToWorkOrder (零件所属工单)
+
+AnnotationAssertion(rdfs:label :partBelongsToWorkOrder "零件所属工单")
+ObjectPropertyDomain(:partBelongsToWorkOrder :Part)
+ObjectPropertyRange(:partBelongsToWorkOrder :WorkOrder)
+
+# Object Property: :partIsProduct (零件对应产品)
+
+AnnotationAssertion(rdfs:label :partIsProduct "零件对应产品")
+ObjectPropertyDomain(:partIsProduct :Part)
+ObjectPropertyRange(:partIsProduct :Material)
+
+# Object Property: :performedBy (报工人)
+
+AnnotationAssertion(rdfs:label :performedBy "报工人")
+ObjectPropertyDomain(:performedBy :ProductionReport)
+ObjectPropertyRange(:performedBy :Employee)
+
+# Object Property: :performsProcess (执行工序)
+
+AnnotationAssertion(rdfs:label :performsProcess "执行工序")
+ObjectPropertyDomain(:performsProcess :Workstation)
+ObjectPropertyRange(:performsProcess :Process)
+
+# Object Property: :placedByCustomer (下单客户)
+
+AnnotationAssertion(rdfs:label :placedByCustomer "下单客户")
+ObjectPropertyDomain(:placedByCustomer :SalesOrder)
+ObjectPropertyRange(:placedByCustomer :Customer)
+
+# Object Property: :planForEquipment (保养设备)
+
+AnnotationAssertion(rdfs:label :planForEquipment "保养设备")
+ObjectPropertyDomain(:planForEquipment :MaintenancePlan)
+ObjectPropertyRange(:planForEquipment :Equipment)
+
+# Object Property: :planOwnedBy (计划负责人)
+
+AnnotationAssertion(rdfs:label :planOwnedBy "计划负责人")
+ObjectPropertyDomain(:planOwnedBy :MaintenancePlan)
+ObjectPropertyRange(:planOwnedBy :Employee)
+
+# Object Property: :poLineBelongsToOrder (所属采购订单)
+
+AnnotationAssertion(rdfs:label :poLineBelongsToOrder "所属采购订单")
+ObjectPropertyDomain(:poLineBelongsToOrder :PurchaseOrderLine)
+ObjectPropertyRange(:poLineBelongsToOrder :PurchaseOrder)
+
+# Object Property: :poLineForMaterial (采购物料)
+
+AnnotationAssertion(rdfs:label :poLineForMaterial "采购物料")
+ObjectPropertyDomain(:poLineForMaterial :PurchaseOrderLine)
+ObjectPropertyRange(:poLineForMaterial :Material)
+
+# Object Property: :poLineFromRequisition (来源请购单)
+
+AnnotationAssertion(rdfs:label :poLineFromRequisition "来源请购单")
+ObjectPropertyDomain(:poLineFromRequisition :PurchaseOrderLine)
+ObjectPropertyRange(:poLineFromRequisition :PurchaseRequisition)
+
+# Object Property: :producesProduct (生产产品)
+
+AnnotationAssertion(rdfs:label :producesProduct "生产产品")
+ObjectPropertyDomain(:producesProduct :WorkOrder)
+ObjectPropertyRange(:producesProduct :Material)
+
+# Object Property: :proposesForWorkOrder (建议针对工单)
+
+AnnotationAssertion(rdfs:label :proposesForWorkOrder "建议针对工单")
+ObjectPropertyDomain(:proposesForWorkOrder :ScheduleProposal)
+ObjectPropertyRange(:proposesForWorkOrder :WorkOrder)
+
+# Object Property: :quotationIssuedTo (报价客户)
+
+AnnotationAssertion(rdfs:label :quotationIssuedTo "报价客户")
+ObjectPropertyDomain(:quotationIssuedTo :Quotation)
+ObjectPropertyRange(:quotationIssuedTo :Customer)
+
+# Object Property: :raisedOnEquipment (发起设备)
+
+AnnotationAssertion(rdfs:label :raisedOnEquipment "发起设备")
+ObjectPropertyDomain(:raisedOnEquipment :Andon)
+ObjectPropertyRange(:raisedOnEquipment :Equipment)
+
+# Object Property: :recordAgainstWorkOrder (检验工单)
+
+AnnotationAssertion(rdfs:label :recordAgainstWorkOrder "检验工单")
+ObjectPropertyDomain(:recordAgainstWorkOrder :InspectionRecord)
+ObjectPropertyRange(:recordAgainstWorkOrder :WorkOrder)
+
+# Object Property: :recordExecutedBy (执行人)
+
+AnnotationAssertion(rdfs:label :recordExecutedBy "执行人")
+ObjectPropertyDomain(:recordExecutedBy :MaintenanceRecord)
+ObjectPropertyRange(:recordExecutedBy :Employee)
+
+# Object Property: :recordFulfillsPlan (执行计划)
+
+AnnotationAssertion(rdfs:label :recordFulfillsPlan "执行计划")
+ObjectPropertyDomain(:recordFulfillsPlan :MaintenanceRecord)
+ObjectPropertyRange(:recordFulfillsPlan :MaintenancePlan)
+
+# Object Property: :recordOnEquipment (保养设备)
+
+AnnotationAssertion(rdfs:label :recordOnEquipment "保养设备")
+ObjectPropertyDomain(:recordOnEquipment :MaintenanceRecord)
+ObjectPropertyRange(:recordOnEquipment :Equipment)
+
+# Object Property: :recordUsesTemplate (使用检验模板)
+
+AnnotationAssertion(rdfs:label :recordUsesTemplate "使用检验模板")
+ObjectPropertyDomain(:recordUsesTemplate :InspectionRecord)
+ObjectPropertyRange(:recordUsesTemplate :InspectionTemplate)
+
+# Object Property: :repairAssignedTo (维修人)
+
+AnnotationAssertion(rdfs:label :repairAssignedTo "维修人")
+ObjectPropertyDomain(:repairAssignedTo :RepairOrder)
+ObjectPropertyRange(:repairAssignedTo :Employee)
+
+# Object Property: :repairForEquipment (维修设备)
+
+AnnotationAssertion(rdfs:label :repairForEquipment "维修设备")
+ObjectPropertyDomain(:repairForEquipment :RepairOrder)
+ObjectPropertyRange(:repairForEquipment :Equipment)
+
+# Object Property: :reportForProcess (报工作业)
+
+AnnotationAssertion(rdfs:label :reportForProcess "报工作业")
+ObjectPropertyDomain(:reportForProcess :ProductionReport)
+ObjectPropertyRange(:reportForProcess :Process)
+
+# Object Property: :reportedDuringShift (报工班次)
+
+AnnotationAssertion(rdfs:label :reportedDuringShift "报工班次")
+ObjectPropertyDomain(:reportedDuringShift :ProductionReport)
+ObjectPropertyRange(:reportedDuringShift :Shift)
+
+# Object Property: :reportedOnEquipment (报工设备)
+
+AnnotationAssertion(rdfs:label :reportedOnEquipment "报工设备")
+ObjectPropertyDomain(:reportedOnEquipment :ProductionReport)
+ObjectPropertyRange(:reportedOnEquipment :Equipment)
+
+# Object Property: :reportsOnOperation (报工工序)
+
+AnnotationAssertion(rdfs:label :reportsOnOperation "报工工序")
+ObjectPropertyDomain(:reportsOnOperation :ProductionReport)
+ObjectPropertyRange(:reportsOnOperation :WorkOrderOperation)
+
+# Object Property: :reportsOnWorkOrder (报工工单)
+
+AnnotationAssertion(rdfs:label :reportsOnWorkOrder "报工工单")
+ObjectPropertyDomain(:reportsOnWorkOrder :ProductionReport)
+ObjectPropertyRange(:reportsOnWorkOrder :WorkOrder)
+
+# Object Property: :requestForWorkOrder (申请工单)
+
+AnnotationAssertion(rdfs:label :requestForWorkOrder "申请工单")
+ObjectPropertyDomain(:requestForWorkOrder :MaterialRequest)
+ObjectPropertyRange(:requestForWorkOrder :WorkOrder)
+
+# Object Property: :requestFromWarehouse (申请仓库)
+
+AnnotationAssertion(rdfs:label :requestFromWarehouse "申请仓库")
+ObjectPropertyDomain(:requestFromWarehouse :MaterialRequest)
+ObjectPropertyRange(:requestFromWarehouse :Warehouse)
+
+# Object Property: :requestsMaterial (申请物料)
+
+AnnotationAssertion(rdfs:label :requestsMaterial "申请物料")
+ObjectPropertyDomain(:requestsMaterial :MaterialRequest)
+ObjectPropertyRange(:requestsMaterial :Material)
+
+# Object Property: :requiresProcess (对应工序)
+
+AnnotationAssertion(rdfs:label :requiresProcess "对应工序")
+ObjectPropertyDomain(:requiresProcess :RoutingStep)
+ObjectPropertyRange(:requiresProcess :Process)
+
+# Object Property: :requisitionConvertedToOrder (转为采购订单)
+
+AnnotationAssertion(rdfs:label :requisitionConvertedToOrder "转为采购订单")
+ObjectPropertyDomain(:requisitionConvertedToOrder :PurchaseRequisition)
+ObjectPropertyRange(:requisitionConvertedToOrder :PurchaseOrder)
+
+# Object Property: :requisitionRequestsMaterial (请购物料)
+
+AnnotationAssertion(rdfs:label :requisitionRequestsMaterial "请购物料")
+ObjectPropertyDomain(:requisitionRequestsMaterial :PurchaseRequisition)
+ObjectPropertyRange(:requisitionRequestsMaterial :Material)
+
+# Object Property: :requisitionSuggestedSupplier (建议供应商)
+
+AnnotationAssertion(rdfs:label :requisitionSuggestedSupplier "建议供应商")
+ObjectPropertyDomain(:requisitionSuggestedSupplier :PurchaseRequisition)
+ObjectPropertyRange(:requisitionSuggestedSupplier :Supplier)
+
+# Object Property: :reworkPerformedBy (返修人)
+
+AnnotationAssertion(rdfs:label :reworkPerformedBy "返修人")
+ObjectPropertyDomain(:reworkPerformedBy :ReworkOrder)
+ObjectPropertyRange(:reworkPerformedBy :Employee)
+
+# Object Property: :reworkRecheckedBy (复检单)
+
+AnnotationAssertion(rdfs:label :reworkRecheckedBy "复检单")
+ObjectPropertyDomain(:reworkRecheckedBy :ReworkOrder)
+ObjectPropertyRange(:reworkRecheckedBy :InspectionRecord)
+
+# Object Property: :reworkRemediates (返修不合格品)
+
+AnnotationAssertion(rdfs:label :reworkRemediates "返修不合格品")
+ObjectPropertyDomain(:reworkRemediates :ReworkOrder)
+ObjectPropertyRange(:reworkRemediates :NonconformanceReport)
+
+# Object Property: :scheduleForOrderLine (交货计划所属订单行)
+
+AnnotationAssertion(rdfs:label :scheduleForOrderLine "交货计划所属订单行")
+ObjectPropertyDomain(:scheduleForOrderLine :DeliverySchedule)
+ObjectPropertyRange(:scheduleForOrderLine :SalesOrderLine)
+
+# Object Property: :scheduledOnLine (排产产线)
+
+AnnotationAssertion(rdfs:label :scheduledOnLine "排产产线")
+ObjectPropertyDomain(:scheduledOnLine :WorkOrder)
+ObjectPropertyRange(:scheduledOnLine :ProductionLine)
+
+# Object Property: :shipmentOfWorkOrder (发运工单)
+
+AnnotationAssertion(rdfs:label :shipmentOfWorkOrder "发运工单")
+ObjectPropertyDomain(:shipmentOfWorkOrder :Shipment)
+ObjectPropertyRange(:shipmentOfWorkOrder :WorkOrder)
+
+# Object Property: :stateOfEquipment (设备状态记录)
+
+AnnotationAssertion(rdfs:label :stateOfEquipment "设备状态记录")
+ObjectPropertyDomain(:stateOfEquipment :EquipmentStateRecord)
+ObjectPropertyRange(:stateOfEquipment :Equipment)
+
+# Object Property: :stockAtLocation (库存库位)
+
+AnnotationAssertion(rdfs:label :stockAtLocation "库存库位")
+ObjectPropertyDomain(:stockAtLocation :Stock)
+ObjectPropertyRange(:stockAtLocation :StorageLocation)
+
+# Object Property: :stockHoldsMaterial (库存物料)
+
+AnnotationAssertion(rdfs:label :stockHoldsMaterial "库存物料")
+ObjectPropertyDomain(:stockHoldsMaterial :Stock)
+ObjectPropertyRange(:stockHoldsMaterial :Material)
+
+# Object Property: :stockInWarehouse (库存仓库)
+
+AnnotationAssertion(rdfs:label :stockInWarehouse "库存仓库")
+ObjectPropertyDomain(:stockInWarehouse :Stock)
+ObjectPropertyRange(:stockInWarehouse :Warehouse)
+
+# Object Property: :suggestionForMaterial (建议物料)
+
+AnnotationAssertion(rdfs:label :suggestionForMaterial "建议物料")
+ObjectPropertyDomain(:suggestionForMaterial :MrpSuggestion)
+ObjectPropertyRange(:suggestionForMaterial :Material)
+
+# Object Property: :suggestionFromRun (所属 MRP 运算)
+
+AnnotationAssertion(rdfs:label :suggestionFromRun "所属 MRP 运算")
+ObjectPropertyDomain(:suggestionFromRun :MrpSuggestion)
+ObjectPropertyRange(:suggestionFromRun :MrpRun)
+
+# Object Property: :suggestionGeneratesPurchaseOrder (生成采购订单)
+
+AnnotationAssertion(rdfs:label :suggestionGeneratesPurchaseOrder "生成采购订单")
+ObjectPropertyDomain(:suggestionGeneratesPurchaseOrder :MrpSuggestion)
+ObjectPropertyRange(:suggestionGeneratesPurchaseOrder :PurchaseOrder)
+
+# Object Property: :suggestionGeneratesRequisition (生成请购单)
+
+AnnotationAssertion(rdfs:label :suggestionGeneratesRequisition "生成请购单")
+ObjectPropertyDomain(:suggestionGeneratesRequisition :MrpSuggestion)
+ObjectPropertyRange(:suggestionGeneratesRequisition :PurchaseRequisition)
+
+# Object Property: :suggestionGeneratesWorkOrder (生成生产工单)
+
+AnnotationAssertion(rdfs:label :suggestionGeneratesWorkOrder "生成生产工单")
+ObjectPropertyDomain(:suggestionGeneratesWorkOrder :MrpSuggestion)
+ObjectPropertyRange(:suggestionGeneratesWorkOrder :WorkOrder)
+
+# Object Property: :suggestionToSupplier (建议供应商)
+
+AnnotationAssertion(rdfs:label :suggestionToSupplier "建议供应商")
+ObjectPropertyDomain(:suggestionToSupplier :MrpSuggestion)
+ObjectPropertyRange(:suggestionToSupplier :Supplier)
+
+# Object Property: :tagFromDataSource (点位数据源)
+
+AnnotationAssertion(rdfs:label :tagFromDataSource "点位数据源")
+ObjectPropertyDomain(:tagFromDataSource :TagPoint)
+ObjectPropertyRange(:tagFromDataSource :DataSource)
+
+# Object Property: :tagOnEquipment (点位设备)
+
+AnnotationAssertion(rdfs:label :tagOnEquipment "点位设备")
+ObjectPropertyDomain(:tagOnEquipment :TagPoint)
+ObjectPropertyRange(:tagOnEquipment :Equipment)
+
+# Object Property: :templateAppliesToMaterial (适用物料)
+
+AnnotationAssertion(rdfs:label :templateAppliesToMaterial "适用物料")
+ObjectPropertyDomain(:templateAppliesToMaterial :InspectionTemplate)
+ObjectPropertyRange(:templateAppliesToMaterial :Material)
+
+# Object Property: :templateAppliesToProcess (适用工序)
+
+AnnotationAssertion(rdfs:label :templateAppliesToProcess "适用工序")
+ObjectPropertyDomain(:templateAppliesToProcess :InspectionTemplate)
+ObjectPropertyRange(:templateAppliesToProcess :Process)
+
+# Object Property: :toolingForProcess (适用工序)
+
+AnnotationAssertion(rdfs:label :toolingForProcess "适用工序")
+ObjectPropertyDomain(:toolingForProcess :Tooling)
+ObjectPropertyRange(:toolingForProcess :Process)
+
+# Object Property: :toolingForProduct (适用产品)
+
+AnnotationAssertion(rdfs:label :toolingForProduct "适用产品")
+ObjectPropertyDomain(:toolingForProduct :Tooling)
+ObjectPropertyRange(:toolingForProduct :Material)
+
+# Object Property: :toolingOnEquipment (所在设备)
+
+AnnotationAssertion(rdfs:label :toolingOnEquipment "所在设备")
+ObjectPropertyDomain(:toolingOnEquipment :Tooling)
+ObjectPropertyRange(:toolingOnEquipment :Equipment)
+
+# Object Property: :txnAtLocation (出入库库位)
+
+AnnotationAssertion(rdfs:label :txnAtLocation "出入库库位")
+ObjectPropertyDomain(:txnAtLocation :StockTransaction)
+ObjectPropertyRange(:txnAtLocation :StorageLocation)
+
+# Object Property: :txnFromWarehouse (来源仓库)
+
+AnnotationAssertion(rdfs:label :txnFromWarehouse "来源仓库")
+ObjectPropertyDomain(:txnFromWarehouse :StockTransaction)
+ObjectPropertyRange(:txnFromWarehouse :Warehouse)
+
+# Object Property: :txnMovesMaterial (出入库物料)
+
+AnnotationAssertion(rdfs:label :txnMovesMaterial "出入库物料")
+ObjectPropertyDomain(:txnMovesMaterial :StockTransaction)
+ObjectPropertyRange(:txnMovesMaterial :Material)
+
+# Object Property: :txnToWarehouse (调入仓库)
+
+AnnotationAssertion(rdfs:comment :txnToWarehouse "移库时的目标仓库。")
+AnnotationAssertion(rdfs:label :txnToWarehouse "调入仓库")
+ObjectPropertyDomain(:txnToWarehouse :StockTransaction)
+ObjectPropertyRange(:txnToWarehouse :Warehouse)
+
+# Object Property: :userLinkedToEmployee (关联员工)
+
+AnnotationAssertion(rdfs:label :userLinkedToEmployee "关联员工")
+ObjectPropertyDomain(:userLinkedToEmployee :UserAccount)
+ObjectPropertyRange(:userLinkedToEmployee :Employee)
+
+# Object Property: :valueBelongsToRecord (所属检验记录)
+
+AnnotationAssertion(rdfs:label :valueBelongsToRecord "所属检验记录")
+ObjectPropertyDomain(:valueBelongsToRecord :InspectionValue)
+ObjectPropertyRange(:valueBelongsToRecord :InspectionRecord)
+
+# Object Property: :valueForItem (对应检验项目)
+
+AnnotationAssertion(rdfs:label :valueForItem "对应检验项目")
+ObjectPropertyDomain(:valueForItem :InspectionValue)
+ObjectPropertyRange(:valueForItem :InspectionItem)
+
+# Object Property: :valueMeasuredWithGauge (测量量具)
+
+AnnotationAssertion(rdfs:label :valueMeasuredWithGauge "测量量具")
+ObjectPropertyDomain(:valueMeasuredWithGauge :InspectionValue)
+ObjectPropertyRange(:valueMeasuredWithGauge :Gauge)
+
+# Object Property: :worksInShift (归属班次)
+
+AnnotationAssertion(rdfs:label :worksInShift "归属班次")
+ObjectPropertyDomain(:worksInShift :Team)
+ObjectPropertyRange(:worksInShift :Shift)
+
+
+############################
+#   Data Properties
+############################
+
+# Data Property: :actualEndTime (实际结束)
+
+AnnotationAssertion(rdfs:label :actualEndTime "实际结束")
+DataPropertyDomain(:actualEndTime :WorkOrderOperation)
+DataPropertyRange(:actualEndTime xsd:dateTime)
+
+# Data Property: :actualStartTime (实际开始)
+
+AnnotationAssertion(rdfs:label :actualStartTime "实际开始")
+DataPropertyDomain(:actualStartTime :WorkOrderOperation)
+DataPropertyRange(:actualStartTime xsd:dateTime)
+
+# Data Property: :alarmDurationSeconds (报警时长)
+
+AnnotationAssertion(rdfs:label :alarmDurationSeconds "报警时长")
+DataPropertyDomain(:alarmDurationSeconds :Alarm)
+DataPropertyRange(:alarmDurationSeconds xsd:decimal)
+
+# Data Property: :alarmMessage (报警内容)
+
+AnnotationAssertion(rdfs:label :alarmMessage "报警内容")
+DataPropertyDomain(:alarmMessage :Alarm)
+DataPropertyRange(:alarmMessage xsd:string)
+
+# Data Property: :alarmStartTime (报警开始)
+
+AnnotationAssertion(rdfs:label :alarmStartTime "报警开始")
+DataPropertyDomain(:alarmStartTime :Alarm)
+DataPropertyRange(:alarmStartTime xsd:dateTime)
+
+# Data Property: :andonDescription (问题描述)
+
+AnnotationAssertion(rdfs:label :andonDescription "问题描述")
+DataPropertyDomain(:andonDescription :Andon)
+DataPropertyRange(:andonDescription xsd:string)
+
+# Data Property: :andonRaisedAt (发起时间)
+
+AnnotationAssertion(rdfs:label :andonRaisedAt "发起时间")
+DataPropertyDomain(:andonRaisedAt :Andon)
+DataPropertyRange(:andonRaisedAt xsd:dateTime)
+
+# Data Property: :andonSource (安灯来源)
+
+AnnotationAssertion(rdfs:comment :andonSource "枚举:人工 / 设备自动 / 智能体。")
+AnnotationAssertion(rdfs:label :andonSource "安灯来源")
+DataPropertyDomain(:andonSource :Andon)
+DataPropertyRange(:andonSource xsd:string)
+
+# Data Property: :andonStatus (安灯状态)
+
+AnnotationAssertion(rdfs:comment :andonStatus "枚举:待响应 / 处理中 / 已关闭。")
+AnnotationAssertion(rdfs:label :andonStatus "安灯状态")
+FunctionalDataProperty(:andonStatus)
+DataPropertyDomain(:andonStatus :Andon)
+DataPropertyRange(:andonStatus xsd:string)
+
+# Data Property: :andonType (安灯类型)
+
+AnnotationAssertion(rdfs:comment :andonType "枚举:设备 / 质量 / 物料 / 安全 / 其他。")
+AnnotationAssertion(rdfs:label :andonType "安灯类型")
+DataPropertyDomain(:andonType :Andon)
+DataPropertyRange(:andonType xsd:string)
+
+# Data Property: :attendanceTime (出勤时间)
+
+AnnotationAssertion(rdfs:label :attendanceTime "出勤时间")
+DataPropertyDomain(:attendanceTime :Attendance)
+DataPropertyRange(:attendanceTime xsd:dateTime)
+
+# Data Property: :bomQuantity (用量)
+
+AnnotationAssertion(rdfs:label :bomQuantity "用量")
+DataPropertyDomain(:bomQuantity :BillOfMaterials)
+DataPropertyRange(:bomQuantity xsd:decimal)
+
+# Data Property: :calibrationCode (校准单号)
+
+AnnotationAssertion(rdfs:label :calibrationCode "校准单号")
+DataPropertyDomain(:calibrationCode :GaugeCalibration)
+DataPropertyRange(:calibrationCode xsd:string)
+
+# Data Property: :calibrationDate (校准日期)
+
+AnnotationAssertion(rdfs:label :calibrationDate "校准日期")
+DataPropertyDomain(:calibrationDate :GaugeCalibration)
+DataPropertyRange(:calibrationDate xsd:date)
+
+# Data Property: :calibrationResult (校准结果)
+
+AnnotationAssertion(rdfs:label :calibrationResult "校准结果")
+DataPropertyDomain(:calibrationResult :GaugeCalibration)
+DataPropertyRange(:calibrationResult xsd:string)
+
+# Data Property: :changeoverMinutes (换型时长)
+
+AnnotationAssertion(rdfs:comment :changeoverMinutes "单位:分钟。")
+AnnotationAssertion(rdfs:label :changeoverMinutes "换型时长")
+DataPropertyDomain(:changeoverMinutes :Changeover)
+DataPropertyRange(:changeoverMinutes xsd:decimal)
+
+# Data Property: :completedAt (完工时间)
+
+AnnotationAssertion(rdfs:label :completedAt "完工时间")
+DataPropertyDomain(:completedAt :WorkOrder)
+DataPropertyRange(:completedAt xsd:dateTime)
+
+# Data Property: :creditLimit (信用额度)
+
+AnnotationAssertion(rdfs:comment :creditLimit "单位:元;0 或空表示不控制。销售订单状态流转中的信用检查依据。")
+AnnotationAssertion(rdfs:label :creditLimit "信用额度")
+DataPropertyDomain(:creditLimit :Customer)
+DataPropertyRange(:creditLimit xsd:decimal)
+
+# Data Property: :customerName (客户名称)
+
+AnnotationAssertion(rdfs:label :customerName "客户名称")
+DataPropertyDomain(:customerName :Customer)
+DataPropertyRange(:customerName xsd:string)
+
+# Data Property: :dataSourceEndpoint (接入地址)
+
+AnnotationAssertion(rdfs:label :dataSourceEndpoint "接入地址")
+DataPropertyDomain(:dataSourceEndpoint :DataSource)
+DataPropertyRange(:dataSourceEndpoint xsd:string)
+
+# Data Property: :dataSourceProtocol (接入协议)
+
+AnnotationAssertion(rdfs:comment :dataSourceProtocol "枚举:MQTT (UNS) / OPC UA / Modbus TCP。")
+AnnotationAssertion(rdfs:label :dataSourceProtocol "接入协议")
+DataPropertyDomain(:dataSourceProtocol :DataSource)
+DataPropertyRange(:dataSourceProtocol xsd:string)
+
+# Data Property: :decidedAt (判定时间)
+
+AnnotationAssertion(rdfs:label :decidedAt "判定时间")
+DataPropertyDomain(:decidedAt :FirstArticleRelease)
+DataPropertyRange(:decidedAt xsd:dateTime)
+
+# Data Property: :defectCategory (缺陷类别)
+
+AnnotationAssertion(rdfs:comment :defectCategory "枚举:铸造 / 机加 / 外观 / 其他。")
+AnnotationAssertion(rdfs:label :defectCategory "缺陷类别")
+DataPropertyDomain(:defectCategory :DefectCode)
+DataPropertyRange(:defectCategory xsd:string)
+
+# Data Property: :defectSeverity (严重度)
+
+AnnotationAssertion(rdfs:comment :defectSeverity "枚举:致命 / 严重 / 轻微。")
+AnnotationAssertion(rdfs:label :defectSeverity "严重度")
+DataPropertyDomain(:defectSeverity :DefectCode)
+DataPropertyRange(:defectSeverity xsd:string)
+
+# Data Property: :downtimeEndTime (停机结束)
+
+AnnotationAssertion(rdfs:label :downtimeEndTime "停机结束")
+DataPropertyDomain(:downtimeEndTime :DowntimePlan)
+DataPropertyRange(:downtimeEndTime xsd:dateTime)
+
+# Data Property: :downtimeKind (停机类型)
+
+AnnotationAssertion(rdfs:comment :downtimeKind "枚举:计划保养 / 维修 / 放假停产 / 试制调试 / 其他。")
+AnnotationAssertion(rdfs:label :downtimeKind "停机类型")
+DataPropertyDomain(:downtimeKind :DowntimePlan)
+DataPropertyRange(:downtimeKind xsd:string)
+
+# Data Property: :downtimeStartTime (停机开始)
+
+AnnotationAssertion(rdfs:label :downtimeStartTime "停机开始")
+DataPropertyDomain(:downtimeStartTime :DowntimePlan)
+DataPropertyRange(:downtimeStartTime xsd:dateTime)
+
+# Data Property: :dueDate (交期)
+
+AnnotationAssertion(rdfs:comment :dueDate "生产工单为交期时刻,销售订单行与采购行为日期。")
+AnnotationAssertion(rdfs:label :dueDate "交期")
+DataPropertyDomain(:dueDate rdfs:Resource)
+DataPropertyRange(:dueDate xsd:dateTime)
+
+# Data Property: :equipmentCode (设备编号)
+
+AnnotationAssertion(rdfs:label :equipmentCode "设备编号")
+DataPropertyDomain(:equipmentCode :Equipment)
+DataPropertyRange(:equipmentCode xsd:string)
+
+# Data Property: :equipmentInstallDate (投用日期)
+
+AnnotationAssertion(rdfs:label :equipmentInstallDate "投用日期")
+DataPropertyDomain(:equipmentInstallDate :Equipment)
+DataPropertyRange(:equipmentInstallDate xsd:date)
+
+# Data Property: :equipmentName (设备名称)
+
+AnnotationAssertion(rdfs:label :equipmentName "设备名称")
+DataPropertyDomain(:equipmentName :Equipment)
+DataPropertyRange(:equipmentName xsd:string)
+
+# Data Property: :equipmentStateName (状态名称)
+
+AnnotationAssertion(rdfs:comment :equipmentStateName "如运行、待机、换型、停机、离线。")
+AnnotationAssertion(rdfs:label :equipmentStateName "状态名称")
+DataPropertyDomain(:equipmentStateName :EquipmentStateRecord)
+DataPropertyRange(:equipmentStateName xsd:string)
+
+# Data Property: :equipmentStatus (设备状态)
+
+AnnotationAssertion(rdfs:comment :equipmentStatus "枚举:运行 / 待机 / 换型 / 停机 / 离线 / 报废。由采集数据推导,系统只读。")
+AnnotationAssertion(rdfs:label :equipmentStatus "设备状态")
+FunctionalDataProperty(:equipmentStatus)
+DataPropertyDomain(:equipmentStatus :Equipment)
+DataPropertyRange(:equipmentStatus xsd:string)
+
+# Data Property: :equipmentType (设备类型)
+
+AnnotationAssertion(rdfs:comment :equipmentType "枚举含中频炉、球化站、砂处理、造型线、冷却线、抛丸机、加工中心、去毛刺单元、检测站、立体仓库、AGV 等。")
+AnnotationAssertion(rdfs:label :equipmentType "设备类型")
+DataPropertyDomain(:equipmentType :Equipment)
+DataPropertyRange(:equipmentType xsd:string)
+
+# Data Property: :equipmentVendor (设备厂家)
+
+AnnotationAssertion(rdfs:label :equipmentVendor "设备厂家")
+DataPropertyDomain(:equipmentVendor :Equipment)
+DataPropertyRange(:equipmentVendor xsd:string)
+
+# Data Property: :estimatedArrivalTime (预计到料时间)
+
+AnnotationAssertion(rdfs:label :estimatedArrivalTime "预计到料时间")
+DataPropertyDomain(:estimatedArrivalTime :KittingRecord)
+DataPropertyRange(:estimatedArrivalTime xsd:dateTime)
+
+# Data Property: :firstArticleCode (首检单号)
+
+AnnotationAssertion(rdfs:label :firstArticleCode "首检单号")
+DataPropertyDomain(:firstArticleCode :FirstArticleRelease)
+DataPropertyRange(:firstArticleCode xsd:string)
+
+# Data Property: :firstArticleStatus (首检状态)
+
+AnnotationAssertion(rdfs:comment :firstArticleStatus "枚举:待检 / 已放行 / 不放行。已放行是量产报工的前置条件。")
+AnnotationAssertion(rdfs:label :firstArticleStatus "首检状态")
+FunctionalDataProperty(:firstArticleStatus)
+DataPropertyDomain(:firstArticleStatus :FirstArticleRelease)
+DataPropertyRange(:firstArticleStatus xsd:string)
+
+# Data Property: :firstArticleTrigger (触发场景)
+
+AnnotationAssertion(rdfs:comment :firstArticleTrigger "枚举:开工 / 换型 / 换刀 / 换班 / 维修后。")
+AnnotationAssertion(rdfs:label :firstArticleTrigger "触发场景")
+DataPropertyDomain(:firstArticleTrigger :FirstArticleRelease)
+DataPropertyRange(:firstArticleTrigger xsd:string)
+
+# Data Property: :forecastDueDate (需求日期)
+
+AnnotationAssertion(rdfs:label :forecastDueDate "需求日期")
+DataPropertyDomain(:forecastDueDate :DemandForecast)
+DataPropertyRange(:forecastDueDate xsd:date)
+
+# Data Property: :forecastQty (预测数量)
+
+AnnotationAssertion(rdfs:label :forecastQty "预测数量")
+DataPropertyDomain(:forecastQty :DemandForecast)
+DataPropertyRange(:forecastQty xsd:decimal)
+
+# Data Property: :gaugeCalibrationDue (校准到期日)
+
+AnnotationAssertion(rdfs:comment :gaugeCalibrationDue "到期后该量具不可用于出具有效检验结论。")
+AnnotationAssertion(rdfs:label :gaugeCalibrationDue "校准到期日")
+DataPropertyDomain(:gaugeCalibrationDue :Gauge)
+DataPropertyRange(:gaugeCalibrationDue xsd:date)
+
+# Data Property: :gaugeCode (量具编号)
+
+AnnotationAssertion(rdfs:label :gaugeCode "量具编号")
+DataPropertyDomain(:gaugeCode :Gauge)
+DataPropertyRange(:gaugeCode xsd:string)
+
+# Data Property: :gaugeName (量具名称)
+
+AnnotationAssertion(rdfs:label :gaugeName "量具名称")
+DataPropertyDomain(:gaugeName :Gauge)
+DataPropertyRange(:gaugeName xsd:string)
+
+# Data Property: :gaugeType (量具类型)
+
+AnnotationAssertion(rdfs:comment :gaugeType "量具类别。检验项声明所需量具类型,录入时按类型匹配。")
+AnnotationAssertion(rdfs:label :gaugeType "量具类型")
+DataPropertyDomain(:gaugeType :Gauge)
+DataPropertyRange(:gaugeType xsd:string)
+
+# Data Property: :idealCycleSeconds (理想节拍)
+
+AnnotationAssertion(rdfs:comment :idealCycleSeconds "设备在最佳状态下的单件理论秒数,是 OEE 性能率的分子基准:理想产量 = 理想节拍 × 总产量 / 运行时间。")
+AnnotationAssertion(rdfs:label :idealCycleSeconds "理想节拍")
+DataPropertyDomain(:idealCycleSeconds :Equipment)
+DataPropertyRange(:idealCycleSeconds xsd:decimal)
+
+# Data Property: :inspectionCode (检验单号)
+
+AnnotationAssertion(rdfs:label :inspectionCode "检验单号")
+DataPropertyDomain(:inspectionCode :InspectionRecord)
+DataPropertyRange(:inspectionCode xsd:string)
+
+# Data Property: :inspectionNgQty (不合格数)
+
+AnnotationAssertion(rdfs:label :inspectionNgQty "不合格数")
+DataPropertyDomain(:inspectionNgQty :InspectionRecord)
+DataPropertyRange(:inspectionNgQty xsd:integer)
+
+# Data Property: :inspectionResult (检验结论)
+
+AnnotationAssertion(rdfs:comment :inspectionResult "枚举:合格 / 不合格 / 待判。")
+AnnotationAssertion(rdfs:label :inspectionResult "检验结论")
+DataPropertyDomain(:inspectionResult :InspectionRecord)
+DataPropertyRange(:inspectionResult xsd:string)
+
+# Data Property: :inspectionSampleQty (样本数)
+
+AnnotationAssertion(rdfs:label :inspectionSampleQty "样本数")
+DataPropertyDomain(:inspectionSampleQty :InspectionRecord)
+DataPropertyRange(:inspectionSampleQty xsd:integer)
+
+# Data Property: :inspectionTime (检验时间)
+
+AnnotationAssertion(rdfs:label :inspectionTime "检验时间")
+DataPropertyDomain(:inspectionTime :InspectionRecord)
+DataPropertyRange(:inspectionTime xsd:dateTime)
+
+# Data Property: :inspectionType (检验类型)
+
+AnnotationAssertion(rdfs:comment :inspectionType "枚举:来料 / 过程 / 首件 / 出货 / 巡检。单值,与 InspectionRecord 的子类划分对应。")
+AnnotationAssertion(rdfs:label :inspectionType "检验类型")
+FunctionalDataProperty(:inspectionType)
+DataPropertyDomain(:inspectionType :InspectionRecord)
+DataPropertyRange(:inspectionType xsd:string)
+
+# Data Property: :inspectionValueNumber (实测值)
+
+AnnotationAssertion(rdfs:label :inspectionValueNumber "实测值")
+DataPropertyDomain(:inspectionValueNumber :InspectionValue)
+DataPropertyRange(:inspectionValueNumber xsd:decimal)
+
+# Data Property: :inspectionValueOk (是否合格)
+
+AnnotationAssertion(rdfs:label :inspectionValueOk "是否合格")
+DataPropertyDomain(:inspectionValueOk :InspectionValue)
+DataPropertyRange(:inspectionValueOk xsd:boolean)
+
+# Data Property: :inspectionValueText (文字结果)
+
+AnnotationAssertion(rdfs:label :inspectionValueText "文字结果")
+DataPropertyDomain(:inspectionValueText :InspectionValue)
+DataPropertyRange(:inspectionValueText xsd:string)
+
+# Data Property: :isMakeToOrder (按单生产)
+
+AnnotationAssertion(rdfs:comment :isMakeToOrder "为真时该订单派生生产工单,是需求到工单的转换点。")
+AnnotationAssertion(rdfs:label :isMakeToOrder "按单生产")
+DataPropertyDomain(:isMakeToOrder :SalesOrder)
+DataPropertyRange(:isMakeToOrder xsd:boolean)
+
+# Data Property: :issueKind (领退类型)
+
+AnnotationAssertion(rdfs:comment :issueKind "枚举:领料 / 退料。")
+AnnotationAssertion(rdfs:label :issueKind "领退类型")
+DataPropertyDomain(:issueKind :MaterialIssue)
+DataPropertyRange(:issueKind xsd:string)
+
+# Data Property: :issueQty (领退数量)
+
+AnnotationAssertion(rdfs:label :issueQty "领退数量")
+DataPropertyDomain(:issueQty :MaterialIssue)
+DataPropertyRange(:issueQty xsd:decimal)
+
+# Data Property: :itemCharacteristicCode (特性代码)
+
+AnnotationAssertion(rdfs:label :itemCharacteristicCode "特性代码")
+DataPropertyDomain(:itemCharacteristicCode :InspectionItem)
+DataPropertyRange(:itemCharacteristicCode xsd:string)
+
+# Data Property: :itemIsKeyCharacteristic (关键特性)
+
+AnnotationAssertion(rdfs:label :itemIsKeyCharacteristic "关键特性")
+DataPropertyDomain(:itemIsKeyCharacteristic :InspectionItem)
+DataPropertyRange(:itemIsKeyCharacteristic xsd:boolean)
+
+# Data Property: :itemLowerLimit (下限)
+
+AnnotationAssertion(rdfs:label :itemLowerLimit "下限")
+DataPropertyDomain(:itemLowerLimit :InspectionItem)
+DataPropertyRange(:itemLowerLimit xsd:decimal)
+
+# Data Property: :itemName (检验项目名)
+
+AnnotationAssertion(rdfs:label :itemName "检验项目名")
+DataPropertyDomain(:itemName :InspectionItem)
+DataPropertyRange(:itemName xsd:string)
+
+# Data Property: :itemSpecialCharacteristic (特殊特性)
+
+AnnotationAssertion(rdfs:label :itemSpecialCharacteristic "特殊特性")
+DataPropertyDomain(:itemSpecialCharacteristic :InspectionItem)
+DataPropertyRange(:itemSpecialCharacteristic xsd:string)
+
+# Data Property: :itemUpperLimit (上限)
+
+AnnotationAssertion(rdfs:comment :itemUpperLimit "首检放行的判定依据:实测值落在上下限内即合格。")
+AnnotationAssertion(rdfs:label :itemUpperLimit "上限")
+DataPropertyDomain(:itemUpperLimit :InspectionItem)
+DataPropertyRange(:itemUpperLimit xsd:decimal)
+
+# Data Property: :kittingQtyNeeded (齐套需求量)
+
+AnnotationAssertion(rdfs:label :kittingQtyNeeded "齐套需求量")
+DataPropertyDomain(:kittingQtyNeeded :KittingRecord)
+DataPropertyRange(:kittingQtyNeeded xsd:decimal)
+
+# Data Property: :kittingQtyReady (齐套已备量)
+
+AnnotationAssertion(rdfs:label :kittingQtyReady "齐套已备量")
+DataPropertyDomain(:kittingQtyReady :KittingRecord)
+DataPropertyRange(:kittingQtyReady xsd:decimal)
+
+# Data Property: :kittingStatus (齐套状态)
+
+AnnotationAssertion(rdfs:comment :kittingStatus "枚举:齐套 / 部分 / 缺料。缺料工单在预计到料后才可开工。")
+AnnotationAssertion(rdfs:label :kittingStatus "齐套状态")
+DataPropertyDomain(:kittingStatus :KittingRecord)
+DataPropertyRange(:kittingStatus xsd:string)
+
+# Data Property: :leadTimeDays (提前期)
+
+AnnotationAssertion(rdfs:comment :leadTimeDays "单位:天,MRP 用它做交期倒推。")
+AnnotationAssertion(rdfs:label :leadTimeDays "提前期")
+DataPropertyDomain(:leadTimeDays :MaterialPlan)
+DataPropertyRange(:leadTimeDays xsd:integer)
+
+# Data Property: :lineCode (产线编码)
+
+AnnotationAssertion(rdfs:label :lineCode "产线编码")
+DataPropertyDomain(:lineCode :ProductionLine)
+DataPropertyRange(:lineCode xsd:string)
+
+# Data Property: :lineName (产线名称)
+
+AnnotationAssertion(rdfs:label :lineName "产线名称")
+DataPropertyDomain(:lineName :ProductionLine)
+DataPropertyRange(:lineName xsd:string)
+
+# Data Property: :lineQty (订单行数量)
+
+AnnotationAssertion(rdfs:label :lineQty "订单行数量")
+DataPropertyDomain(:lineQty :SalesOrderLine)
+DataPropertyRange(:lineQty xsd:decimal)
+
+# Data Property: :lineQtyShipped (已发数量)
+
+AnnotationAssertion(rdfs:label :lineQtyShipped "已发数量")
+DataPropertyDomain(:lineQtyShipped :SalesOrderLine)
+DataPropertyRange(:lineQtyShipped xsd:decimal)
+
+# Data Property: :locationCapacity (库位容量)
+
+AnnotationAssertion(rdfs:label :locationCapacity "库位容量")
+DataPropertyDomain(:locationCapacity :StorageLocation)
+DataPropertyRange(:locationCapacity xsd:integer)
+
+# Data Property: :locationCode (库位编码)
+
+AnnotationAssertion(rdfs:label :locationCode "库位编码")
+DataPropertyDomain(:locationCode :StorageLocation)
+DataPropertyRange(:locationCode xsd:string)
+
+# Data Property: :lotCode (批次号)
+
+AnnotationAssertion(rdfs:comment :lotCode "批次/炉次标识。冻结、追溯、抽样都以批次为维度。")
+AnnotationAssertion(rdfs:label :lotCode "批次号")
+DataPropertyDomain(:lotCode rdfs:Resource)
+DataPropertyRange(:lotCode xsd:string)
+
+# Data Property: :lotHoldCode (冻结单号)
+
+AnnotationAssertion(rdfs:label :lotHoldCode "冻结单号")
+DataPropertyDomain(:lotHoldCode :LotHold)
+DataPropertyRange(:lotHoldCode xsd:string)
+
+# Data Property: :lotHoldReason (冻结原因)
+
+AnnotationAssertion(rdfs:label :lotHoldReason "冻结原因")
+DataPropertyDomain(:lotHoldReason :LotHold)
+DataPropertyRange(:lotHoldReason xsd:string)
+
+# Data Property: :lotHoldStatus (冻结状态)
+
+AnnotationAssertion(rdfs:comment :lotHoldStatus "枚举:冻结中 / 已解冻。")
+AnnotationAssertion(rdfs:label :lotHoldStatus "冻结状态")
+FunctionalDataProperty(:lotHoldStatus)
+DataPropertyDomain(:lotHoldStatus :LotHold)
+DataPropertyRange(:lotHoldStatus xsd:string)
+
+# Data Property: :lotHoldedAt (冻结时间)
+
+AnnotationAssertion(rdfs:label :lotHoldedAt "冻结时间")
+DataPropertyDomain(:lotHoldedAt :LotHold)
+DataPropertyRange(:lotHoldedAt xsd:dateTime)
+
+# Data Property: :lotMultiple (批量倍数)
+
+AnnotationAssertion(rdfs:label :lotMultiple "批量倍数")
+DataPropertyDomain(:lotMultiple :MaterialPlan)
+DataPropertyRange(:lotMultiple xsd:decimal)
+
+# Data Property: :lotReleasedAt (解冻时间)
+
+AnnotationAssertion(rdfs:label :lotReleasedAt "解冻时间")
+DataPropertyDomain(:lotReleasedAt :LotHold)
+DataPropertyRange(:lotReleasedAt xsd:dateTime)
+
+# Data Property: :maintenanceCycleDays (保养周期)
+
+AnnotationAssertion(rdfs:comment :maintenanceCycleDays "单位:天。")
+AnnotationAssertion(rdfs:label :maintenanceCycleDays "保养周期")
+DataPropertyDomain(:maintenanceCycleDays :MaintenancePlan)
+DataPropertyRange(:maintenanceCycleDays xsd:integer)
+
+# Data Property: :maintenanceNextDue (下次到期)
+
+AnnotationAssertion(rdfs:label :maintenanceNextDue "下次到期")
+DataPropertyDomain(:maintenanceNextDue :MaintenancePlan)
+DataPropertyRange(:maintenanceNextDue xsd:date)
+
+# Data Property: :maintenanceResult (保养结果)
+
+AnnotationAssertion(rdfs:comment :maintenanceResult "枚举:正常 / 异常。")
+AnnotationAssertion(rdfs:label :maintenanceResult "保养结果")
+DataPropertyDomain(:maintenanceResult :MaintenanceRecord)
+DataPropertyRange(:maintenanceResult xsd:string)
+
+# Data Property: :maintenanceType (保养类型)
+
+AnnotationAssertion(rdfs:comment :maintenanceType "枚举:日常点检 / 定期保养 / 润滑。")
+AnnotationAssertion(rdfs:label :maintenanceType "保养类型")
+DataPropertyDomain(:maintenanceType :MaintenancePlan)
+DataPropertyRange(:maintenanceType xsd:string)
+
+# Data Property: :makeOrBuy (自制或外购)
+
+AnnotationAssertion(rdfs:comment :makeOrBuy "枚举:自制 / 外购。决定 MRP 净算后产生工单还是采购申请。")
+AnnotationAssertion(rdfs:label :makeOrBuy "自制或外购")
+DataPropertyDomain(:makeOrBuy :MaterialPlan)
+DataPropertyRange(:makeOrBuy xsd:string)
+
+# Data Property: :materialCode (物料编码)
+
+AnnotationAssertion(rdfs:label :materialCode "物料编码")
+DataPropertyDomain(:materialCode :Material)
+DataPropertyRange(:materialCode xsd:string)
+
+# Data Property: :materialName (物料名称)
+
+AnnotationAssertion(rdfs:label :materialName "物料名称")
+DataPropertyDomain(:materialName :Material)
+DataPropertyRange(:materialName xsd:string)
+
+# Data Property: :materialSpec (规格)
+
+AnnotationAssertion(rdfs:label :materialSpec "规格")
+DataPropertyDomain(:materialSpec :Material)
+DataPropertyRange(:materialSpec xsd:string)
+
+# Data Property: :materialType (物料类型)
+
+AnnotationAssertion(rdfs:comment :materialType "枚举:原材料 / 半成品 / 成品 / 辅料 / 易耗品。单值,故与 Material 的子类划分对应。")
+AnnotationAssertion(rdfs:label :materialType "物料类型")
+FunctionalDataProperty(:materialType)
+DataPropertyDomain(:materialType :Material)
+DataPropertyRange(:materialType xsd:string)
+
+# Data Property: :materialUnit (单位)
+
+AnnotationAssertion(rdfs:label :materialUnit "单位")
+DataPropertyDomain(:materialUnit :Material)
+DataPropertyRange(:materialUnit xsd:string)
+
+# Data Property: :minimumLotQty (最小批量)
+
+AnnotationAssertion(rdfs:label :minimumLotQty "最小批量")
+DataPropertyDomain(:minimumLotQty :MaterialPlan)
+DataPropertyRange(:minimumLotQty xsd:decimal)
+
+# Data Property: :mrpHorizonDays (计划期)
+
+AnnotationAssertion(rdfs:comment :mrpHorizonDays "单位:天,运算的时间跨度。")
+AnnotationAssertion(rdfs:label :mrpHorizonDays "计划期")
+DataPropertyDomain(:mrpHorizonDays :MrpRun)
+DataPropertyRange(:mrpHorizonDays xsd:integer)
+
+# Data Property: :mrpRunAt (运算时间)
+
+AnnotationAssertion(rdfs:label :mrpRunAt "运算时间")
+DataPropertyDomain(:mrpRunAt :MrpRun)
+DataPropertyRange(:mrpRunAt xsd:dateTime)
+
+# Data Property: :mrpRunCode (MRP 运算号)
+
+AnnotationAssertion(rdfs:label :mrpRunCode "MRP 运算号")
+DataPropertyDomain(:mrpRunCode :MrpRun)
+DataPropertyRange(:mrpRunCode xsd:string)
+
+# Data Property: :mrpRunStatus (运算状态)
+
+AnnotationAssertion(rdfs:comment :mrpRunStatus "枚举:已完成 / 已被新运算取代。")
+AnnotationAssertion(rdfs:label :mrpRunStatus "运算状态")
+DataPropertyDomain(:mrpRunStatus :MrpRun)
+DataPropertyRange(:mrpRunStatus xsd:string)
+
+# Data Property: :ncrCode (NCR 号)
+
+AnnotationAssertion(rdfs:label :ncrCode "NCR 号")
+DataPropertyDomain(:ncrCode :NonconformanceReport)
+DataPropertyRange(:ncrCode xsd:string)
+
+# Data Property: :ncrCorrectiveAction (纠正措施)
+
+AnnotationAssertion(rdfs:label :ncrCorrectiveAction "纠正措施")
+DataPropertyDomain(:ncrCorrectiveAction :NonconformanceReport)
+DataPropertyRange(:ncrCorrectiveAction xsd:string)
+
+# Data Property: :ncrDisposition (处置方式)
+
+AnnotationAssertion(rdfs:comment :ncrDisposition "枚举:待处置 / 返修 / 报废 / 让步接收 / 退供应商。")
+AnnotationAssertion(rdfs:label :ncrDisposition "处置方式")
+DataPropertyDomain(:ncrDisposition :NonconformanceReport)
+DataPropertyRange(:ncrDisposition xsd:string)
+
+# Data Property: :ncrFoundAt (发现时间)
+
+AnnotationAssertion(rdfs:label :ncrFoundAt "发现时间")
+DataPropertyDomain(:ncrFoundAt :NonconformanceReport)
+DataPropertyRange(:ncrFoundAt xsd:dateTime)
+
+# Data Property: :ncrQty (不合格数量)
+
+AnnotationAssertion(rdfs:label :ncrQty "不合格数量")
+DataPropertyDomain(:ncrQty :NonconformanceReport)
+DataPropertyRange(:ncrQty xsd:integer)
+
+# Data Property: :ncrRootCause (原因分析)
+
+AnnotationAssertion(rdfs:label :ncrRootCause "原因分析")
+DataPropertyDomain(:ncrRootCause :NonconformanceReport)
+DataPropertyRange(:ncrRootCause xsd:string)
+
+# Data Property: :ncrStatus (NCR 状态)
+
+AnnotationAssertion(rdfs:comment :ncrStatus "枚举:待处理 / 评审中 / 已关闭。")
+AnnotationAssertion(rdfs:label :ncrStatus "NCR 状态")
+FunctionalDataProperty(:ncrStatus)
+DataPropertyDomain(:ncrStatus :NonconformanceReport)
+DataPropertyRange(:ncrStatus xsd:string)
+
+# Data Property: :needDate (需求日期)
+
+AnnotationAssertion(rdfs:label :needDate "需求日期")
+DataPropertyDomain(:needDate :MrpSuggestion)
+DataPropertyRange(:needDate xsd:date)
+
+# Data Property: :operationGoodQty (工序合格量)
+
+AnnotationAssertion(rdfs:label :operationGoodQty "工序合格量")
+DataPropertyDomain(:operationGoodQty :WorkOrderOperation)
+DataPropertyRange(:operationGoodQty xsd:integer)
+
+# Data Property: :operationNgQty (工序不良量)
+
+AnnotationAssertion(rdfs:label :operationNgQty "工序不良量")
+DataPropertyDomain(:operationNgQty :WorkOrderOperation)
+DataPropertyRange(:operationNgQty xsd:integer)
+
+# Data Property: :operationPlannedQty (工序计划量)
+
+AnnotationAssertion(rdfs:comment :operationPlannedQty "超计划报工的基准,允许超出上限由超报比例参数控制。")
+AnnotationAssertion(rdfs:label :operationPlannedQty "工序计划量")
+DataPropertyDomain(:operationPlannedQty :WorkOrderOperation)
+DataPropertyRange(:operationPlannedQty xsd:integer)
+
+# Data Property: :operationStatus (工序状态)
+
+AnnotationAssertion(rdfs:comment :operationStatus "枚举:待开工 / 可开工 / 进行中 / 完成。")
+AnnotationAssertion(rdfs:label :operationStatus "工序状态")
+FunctionalDataProperty(:operationStatus)
+DataPropertyDomain(:operationStatus :WorkOrderOperation)
+DataPropertyRange(:operationStatus xsd:string)
+
+# Data Property: :orderAmount (订单金额)
+
+AnnotationAssertion(rdfs:comment :orderAmount "单位:元。")
+AnnotationAssertion(rdfs:label :orderAmount "订单金额")
+DataPropertyDomain(:orderAmount rdfs:Resource)
+DataPropertyRange(:orderAmount xsd:decimal)
+
+# Data Property: :partCurrentStation (当前位置)
+
+AnnotationAssertion(rdfs:label :partCurrentStation "当前位置")
+DataPropertyDomain(:partCurrentStation :Part)
+DataPropertyRange(:partCurrentStation xsd:string)
+
+# Data Property: :partEventTime (事件时间)
+
+AnnotationAssertion(rdfs:label :partEventTime "事件时间")
+DataPropertyDomain(:partEventTime :PartEvent)
+DataPropertyRange(:partEventTime xsd:dateTime)
+
+# Data Property: :partEventType (事件类型)
+
+AnnotationAssertion(rdfs:comment :partEventType "如流转、检验、冻结等事件名。")
+AnnotationAssertion(rdfs:label :partEventType "事件类型")
+DataPropertyDomain(:partEventType :PartEvent)
+DataPropertyRange(:partEventType xsd:string)
+
+# Data Property: :partHeatNumber (炉次)
+
+AnnotationAssertion(rdfs:comment :partHeatNumber "铸造炉次号,是机加缺陷反查熔炼过程的追溯锚点。")
+AnnotationAssertion(rdfs:label :partHeatNumber "炉次")
+DataPropertyDomain(:partHeatNumber :Part)
+DataPropertyRange(:partHeatNumber xsd:string)
+
+# Data Property: :partPourTemperature (浇注温度)
+
+AnnotationAssertion(rdfs:label :partPourTemperature "浇注温度")
+DataPropertyDomain(:partPourTemperature :Part)
+DataPropertyRange(:partPourTemperature xsd:decimal)
+
+# Data Property: :partResidualMagnesium (残镁)
+
+AnnotationAssertion(rdfs:comment :partResidualMagnesium "单位:%,与浇注温度、型砂水分共同参与缺陷相关性分析。")
+AnnotationAssertion(rdfs:label :partResidualMagnesium "残镁")
+DataPropertyDomain(:partResidualMagnesium :Part)
+DataPropertyRange(:partResidualMagnesium xsd:decimal)
+
+# Data Property: :partReworkCount (返修次数)
+
+AnnotationAssertion(rdfs:label :partReworkCount "返修次数")
+DataPropertyDomain(:partReworkCount :Part)
+DataPropertyRange(:partReworkCount xsd:integer)
+
+# Data Property: :partSerialNumber (零件码)
+
+AnnotationAssertion(rdfs:comment :partSerialNumber "一件一码的实物身份,贯穿报工、检验、冻结、发运。")
+AnnotationAssertion(rdfs:label :partSerialNumber "零件码")
+DataPropertyDomain(:partSerialNumber :Part)
+DataPropertyRange(:partSerialNumber xsd:string)
+
+# Data Property: :partStatus (零件状态)
+
+AnnotationAssertion(rdfs:comment :partStatus "枚举:在制 / 检验合格 / 成品入库 / 已发运 / 报废 / 毛坯库 / 返修中 / 冻结。")
+AnnotationAssertion(rdfs:label :partStatus "零件状态")
+FunctionalDataProperty(:partStatus)
+DataPropertyDomain(:partStatus :Part)
+DataPropertyRange(:partStatus xsd:string)
+
+# Data Property: :plannedStartTime (计划开始)
+
+AnnotationAssertion(rdfs:label :plannedStartTime "计划开始")
+DataPropertyDomain(:plannedStartTime rdfs:Resource)
+DataPropertyRange(:plannedStartTime xsd:dateTime)
+
+# Data Property: :plantAddress (工厂地址)
+
+AnnotationAssertion(rdfs:label :plantAddress "工厂地址")
+DataPropertyDomain(:plantAddress :Plant)
+DataPropertyRange(:plantAddress xsd:string)
+
+# Data Property: :plantCode (工厂编码)
+
+AnnotationAssertion(rdfs:label :plantCode "工厂编码")
+DataPropertyDomain(:plantCode :Plant)
+DataPropertyRange(:plantCode xsd:string)
+
+# Data Property: :plantName (工厂名称)
+
+AnnotationAssertion(rdfs:label :plantName "工厂名称")
+DataPropertyDomain(:plantName :Plant)
+DataPropertyRange(:plantName xsd:string)
+
+# Data Property: :poLineQty (采购数量)
+
+AnnotationAssertion(rdfs:label :poLineQty "采购数量")
+DataPropertyDomain(:poLineQty :PurchaseOrderLine)
+DataPropertyRange(:poLineQty xsd:decimal)
+
+# Data Property: :poLineQtyAccepted (合格入库数量)
+
+AnnotationAssertion(rdfs:label :poLineQtyAccepted "合格入库数量")
+DataPropertyDomain(:poLineQtyAccepted :PurchaseOrderLine)
+DataPropertyRange(:poLineQtyAccepted xsd:decimal)
+
+# Data Property: :poLineQtyReceived (已收数量)
+
+AnnotationAssertion(rdfs:label :poLineQtyReceived "已收数量")
+DataPropertyDomain(:poLineQtyReceived :PurchaseOrderLine)
+DataPropertyRange(:poLineQtyReceived xsd:decimal)
+
+# Data Property: :poLineQtyRejected (不合格数量)
+
+AnnotationAssertion(rdfs:label :poLineQtyRejected "不合格数量")
+DataPropertyDomain(:poLineQtyRejected :PurchaseOrderLine)
+DataPropertyRange(:poLineQtyRejected xsd:decimal)
+
+# Data Property: :processCode (工序编码)
+
+AnnotationAssertion(rdfs:label :processCode "工序编码")
+DataPropertyDomain(:processCode :Process)
+DataPropertyRange(:processCode xsd:string)
+
+# Data Property: :processName (工序名称)
+
+AnnotationAssertion(rdfs:label :processName "工序名称")
+DataPropertyDomain(:processName :Process)
+DataPropertyRange(:processName xsd:string)
+
+# Data Property: :processType (工序类型)
+
+AnnotationAssertion(rdfs:comment :processType "枚举含熔炼、球化孕育、造型浇注、冷却落砂、清理抛丸、来料、机加工、去毛刺、检测、入库等。")
+AnnotationAssertion(rdfs:label :processType "工序类型")
+DataPropertyDomain(:processType :Process)
+DataPropertyRange(:processType xsd:string)
+
+# Data Property: :proposalStatus (建议状态)
+
+AnnotationAssertion(rdfs:label :proposalStatus "建议状态")
+DataPropertyDomain(:proposalStatus :ScheduleProposal)
+DataPropertyRange(:proposalStatus xsd:string)
+
+# Data Property: :purchaseOrderCode (采购订单号)
+
+AnnotationAssertion(rdfs:label :purchaseOrderCode "采购订单号")
+DataPropertyDomain(:purchaseOrderCode :PurchaseOrder)
+DataPropertyRange(:purchaseOrderCode xsd:string)
+
+# Data Property: :purchaseOrderStatus (采购订单状态)
+
+AnnotationAssertion(rdfs:comment :purchaseOrderStatus "枚举:草稿 / 已审批 / 已下发 / 部分到货 / 已到齐 / 已关闭 / 已取消。")
+AnnotationAssertion(rdfs:label :purchaseOrderStatus "采购订单状态")
+FunctionalDataProperty(:purchaseOrderStatus)
+DataPropertyDomain(:purchaseOrderStatus :PurchaseOrder)
+DataPropertyRange(:purchaseOrderStatus xsd:string)
+
+# Data Property: :quotationCode (报价单号)
+
+AnnotationAssertion(rdfs:label :quotationCode "报价单号")
+DataPropertyDomain(:quotationCode :Quotation)
+DataPropertyRange(:quotationCode xsd:string)
+
+# Data Property: :ratedPowerKw (额定功率)
+
+AnnotationAssertion(rdfs:comment :ratedPowerKw "单位:kW,用于小时电耗与能耗分析。")
+AnnotationAssertion(rdfs:label :ratedPowerKw "额定功率")
+DataPropertyDomain(:ratedPowerKw :Equipment)
+DataPropertyRange(:ratedPowerKw xsd:decimal)
+
+# Data Property: :recheckResult (复检结论)
+
+AnnotationAssertion(rdfs:comment :recheckResult "枚举:合格 / 不合格。")
+AnnotationAssertion(rdfs:label :recheckResult "复检结论")
+DataPropertyDomain(:recheckResult :ReworkOrder)
+DataPropertyRange(:recheckResult xsd:string)
+
+# Data Property: :releaseDate (建议下达日期)
+
+AnnotationAssertion(rdfs:comment :releaseDate "按提前期从需求日期倒推得到。")
+AnnotationAssertion(rdfs:label :releaseDate "建议下达日期")
+DataPropertyDomain(:releaseDate :MrpSuggestion)
+DataPropertyRange(:releaseDate xsd:date)
+
+# Data Property: :releasedAt (下达时间)
+
+AnnotationAssertion(rdfs:label :releasedAt "下达时间")
+DataPropertyDomain(:releasedAt :WorkOrder)
+DataPropertyRange(:releasedAt xsd:dateTime)
+
+# Data Property: :repairDowntimeMinutes (维修停机时长)
+
+AnnotationAssertion(rdfs:comment :repairDowntimeMinutes "单位:分钟,计入设备损失。")
+AnnotationAssertion(rdfs:label :repairDowntimeMinutes "维修停机时长")
+DataPropertyDomain(:repairDowntimeMinutes :RepairOrder)
+DataPropertyRange(:repairDowntimeMinutes xsd:decimal)
+
+# Data Property: :repairFault (故障描述)
+
+AnnotationAssertion(rdfs:label :repairFault "故障描述")
+DataPropertyDomain(:repairFault :RepairOrder)
+DataPropertyRange(:repairFault xsd:string)
+
+# Data Property: :repairLevel (紧急程度)
+
+AnnotationAssertion(rdfs:comment :repairLevel "枚举:紧急 / 一般。")
+AnnotationAssertion(rdfs:label :repairLevel "紧急程度")
+DataPropertyDomain(:repairLevel :RepairOrder)
+DataPropertyRange(:repairLevel xsd:string)
+
+# Data Property: :repairStatus (维修状态)
+
+AnnotationAssertion(rdfs:comment :repairStatus "枚举:已报修 / 已派工 / 维修中 / 已修复 / 已验收。未验收的维修单使设备在排产时不可用。")
+AnnotationAssertion(rdfs:label :repairStatus "维修状态")
+FunctionalDataProperty(:repairStatus)
+DataPropertyDomain(:repairStatus :RepairOrder)
+DataPropertyRange(:repairStatus xsd:string)
+
+# Data Property: :reportCode (报工单号)
+
+AnnotationAssertion(rdfs:label :reportCode "报工单号")
+DataPropertyDomain(:reportCode :ProductionReport)
+DataPropertyRange(:reportCode xsd:string)
+
+# Data Property: :reportEndTime (报工结束)
+
+AnnotationAssertion(rdfs:label :reportEndTime "报工结束")
+DataPropertyDomain(:reportEndTime :ProductionReport)
+DataPropertyRange(:reportEndTime xsd:dateTime)
+
+# Data Property: :reportGoodQty (报工合格数)
+
+AnnotationAssertion(rdfs:label :reportGoodQty "报工合格数")
+DataPropertyDomain(:reportGoodQty :ProductionReport)
+DataPropertyRange(:reportGoodQty xsd:integer)
+
+# Data Property: :reportIdempotencyKey (幂等键)
+
+AnnotationAssertion(rdfs:comment :reportIdempotencyKey "同一幂等键重复提交被识别为重复提交,不重复计数,是防止重复报工的兜底。")
+AnnotationAssertion(rdfs:label :reportIdempotencyKey "幂等键")
+DataPropertyDomain(:reportIdempotencyKey :ProductionReport)
+DataPropertyRange(:reportIdempotencyKey xsd:string)
+
+# Data Property: :reportNgQty (报工不良数)
+
+AnnotationAssertion(rdfs:label :reportNgQty "报工不良数")
+DataPropertyDomain(:reportNgQty :ProductionReport)
+DataPropertyRange(:reportNgQty xsd:integer)
+
+# Data Property: :reportSource (报工来源)
+
+AnnotationAssertion(rdfs:comment :reportSource "枚举:设备自动 / 人工 / 手机扫码 / 扫码枪 / 工位终端。")
+AnnotationAssertion(rdfs:label :reportSource "报工来源")
+DataPropertyDomain(:reportSource :ProductionReport)
+DataPropertyRange(:reportSource xsd:string)
+
+# Data Property: :reportStartTime (报工开始)
+
+AnnotationAssertion(rdfs:label :reportStartTime "报工开始")
+DataPropertyDomain(:reportStartTime :ProductionReport)
+DataPropertyRange(:reportStartTime xsd:dateTime)
+
+# Data Property: :requestQty (申请数量)
+
+AnnotationAssertion(rdfs:label :requestQty "申请数量")
+DataPropertyDomain(:requestQty :MaterialRequest)
+DataPropertyRange(:requestQty xsd:decimal)
+
+# Data Property: :requisitionCode (请购单号)
+
+AnnotationAssertion(rdfs:label :requisitionCode "请购单号")
+DataPropertyDomain(:requisitionCode :PurchaseRequisition)
+DataPropertyRange(:requisitionCode xsd:string)
+
+# Data Property: :requisitionQty (请购数量)
+
+AnnotationAssertion(rdfs:label :requisitionQty "请购数量")
+DataPropertyDomain(:requisitionQty :PurchaseRequisition)
+DataPropertyRange(:requisitionQty xsd:decimal)
+
+# Data Property: :requisitionStatus (请购状态)
+
+AnnotationAssertion(rdfs:comment :requisitionStatus "枚举:草稿 / 待审批 / 已批准 / 已下单 / 已驳回 / 已取消。")
+AnnotationAssertion(rdfs:label :requisitionStatus "请购状态")
+FunctionalDataProperty(:requisitionStatus)
+DataPropertyDomain(:requisitionStatus :PurchaseRequisition)
+DataPropertyRange(:requisitionStatus xsd:string)
+
+# Data Property: :reworkMethod (返修方法)
+
+AnnotationAssertion(rdfs:label :reworkMethod "返修方法")
+DataPropertyDomain(:reworkMethod :ReworkOrder)
+DataPropertyRange(:reworkMethod xsd:string)
+
+# Data Property: :reworkResult (返修结果)
+
+AnnotationAssertion(rdfs:comment :reworkResult "枚举:合格 / 仍不合格 / 进行中。只有「进行中」才能流转结果。")
+AnnotationAssertion(rdfs:label :reworkResult "返修结果")
+DataPropertyDomain(:reworkResult :ReworkOrder)
+DataPropertyRange(:reworkResult xsd:string)
+
+# Data Property: :routingStatus (工艺路线状态)
+
+AnnotationAssertion(rdfs:comment :routingStatus "枚举:草稿 / 生效 / 作废。")
+AnnotationAssertion(rdfs:label :routingStatus "工艺路线状态")
+FunctionalDataProperty(:routingStatus)
+DataPropertyDomain(:routingStatus :Routing)
+DataPropertyRange(:routingStatus xsd:string)
+
+# Data Property: :routingVersion (工艺版本)
+
+AnnotationAssertion(rdfs:label :routingVersion "工艺版本")
+DataPropertyDomain(:routingVersion :Routing)
+DataPropertyRange(:routingVersion xsd:string)
+
+# Data Property: :safetyStock (安全库存)
+
+AnnotationAssertion(rdfs:label :safetyStock "安全库存")
+DataPropertyDomain(:safetyStock rdfs:Resource)
+DataPropertyRange(:safetyStock xsd:decimal)
+
+# Data Property: :salesOrderCode (销售订单号)
+
+AnnotationAssertion(rdfs:label :salesOrderCode "销售订单号")
+DataPropertyDomain(:salesOrderCode :SalesOrder)
+DataPropertyRange(:salesOrderCode xsd:string)
+
+# Data Property: :salesOrderDate (下单日期)
+
+AnnotationAssertion(rdfs:label :salesOrderDate "下单日期")
+DataPropertyDomain(:salesOrderDate :SalesOrder)
+DataPropertyRange(:salesOrderDate xsd:date)
+
+# Data Property: :salesOrderStatus (销售订单状态)
+
+AnnotationAssertion(rdfs:comment :salesOrderStatus "枚举:草稿 / 信用待批 / 已确认 / 部分发货 / 已发完 / 已关闭 / 已取消。")
+AnnotationAssertion(rdfs:label :salesOrderStatus "销售订单状态")
+FunctionalDataProperty(:salesOrderStatus)
+DataPropertyDomain(:salesOrderStatus :SalesOrder)
+DataPropertyRange(:salesOrderStatus xsd:string)
+
+# Data Property: :scheduleDueDate (交货日期)
+
+AnnotationAssertion(rdfs:label :scheduleDueDate "交货日期")
+DataPropertyDomain(:scheduleDueDate :DeliverySchedule)
+DataPropertyRange(:scheduleDueDate xsd:date)
+
+# Data Property: :scheduleQty (交货数量)
+
+AnnotationAssertion(rdfs:label :scheduleQty "交货数量")
+DataPropertyDomain(:scheduleQty :DeliverySchedule)
+DataPropertyRange(:scheduleQty xsd:decimal)
+
+# Data Property: :scrapRatePct (损耗率)
+
+AnnotationAssertion(rdfs:comment :scrapRatePct "单位:%,MRP 净算时放大需求量。")
+AnnotationAssertion(rdfs:label :scrapRatePct "损耗率")
+DataPropertyDomain(:scrapRatePct :MaterialPlan)
+DataPropertyRange(:scrapRatePct xsd:decimal)
+
+# Data Property: :shiftActive (排产启用)
+
+AnnotationAssertion(rdfs:comment :shiftActive "为假时该班次不参与排产,设备不在该时段内作业。")
+AnnotationAssertion(rdfs:label :shiftActive "排产启用")
+DataPropertyDomain(:shiftActive :Shift)
+DataPropertyRange(:shiftActive xsd:boolean)
+
+# Data Property: :shiftEndTime (班次结束)
+
+AnnotationAssertion(rdfs:label :shiftEndTime "班次结束")
+DataPropertyDomain(:shiftEndTime :Shift)
+DataPropertyRange(:shiftEndTime xsd:string)
+
+# Data Property: :shiftStartTime (班次开始)
+
+AnnotationAssertion(rdfs:comment :shiftStartTime "时刻,格式 HH:MM。")
+AnnotationAssertion(rdfs:label :shiftStartTime "班次开始")
+DataPropertyDomain(:shiftStartTime :Shift)
+DataPropertyRange(:shiftStartTime xsd:string)
+
+# Data Property: :shipmentCode (发运单号)
+
+AnnotationAssertion(rdfs:label :shipmentCode "发运单号")
+DataPropertyDomain(:shipmentCode :Shipment)
+DataPropertyRange(:shipmentCode xsd:string)
+
+# Data Property: :shipmentQty (发运数量)
+
+AnnotationAssertion(rdfs:label :shipmentQty "发运数量")
+DataPropertyDomain(:shipmentQty :Shipment)
+DataPropertyRange(:shipmentQty xsd:integer)
+
+# Data Property: :shipmentTime (发运时间)
+
+AnnotationAssertion(rdfs:label :shipmentTime "发运时间")
+DataPropertyDomain(:shipmentTime :Shipment)
+DataPropertyRange(:shipmentTime xsd:dateTime)
+
+# Data Property: :skillLevel (技能等级)
+
+AnnotationAssertion(rdfs:comment :skillLevel "枚举:学徒(需带教) / 熟练 / 骨干 / 可带教。")
+AnnotationAssertion(rdfs:label :skillLevel "技能等级")
+DataPropertyDomain(:skillLevel :OperatorSkill)
+DataPropertyRange(:skillLevel xsd:string)
+
+# Data Property: :skillValidUntil (技能有效期至)
+
+AnnotationAssertion(rdfs:label :skillValidUntil "技能有效期至")
+DataPropertyDomain(:skillValidUntil :OperatorSkill)
+DataPropertyRange(:skillValidUntil xsd:date)
+
+# Data Property: :standardCycleSeconds (标准节拍)
+
+AnnotationAssertion(rdfs:comment :standardCycleSeconds "完成一件的理论秒数。用于排产时长计算与 OEE 性能率基准。")
+AnnotationAssertion(rdfs:label :standardCycleSeconds "标准节拍")
+DataPropertyDomain(:standardCycleSeconds rdfs:Resource)
+DataPropertyRange(:standardCycleSeconds xsd:decimal)
+
+# Data Property: :stateDurationSeconds (状态时长)
+
+AnnotationAssertion(rdfs:comment :stateDurationSeconds "单位:秒。")
+AnnotationAssertion(rdfs:label :stateDurationSeconds "状态时长")
+DataPropertyDomain(:stateDurationSeconds :EquipmentStateRecord)
+DataPropertyRange(:stateDurationSeconds xsd:decimal)
+
+# Data Property: :stateEndTime (状态结束)
+
+AnnotationAssertion(rdfs:comment :stateEndTime "空值表示该状态持续至今。")
+AnnotationAssertion(rdfs:label :stateEndTime "状态结束")
+DataPropertyDomain(:stateEndTime :EquipmentStateRecord)
+DataPropertyRange(:stateEndTime xsd:dateTime)
+
+# Data Property: :stateStartTime (状态开始)
+
+AnnotationAssertion(rdfs:label :stateStartTime "状态开始")
+DataPropertyDomain(:stateStartTime :EquipmentStateRecord)
+DataPropertyRange(:stateStartTime xsd:dateTime)
+
+# Data Property: :stepInstruction (作业指示)
+
+AnnotationAssertion(rdfs:label :stepInstruction "作业指示")
+DataPropertyDomain(:stepInstruction :RoutingStep)
+DataPropertyRange(:stepInstruction xsd:string)
+
+# Data Property: :stepIsInspectionPoint (检验点)
+
+AnnotationAssertion(rdfs:label :stepIsInspectionPoint "检验点")
+DataPropertyDomain(:stepIsInspectionPoint :RoutingStep)
+DataPropertyRange(:stepIsInspectionPoint xsd:boolean)
+
+# Data Property: :stepReportMode (报工方式)
+
+AnnotationAssertion(rdfs:comment :stepReportMode "枚举:设备自动 / 人工 / 扫码。决定现场以何种方式产生报工记录。")
+AnnotationAssertion(rdfs:label :stepReportMode "报工方式")
+DataPropertyDomain(:stepReportMode :RoutingStep)
+DataPropertyRange(:stepReportMode xsd:string)
+
+# Data Property: :stepRequiresFirstArticle (首检放行)
+
+AnnotationAssertion(rdfs:comment :stepRequiresFirstArticle "为真时,该工序在首检放行前不得量产报工。")
+AnnotationAssertion(rdfs:label :stepRequiresFirstArticle "首检放行")
+DataPropertyDomain(:stepRequiresFirstArticle :RoutingStep)
+DataPropertyRange(:stepRequiresFirstArticle xsd:boolean)
+
+# Data Property: :stepSequence (步骤顺序)
+
+AnnotationAssertion(rdfs:comment :stepSequence "有序值,是「不得跳序报工」与「不得超过上道转来数量」的判定基础。")
+AnnotationAssertion(rdfs:label :stepSequence "步骤顺序")
+DataPropertyDomain(:stepSequence rdfs:Resource)
+DataPropertyRange(:stepSequence xsd:integer)
+
+# Data Property: :stockQty (库存数量)
+
+AnnotationAssertion(rdfs:label :stockQty "库存数量")
+DataPropertyDomain(:stockQty :Stock)
+DataPropertyRange(:stockQty xsd:decimal)
+
+# Data Property: :suggestionKind (建议类型)
+
+AnnotationAssertion(rdfs:comment :suggestionKind "枚举:计划生产 / 计划采购 / 提前 / 推迟。")
+AnnotationAssertion(rdfs:label :suggestionKind "建议类型")
+DataPropertyDomain(:suggestionKind :MrpSuggestion)
+DataPropertyRange(:suggestionKind xsd:string)
+
+# Data Property: :suggestionLevel (BOM 层级)
+
+AnnotationAssertion(rdfs:comment :suggestionLevel "多级 BOM 展开后的层级,用于展示净算过程。")
+AnnotationAssertion(rdfs:label :suggestionLevel "BOM 层级")
+DataPropertyDomain(:suggestionLevel :MrpSuggestion)
+DataPropertyRange(:suggestionLevel xsd:integer)
+
+# Data Property: :suggestionQty (建议数量)
+
+AnnotationAssertion(rdfs:label :suggestionQty "建议数量")
+DataPropertyDomain(:suggestionQty :MrpSuggestion)
+DataPropertyRange(:suggestionQty xsd:decimal)
+
+# Data Property: :suggestionStatus (建议状态)
+
+AnnotationAssertion(rdfs:comment :suggestionStatus "枚举:待处理 / 已调整 / 已下达 / 已忽略。")
+AnnotationAssertion(rdfs:label :suggestionStatus "建议状态")
+FunctionalDataProperty(:suggestionStatus)
+DataPropertyDomain(:suggestionStatus :MrpSuggestion)
+DataPropertyRange(:suggestionStatus xsd:string)
+
+# Data Property: :supplierName (供应商名称)
+
+AnnotationAssertion(rdfs:label :supplierName "供应商名称")
+DataPropertyDomain(:supplierName :Supplier)
+DataPropertyRange(:supplierName xsd:string)
+
+# Data Property: :supplierQualification (供应商资格)
+
+AnnotationAssertion(rdfs:comment :supplierQualification "枚举:合格 / 试用 / 停用。停用供应商不能下采购订单。")
+AnnotationAssertion(rdfs:label :supplierQualification "供应商资格")
+DataPropertyDomain(:supplierQualification :Supplier)
+DataPropertyRange(:supplierQualification xsd:string)
+
+# Data Property: :supplierRating (供应商绩效)
+
+AnnotationAssertion(rdfs:label :supplierRating "供应商绩效")
+DataPropertyDomain(:supplierRating :Supplier)
+DataPropertyRange(:supplierRating xsd:decimal)
+
+# Data Property: :tagAddress (点位地址)
+
+AnnotationAssertion(rdfs:label :tagAddress "点位地址")
+DataPropertyDomain(:tagAddress :TagPoint)
+DataPropertyRange(:tagAddress xsd:string)
+
+# Data Property: :tagAlarmLower (报警下限)
+
+AnnotationAssertion(rdfs:label :tagAlarmLower "报警下限")
+DataPropertyDomain(:tagAlarmLower :TagPoint)
+DataPropertyRange(:tagAlarmLower xsd:decimal)
+
+# Data Property: :tagAlarmUpper (报警上限)
+
+AnnotationAssertion(rdfs:label :tagAlarmUpper "报警上限")
+DataPropertyDomain(:tagAlarmUpper :TagPoint)
+DataPropertyRange(:tagAlarmUpper xsd:decimal)
+
+# Data Property: :tagConfirmed (语义已确认)
+
+AnnotationAssertion(rdfs:comment :tagConfirmed "接入时逐点确认语义;未确认的点位不投产,这是设备接入的业务闸门。")
+AnnotationAssertion(rdfs:label :tagConfirmed "语义已确认")
+DataPropertyDomain(:tagConfirmed :TagPoint)
+DataPropertyRange(:tagConfirmed xsd:boolean)
+
+# Data Property: :tagName (点位名称)
+
+AnnotationAssertion(rdfs:label :tagName "点位名称")
+DataPropertyDomain(:tagName :TagPoint)
+DataPropertyRange(:tagName xsd:string)
+
+# Data Property: :tagPeriodMs (采集周期)
+
+AnnotationAssertion(rdfs:comment :tagPeriodMs "单位:毫秒。")
+AnnotationAssertion(rdfs:label :tagPeriodMs "采集周期")
+DataPropertyDomain(:tagPeriodMs :TagPoint)
+DataPropertyRange(:tagPeriodMs xsd:integer)
+
+# Data Property: :tagRole (点位用途)
+
+AnnotationAssertion(rdfs:comment :tagRole "枚举:运行状态 / 报警 / 功率 / 电能 / 产量 / 主轴负载 / 温度 / 质量值 / 其他。用途决定该点位被映射成哪类业务记录。")
+AnnotationAssertion(rdfs:label :tagRole "点位用途")
+DataPropertyDomain(:tagRole :TagPoint)
+DataPropertyRange(:tagRole xsd:string)
+
+# Data Property: :templateCode (检验模板编码)
+
+AnnotationAssertion(rdfs:label :templateCode "检验模板编码")
+DataPropertyDomain(:templateCode :InspectionTemplate)
+DataPropertyRange(:templateCode xsd:string)
+
+# Data Property: :templateName (检验模板名称)
+
+AnnotationAssertion(rdfs:label :templateName "检验模板名称")
+DataPropertyDomain(:templateName :InspectionTemplate)
+DataPropertyRange(:templateName xsd:string)
+
+# Data Property: :toolingAvailableFrom (预计可用时间)
+
+AnnotationAssertion(rdfs:label :toolingAvailableFrom "预计可用时间")
+DataPropertyDomain(:toolingAvailableFrom :Tooling)
+DataPropertyRange(:toolingAvailableFrom xsd:dateTime)
+
+# Data Property: :toolingLifeShots (寿命模次)
+
+AnnotationAssertion(rdfs:comment :toolingLifeShots "剩余模次不足以完成本单时,排产产出「模具寿命不足」提示。")
+AnnotationAssertion(rdfs:label :toolingLifeShots "寿命模次")
+DataPropertyDomain(:toolingLifeShots :Tooling)
+DataPropertyRange(:toolingLifeShots xsd:integer)
+
+# Data Property: :toolingShots (当前模次)
+
+AnnotationAssertion(rdfs:label :toolingShots "当前模次")
+DataPropertyDomain(:toolingShots :Tooling)
+DataPropertyRange(:toolingShots xsd:integer)
+
+# Data Property: :toolingStatus (模具状态)
+
+AnnotationAssertion(rdfs:comment :toolingStatus "枚举:可用 / 在用 / 保养维修中 / 报废。")
+AnnotationAssertion(rdfs:label :toolingStatus "模具状态")
+FunctionalDataProperty(:toolingStatus)
+DataPropertyDomain(:toolingStatus :Tooling)
+DataPropertyRange(:toolingStatus xsd:string)
+
+# Data Property: :toolingType (模具类型)
+
+AnnotationAssertion(rdfs:comment :toolingType "枚举:模板/模具 / 芯盒 / 夹具 / 检具 / 其他。")
+AnnotationAssertion(rdfs:label :toolingType "模具类型")
+DataPropertyDomain(:toolingType :Tooling)
+DataPropertyRange(:toolingType xsd:string)
+
+# Data Property: :transactionQty (出入库数量)
+
+AnnotationAssertion(rdfs:label :transactionQty "出入库数量")
+DataPropertyDomain(:transactionQty :StockTransaction)
+DataPropertyRange(:transactionQty xsd:decimal)
+
+# Data Property: :transactionTime (出入库时间)
+
+AnnotationAssertion(rdfs:label :transactionTime "出入库时间")
+DataPropertyDomain(:transactionTime :StockTransaction)
+DataPropertyRange(:transactionTime xsd:dateTime)
+
+# Data Property: :transactionType (出入库类型)
+
+AnnotationAssertion(rdfs:comment :transactionType "枚举:入库 / 出库 / 移库 / 盘点调整。出库与移库方向受批次冻结拦截。")
+AnnotationAssertion(rdfs:label :transactionType "出入库类型")
+DataPropertyDomain(:transactionType :StockTransaction)
+DataPropertyRange(:transactionType xsd:string)
+
+# Data Property: :unitPrice (单价)
+
+AnnotationAssertion(rdfs:comment :unitPrice "单位:元。")
+AnnotationAssertion(rdfs:label :unitPrice "单价")
+DataPropertyDomain(:unitPrice rdfs:Resource)
+DataPropertyRange(:unitPrice xsd:decimal)
+
+# Data Property: :unitWeightKg (单重)
+
+AnnotationAssertion(rdfs:comment :unitWeightKg "单位:千克。")
+AnnotationAssertion(rdfs:label :unitWeightKg "单重")
+DataPropertyDomain(:unitWeightKg :Material)
+DataPropertyRange(:unitWeightKg xsd:decimal)
+
+# Data Property: :userDisplayName (姓名)
+
+AnnotationAssertion(rdfs:label :userDisplayName "姓名")
+DataPropertyDomain(:userDisplayName :UserAccount)
+DataPropertyRange(:userDisplayName xsd:string)
+
+# Data Property: :userRoles (角色)
+
+AnnotationAssertion(rdfs:comment :userRoles "角色决定页面、按钮与 API 权限。")
+AnnotationAssertion(rdfs:label :userRoles "角色")
+DataPropertyDomain(:userRoles :UserAccount)
+DataPropertyRange(:userRoles xsd:string)
+
+# Data Property: :username (账号)
+
+AnnotationAssertion(rdfs:label :username "账号")
+DataPropertyDomain(:username :UserAccount)
+DataPropertyRange(:username xsd:string)
+
+# Data Property: :warehouseType (仓库类型)
+
+AnnotationAssertion(rdfs:comment :warehouseType "枚举:原材料库 / 毛坯库 / 线边库 / 成品库 / 辅料库 / 委外仓。")
+AnnotationAssertion(rdfs:label :warehouseType "仓库类型")
+DataPropertyDomain(:warehouseType :Warehouse)
+DataPropertyRange(:warehouseType xsd:string)
+
+# Data Property: :workOrderCode (工单号)
+
+AnnotationAssertion(rdfs:comment :workOrderCode "系统自动编号,格式 WO{日期}{流水}。是工单的业务身份。")
+AnnotationAssertion(rdfs:label :workOrderCode "工单号")
+DataPropertyDomain(:workOrderCode :WorkOrder)
+DataPropertyRange(:workOrderCode xsd:string)
+
+# Data Property: :workOrderPriority (优先级)
+
+AnnotationAssertion(rdfs:comment :workOrderPriority "1 为最高。有限产能排程按优先级与交期排序。")
+AnnotationAssertion(rdfs:label :workOrderPriority "优先级")
+DataPropertyDomain(:workOrderPriority :WorkOrder)
+DataPropertyRange(:workOrderPriority xsd:integer)
+
+# Data Property: :workOrderQty (计划数量)
+
+AnnotationAssertion(rdfs:label :workOrderQty "计划数量")
+DataPropertyDomain(:workOrderQty :WorkOrder)
+DataPropertyRange(:workOrderQty xsd:integer)
+
+# Data Property: :workOrderQtyDone (完工数量)
+
+AnnotationAssertion(rdfs:comment :workOrderQtyDone "由报工汇总,系统只读。")
+AnnotationAssertion(rdfs:label :workOrderQtyDone "完工数量")
+DataPropertyDomain(:workOrderQtyDone :WorkOrder)
+DataPropertyRange(:workOrderQtyDone xsd:integer)
+
+# Data Property: :workOrderQtyScrap (报废数量)
+
+AnnotationAssertion(rdfs:label :workOrderQtyScrap "报废数量")
+DataPropertyDomain(:workOrderQtyScrap :WorkOrder)
+DataPropertyRange(:workOrderQtyScrap xsd:integer)
+
+# Data Property: :workOrderStatus (工单状态)
+
+AnnotationAssertion(rdfs:comment :workOrderStatus "枚举:草稿 / 已下达 / 生产中 / 已完工 / 已关闭 / 已取消。由动作驱动,非直接编辑。")
+AnnotationAssertion(rdfs:label :workOrderStatus "工单状态")
+FunctionalDataProperty(:workOrderStatus)
+DataPropertyDomain(:workOrderStatus :WorkOrder)
+DataPropertyRange(:workOrderStatus xsd:string)
+
+# Data Property: :workshopType (车间类型)
+
+AnnotationAssertion(rdfs:comment :workshopType "枚举:铸造 / 机加 / 仓储 / 其他。")
+AnnotationAssertion(rdfs:label :workshopType "车间类型")
+FunctionalDataProperty(:workshopType)
+DataPropertyDomain(:workshopType :Workshop)
+DataPropertyRange(:workshopType xsd:string)
+
+# Data Property: :workstationGroup (工位组)
+
+AnnotationAssertion(rdfs:comment :workstationGroup "同组工位可互相替代(如 CNC、MOLD1)。排产时按工位组整体分配设备与模具。")
+AnnotationAssertion(rdfs:label :workstationGroup "工位组")
+DataPropertyDomain(:workstationGroup rdfs:Resource)
+DataPropertyRange(:workstationGroup xsd:string)
+
+
+
+############################
+#   Classes
+############################
+
+# Class: :Alarm (报警记录)
+
+AnnotationAssertion(rdfs:comment :Alarm "设备报警及其确认与处理,时长计入设备损失。")
+AnnotationAssertion(rdfs:label :Alarm "报警记录")
+
+# Class: :Andon (安灯)
+
+AnnotationAssertion(rdfs:comment :Andon "现场异常呼叫,分设备/质量/物料/安全等类型,状态从待响应到处理中到已关闭。可由人工发起或由设备自动触发。")
+AnnotationAssertion(rdfs:label :Andon "安灯")
+
+# Class: :Attendance (上下工记录)
+
+AnnotationAssertion(rdfs:comment :Attendance "员工按班次的出勤记录,是工时与人工成本的基础。")
+AnnotationAssertion(rdfs:label :Attendance "上下工记录")
+
+# Class: :AuxiliaryMaterial (辅料)
+
+AnnotationAssertion(rdfs:comment :AuxiliaryMaterial "物料类型取值之一:辅料。参与生产但不构成产品主体。")
+AnnotationAssertion(rdfs:label :AuxiliaryMaterial "辅料")
+SubClassOf(:AuxiliaryMaterial :Material)
+DisjointClasses(:AuxiliaryMaterial :Consumable)
+DisjointClasses(:AuxiliaryMaterial :FinishedProduct)
+DisjointClasses(:AuxiliaryMaterial :RawMaterial)
+DisjointClasses(:AuxiliaryMaterial :SemiFinishedMaterial)
+
+# Class: :BillOfMaterials (BOM)
+
+AnnotationAssertion(rdfs:comment :BillOfMaterials "物料清单:一个产品由哪些子件按多少用量组成。多层 BOM 展开是 MRP 运算(netting)的基础。")
+AnnotationAssertion(rdfs:label :BillOfMaterials "BOM")
+
+# Class: :Changeover (换型时间)
+
+AnnotationAssertion(rdfs:comment :Changeover "设备由前一产品切换到后一产品所需的准备时长。排产时在上一单产品不同时追加该时长,并产出「换型」提示。")
+AnnotationAssertion(rdfs:label :Changeover "换型时间")
+
+# Class: :Consumable (易耗品)
+
+AnnotationAssertion(rdfs:comment :Consumable "物料类型取值之一:易耗品。如刀具、砂料等按消耗扣减的物料。")
+AnnotationAssertion(rdfs:label :Consumable "易耗品")
+SubClassOf(:Consumable :Material)
+DisjointClasses(:Consumable :FinishedProduct)
+DisjointClasses(:Consumable :RawMaterial)
+DisjointClasses(:Consumable :SemiFinishedMaterial)
+
+# Class: :Customer (客户)
+
+AnnotationAssertion(rdfs:comment :Customer "销售对象,带信用额度与结算方式;信用检查是销售订单状态流转的一环。")
+AnnotationAssertion(rdfs:label :Customer "客户")
+
+# Class: :DataSource (数据源)
+
+AnnotationAssertion(rdfs:comment :DataSource "现场设备接入点,协议含 MQTT(UNS)、OPC UA、Modbus TCP。")
+AnnotationAssertion(rdfs:label :DataSource "数据源")
+
+# Class: :DefectCode (缺陷代码)
+
+AnnotationAssertion(rdfs:comment :DefectCode "缺陷字典,带类别(铸造/机加/外观/其他)与严重度(致命/严重/轻微),可绑定责任工序用于根因追溯。")
+AnnotationAssertion(rdfs:label :DefectCode "缺陷代码")
+
+# Class: :DeliverySchedule (交货计划)
+
+AnnotationAssertion(rdfs:comment :DeliverySchedule "订单行下的分批交货安排,交期是排产的时间锚点。")
+AnnotationAssertion(rdfs:label :DeliverySchedule "交货计划")
+
+# Class: :DemandForecast (需求预测)
+
+AnnotationAssertion(rdfs:comment :DemandForecast "物料在某日期的预测需求量,可关联客户。")
+AnnotationAssertion(rdfs:label :DemandForecast "需求预测")
+
+# Class: :DowntimePlan (设备停机计划)
+
+AnnotationAssertion(rdfs:comment :DowntimePlan "已登记的设备不可用时段(计划保养、维修、放假停产、试制调试),排产时作为硬约束。")
+AnnotationAssertion(rdfs:label :DowntimePlan "设备停机计划")
+
+# Class: :Employee (员工)
+
+AnnotationAssertion(rdfs:comment :Employee "作业人员。能否操作某工序由 OperatorSkill 决定,不由岗位名称决定。")
+AnnotationAssertion(rdfs:label :Employee "员工")
+
+# Class: :Equipment (设备)
+
+AnnotationAssertion(rdfs:comment :Equipment "设备台账。带理想节拍(ideal_cycle_s),这是 OEE 性能率的计算基准;额定功率用于能耗分析。设备状态(运行/待机/换型/停机/离线/报废)由采集数据推导。")
+AnnotationAssertion(rdfs:label :Equipment "设备")
+
+# Class: :EquipmentStateRecord (设备状态记录)
+
+AnnotationAssertion(rdfs:comment :EquipmentStateRecord "设备状态的时间区间记录(运行/待机/换型/停机),是 OEE 与损失分析的原始依据。
+OEE = 可用率 A × 性能率 P × 质量率 Q:
+A = 运行时间 / 计划时间;
+P = min(1, 理想节拍 × 总产量 / 运行时间);
+Q = 合格数 / 总数。
+损失分为:停机、换型换刀、待机等待、运行。")
+AnnotationAssertion(rdfs:label :EquipmentStateRecord "设备状态记录")
+
+# Class: :FinalInspection (出货检验)
+
+AnnotationAssertion(rdfs:comment :FinalInspection "检验类型取值之一:出货。成品发货前的最终检验。")
+AnnotationAssertion(rdfs:label :FinalInspection "出货检验")
+SubClassOf(:FinalInspection :InspectionRecord)
+DisjointClasses(:FinalInspection :FirstArticleInspection)
+DisjointClasses(:FinalInspection :InProcessInspection)
+DisjointClasses(:FinalInspection :IncomingInspection)
+DisjointClasses(:FinalInspection :PatrolInspection)
+
+# Class: :FinishedProduct (成品)
+
+AnnotationAssertion(rdfs:comment :FinishedProduct "物料类型取值之一:成品。可入库、发运并对应销售订单行。")
+AnnotationAssertion(rdfs:label :FinishedProduct "成品")
+SubClassOf(:FinishedProduct :Material)
+DisjointClasses(:FinishedProduct :RawMaterial)
+DisjointClasses(:FinishedProduct :SemiFinishedMaterial)
+
+# Class: :FirstArticleInspection (首件检验)
+
+AnnotationAssertion(rdfs:comment :FirstArticleInspection "检验类型取值之一:首件。首检放行单的证据来源。")
+AnnotationAssertion(rdfs:label :FirstArticleInspection "首件检验")
+SubClassOf(:FirstArticleInspection :InspectionRecord)
+DisjointClasses(:FirstArticleInspection :InProcessInspection)
+DisjointClasses(:FirstArticleInspection :IncomingInspection)
+DisjointClasses(:FirstArticleInspection :PatrolInspection)
+
+# Class: :FirstArticleRelease (首检放行)
+
+AnnotationAssertion(rdfs:comment :FirstArticleRelease "首检单。触发场景:开工、换型、换刀、换班、维修后。工艺步骤勾选「首检放行」时,该工序在放行前不得量产报工;首检判定不合格则不放行并登记 NCR。")
+AnnotationAssertion(rdfs:label :FirstArticleRelease "首检放行")
+
+# Class: :Gauge (量检具)
+
+AnnotationAssertion(rdfs:comment :Gauge "量具/检具台账。带校准到期状态:检验记录要求引用一把在有效期内的量具,过期量具不能用于出具有效检验结论。")
+AnnotationAssertion(rdfs:label :Gauge "量检具")
+
+# Class: :GaugeCalibration (校准记录)
+
+AnnotationAssertion(rdfs:comment :GaugeCalibration "量检具的一次校准,含校准日期、结果与到期日;到期后量具不可用于检验。")
+AnnotationAssertion(rdfs:label :GaugeCalibration "校准记录")
+
+# Class: :InProcessInspection (过程检验)
+
+AnnotationAssertion(rdfs:comment :InProcessInspection "检验类型取值之一:过程。生产过程中在检验点执行。")
+AnnotationAssertion(rdfs:label :InProcessInspection "过程检验")
+SubClassOf(:InProcessInspection :InspectionRecord)
+DisjointClasses(:InProcessInspection :IncomingInspection)
+DisjointClasses(:InProcessInspection :PatrolInspection)
+
+# Class: :IncomingInspection (来料检验)
+
+AnnotationAssertion(rdfs:comment :IncomingInspection "检验类型取值之一:来料。对应采购收货时的进货检验。")
+AnnotationAssertion(rdfs:label :IncomingInspection "来料检验")
+SubClassOf(:IncomingInspection :InspectionRecord)
+DisjointClasses(:IncomingInspection :PatrolInspection)
+
+# Class: :InspectionItem (检验项目)
+
+AnnotationAssertion(rdfs:comment :InspectionItem "模板下的一条待检项:特性代码、量具类型、上下限、关键/特殊特性标记。首检放行的判定依据即这些项目的上下限。")
+AnnotationAssertion(rdfs:label :InspectionItem "检验项目")
+
+# Class: :InspectionRecord (检验记录)
+
+AnnotationAssertion(rdfs:comment :InspectionRecord "一次检验的执行结果,结论为合格/不合格/待判。检验类型为单值枚举,故其子类互斥。")
+AnnotationAssertion(rdfs:label :InspectionRecord "检验记录")
+
+# Class: :InspectionTemplate (检验模板)
+
+AnnotationAssertion(rdfs:comment :InspectionTemplate "检验的模板定义,按物料或工序适用,含抽样规则。模板下挂检验项目,项目带上下限与关键特性标记。")
+AnnotationAssertion(rdfs:label :InspectionTemplate "检验模板")
+
+# Class: :InspectionValue (检验值)
+
+AnnotationAssertion(rdfs:comment :InspectionValue "单个检验项的实测值,绑定量具。合格判定按上下限,判定结论回写到检验记录。")
+AnnotationAssertion(rdfs:label :InspectionValue "检验值")
+
+# Class: :KittingRecord (物料齐套)
+
+AnnotationAssertion(rdfs:comment :KittingRecord "工单各物料的齐套状态(齐套/部分/缺料)与预计到料时间。缺料工单在预计到料时间之后才能开工,这是排产的主要输入之一。")
+AnnotationAssertion(rdfs:label :KittingRecord "物料齐套")
+
+# Class: :LotHold (批次冻结)
+
+AnnotationAssertion(rdfs:comment :LotHold "对某个批次(炉次)的冻结单。冻结期间:该批次零件禁止报工、禁止出库/移库;解冻时按冻结后的事件流恢复零件真实状态。")
+AnnotationAssertion(rdfs:label :LotHold "批次冻结")
+
+# Class: :MaintenancePlan (点检保养计划)
+
+AnnotationAssertion(rdfs:comment :MaintenancePlan "点检/保养/润滑计划,带周期天数与下次到期日,指定负责人。")
+AnnotationAssertion(rdfs:label :MaintenancePlan "点检保养计划")
+
+# Class: :MaintenanceRecord (点检保养记录)
+
+AnnotationAssertion(rdfs:comment :MaintenanceRecord "计划的一次执行结果(正常/异常)。")
+AnnotationAssertion(rdfs:label :MaintenanceRecord "点检保养记录")
+
+# Class: :Material (物料)
+
+AnnotationAssertion(rdfs:comment :Material "可被生产消耗或对外销售的对象,承载规格、单位、安全库存、单价、单重。物料类型(mtype)在系统中为单值枚举,故其子类互斥。")
+AnnotationAssertion(rdfs:label :Material "物料")
+
+# Class: :MaterialIssue (领料退料)
+
+AnnotationAssertion(rdfs:comment :MaterialIssue "工单领用或退回物料的流水,带批次维度。批次冻结期间,出库方向会被拦截。")
+AnnotationAssertion(rdfs:label :MaterialIssue "领料退料")
+
+# Class: :MaterialPlan (物料计划参数)
+
+AnnotationAssertion(rdfs:comment :MaterialPlan "物料的采购/制造属性:自制或外购、提前期、最小批量、批量倍数、安全库存、损耗率、默认供应商与默认仓库。MRP 运算按这些参数净算需求。")
+AnnotationAssertion(rdfs:label :MaterialPlan "物料计划参数")
+
+# Class: :MaterialRequest (物料申请)
+
+AnnotationAssertion(rdfs:comment :MaterialRequest "缺料时的请领单,挂在工单与仓库上。")
+AnnotationAssertion(rdfs:label :MaterialRequest "物料申请")
+
+# Class: :MrpRun (MRP 运算)
+
+AnnotationAssertion(rdfs:comment :MrpRun "一次物料需求计划运算,带计划期与运算状态;新运算取代旧运算。")
+AnnotationAssertion(rdfs:label :MrpRun "MRP 运算")
+
+# Class: :MrpSuggestion (MRP 建议)
+
+AnnotationAssertion(rdfs:comment :MrpSuggestion "MRP 净算后的建议(计划生产/计划采购/提前/推迟),带需求 pegging 溯源与产能检查结果。可下发为生产工单或采购订单。")
+AnnotationAssertion(rdfs:label :MrpSuggestion "MRP 建议")
+
+# Class: :NonconformanceReport (不合格品)
+
+AnnotationAssertion(rdfs:comment :NonconformanceReport "不合格品报告(NCR),带处置(待处置/返修/报废/让步接收/退供应商)与状态(待处理/评审中/已关闭)。首检不合格时自动登记 NCR 且不予放行。")
+AnnotationAssertion(rdfs:label :NonconformanceReport "不合格品")
+
+# Class: :OperatorSkill (人员技能)
+
+AnnotationAssertion(rdfs:comment :OperatorSkill "员工在某工序/工位组上的技能等级(学徒/熟练/骨干/可带教),带有效期。排产时若某工序在某个班次内没有合格操作工,产出约束标记「无合格操作工」。")
+AnnotationAssertion(rdfs:label :OperatorSkill "人员技能")
+
+# Class: :Part (在制品)
+
+AnnotationAssertion(rdfs:comment :Part "一件一码的实物追踪对象。状态流转:毛坯库 → 在制 → 检验合格 → 成品入库 → 已发运,旁路有返修中、冻结、报废。
+铸造场景下携带炉次、浇包、砂型、型腔、浇注温度、残镁、型砂水分等追溯参数;机加场景下携带加工机床。")
+AnnotationAssertion(rdfs:label :Part "在制品")
+
+# Class: :PartEvent (零件事件)
+
+AnnotationAssertion(rdfs:comment :PartEvent "零件在现场的时序事件流(流转、检验、冻结等),与 Part 一对多,按时间回放可重建当前状态。")
+AnnotationAssertion(rdfs:label :PartEvent "零件事件")
+
+# Class: :PatrolInspection (巡检)
+
+AnnotationAssertion(rdfs:comment :PatrolInspection "检验类型取值之一:巡检。班中周期性抽查。")
+AnnotationAssertion(rdfs:label :PatrolInspection "巡检")
+SubClassOf(:PatrolInspection :InspectionRecord)
+
+# Class: :Plant (工厂)
+
+AnnotationAssertion(rdfs:comment :Plant "制造实体,是车间与销售订单/采购订单的收货与发货主体。")
+AnnotationAssertion(rdfs:label :Plant "工厂")
+
+# Class: :Process (工序)
+
+AnnotationAssertion(rdfs:comment :Process "可被排产与报工的最小制造步骤(如熔炼、造型浇注、机加工)。工序带标准节拍,是 OEE 性能率与排产时长的计算基准。")
+AnnotationAssertion(rdfs:label :Process "工序")
+
+# Class: :ProductionLine (产线)
+
+AnnotationAssertion(rdfs:comment :ProductionLine "车间下的连续生产单元,工位与设备挂靠其上;工单可在产线上排产。")
+AnnotationAssertion(rdfs:label :ProductionLine "产线")
+
+# Class: :ProductionReport (报工记录)
+
+AnnotationAssertion(rdfs:comment :ProductionReport "现场产出记录,来源含设备自动、人工、手机扫码、扫码枪、工位终端。系统实际执行的放行闸门( services/gates.py submit_report )依次为:
+(1) 幂等键 idem_key 重复提交 → 识别为重复提交,不重复计数;
+(2) 零件所属批次处于冻结中 → 阻断;
+(3) 本次合格数+不良数必须大于 0;
+(4) 不得超过上道工序转来的合格数减去本道已报数(跳序/超量);
+(5) 不得超过工序计划量 ×(1+report_over_pct/100)(超计划);
+(6) 工序标记首检放行时,须已首检放行;
+(7) ECN 停工中的工单 → 阻断。
+以上为运行时规则,本体仅记录其语义,不以 OWL 公理表达为可执行约束。")
+AnnotationAssertion(rdfs:label :ProductionReport "报工记录")
+
+# Class: :PurchaseOrder (采购订单)
+
+AnnotationAssertion(rdfs:comment :PurchaseOrder "对供应商的采购承诺,收货时转入库并触发来料检验。")
+AnnotationAssertion(rdfs:label :PurchaseOrder "采购订单")
+
+# Class: :PurchaseOrderLine (采购订单行)
+
+AnnotationAssertion(rdfs:comment :PurchaseOrderLine "采购明细,带已收/合格入库/不合格数量,不合格部分可退供。")
+AnnotationAssertion(rdfs:label :PurchaseOrderLine "采购订单行")
+
+# Class: :PurchaseRequisition (请购单)
+
+AnnotationAssertion(rdfs:comment :PurchaseRequisition "采购需求,可由 MRP 建议生成。")
+AnnotationAssertion(rdfs:label :PurchaseRequisition "请购单")
+
+# Class: :Quotation (报价单)
+
+AnnotationAssertion(rdfs:comment :Quotation "对外报价,可转为销售订单。")
+AnnotationAssertion(rdfs:label :Quotation "报价单")
+
+# Class: :RawMaterial (原材料)
+
+AnnotationAssertion(rdfs:comment :RawMaterial "物料类型取值之一:原材料。与其他物料类型子类互斥(mtype 单值枚举)。")
+AnnotationAssertion(rdfs:label :RawMaterial "原材料")
+SubClassOf(:RawMaterial :Material)
+DisjointClasses(:RawMaterial :SemiFinishedMaterial)
+
+# Class: :RepairOrder (维修工单)
+
+AnnotationAssertion(rdfs:comment :RepairOrder "维修工单,状态:已报修 → 已派工 → 维修中 → 已修复 → 已验收。未修复完成的工单所涉设备在排产时视为不可用。")
+AnnotationAssertion(rdfs:label :RepairOrder "维修工单")
+
+# Class: :ReworkOrder (返修记录)
+
+AnnotationAssertion(rdfs:comment :ReworkOrder "返修单,必须处于「进行中」才能流转结果;返修完成后须复检(引用一条检验记录)并给出复检结论,复检不合格则返修不合格。")
+AnnotationAssertion(rdfs:label :ReworkOrder "返修记录")
+
+# Class: :Routing (工艺路线)
+
+AnnotationAssertion(rdfs:comment :Routing "产品的工艺版本,带生效/作废状态;一条路线由若干有序工艺步骤构成,工单下达时冻结引用某一版本。")
+AnnotationAssertion(rdfs:label :Routing "工艺路线")
+
+# Class: :RoutingStep (工艺步骤)
+
+AnnotationAssertion(rdfs:comment :RoutingStep "工艺路线上的一道工序。携带决定现场行为的三个开关:是否检验点、是否首检放行、报工方式(设备自动/人工/扫码);并指定工位组与标准节拍。")
+AnnotationAssertion(rdfs:label :RoutingStep "工艺步骤")
+
+# Class: :SalesOrder (销售订单)
+
+AnnotationAssertion(rdfs:comment :SalesOrder "客户订单。状态:草稿 → 信用待批 → 已确认 → 部分发货 → 已发完 → 已关闭。按单生产(mto)时,订单行会派生生产工单。")
+AnnotationAssertion(rdfs:label :SalesOrder "销售订单")
+
+# Class: :SalesOrderLine (销售订单行)
+
+AnnotationAssertion(rdfs:comment :SalesOrderLine "订单的产品明细行,带数量、单价、交期与已发/已退数量;按单生产时关联到具体工单。")
+AnnotationAssertion(rdfs:label :SalesOrderLine "销售订单行")
+
+# Class: :ScheduleProposal (排程调整建议)
+
+AnnotationAssertion(rdfs:comment :ScheduleProposal "what-if 排产假设(设备停机、到料推迟、模具保养、优先级调整)落成的建议,带受影响工单与原因。采纳后写入主数据并重排。")
+AnnotationAssertion(rdfs:label :ScheduleProposal "排程调整建议")
+
+# Class: :SemiFinishedMaterial (半成品)
+
+AnnotationAssertion(rdfs:comment :SemiFinishedMaterial "物料类型取值之一:半成品。经一道或多道工序加工后进入下一工序的中间件。")
+AnnotationAssertion(rdfs:label :SemiFinishedMaterial "半成品")
+SubClassOf(:SemiFinishedMaterial :Material)
+
+# Class: :Shift (班次)
+
+AnnotationAssertion(rdfs:comment :Shift "排产与考勤使用的时间段。active=false 的班次不参与排产,设备只在启用班次内工作。")
+AnnotationAssertion(rdfs:label :Shift "班次")
+
+# Class: :Shipment (发运记录)
+
+AnnotationAssertion(rdfs:comment :Shipment "成品发运,对应工单与客户。")
+AnnotationAssertion(rdfs:label :Shipment "发运记录")
+
+# Class: :Stock (库存)
+
+AnnotationAssertion(rdfs:comment :Stock "物料在仓库/库位上的当前数量,按批次(lot)分列。冻结批次仍占用库存,但不可出库。")
+AnnotationAssertion(rdfs:label :Stock "库存")
+
+# Class: :StockTransaction (出入库记录)
+
+AnnotationAssertion(rdfs:comment :StockTransaction "库存流水:入库/出库/移库/盘点调整。移库含调入仓库。出库与移库方向受批次冻结拦截。")
+AnnotationAssertion(rdfs:label :StockTransaction "出入库记录")
+
+# Class: :StorageLocation (库位)
+
+AnnotationAssertion(rdfs:comment :StorageLocation "仓库内的库位,带容量。库存精确到库位。")
+AnnotationAssertion(rdfs:label :StorageLocation "库位")
+
+# Class: :Supplier (供应商)
+
+AnnotationAssertion(rdfs:comment :Supplier "供货方,带资格(合格/试用/停用)与绩效得分;停用供应商不能下采购订单。")
+AnnotationAssertion(rdfs:label :Supplier "供应商")
+
+# Class: :TagPoint (采集点)
+
+AnnotationAssertion(rdfs:comment :TagPoint "设备点位定义,带地址、类型、量程缩放、采集周期与报警上下限。用途(运行状态/报警/功率/产量/主轴负载/温度/质量值)决定该点位被映射成哪类业务记录;接入时逐点确认语义,确认前不可投产。")
+AnnotationAssertion(rdfs:label :TagPoint "采集点")
+
+# Class: :Team (班组)
+
+AnnotationAssertion(rdfs:comment :Team "人员的组织单元,归属某个班次,班组长是排产技能覆盖判断的组织边界。")
+AnnotationAssertion(rdfs:label :Team "班组")
+
+# Class: :Tooling (模具夹具)
+
+AnnotationAssertion(rdfs:comment :Tooling "模具/芯盒/夹具/检具。带当前模次与寿命模次。排产约束:同一套模具同一时间只能在一台设备上;保养中的模具要到预计可用时间才能占用;剩余模次不足以完成本单时产出「模具寿命不足」提示。")
+AnnotationAssertion(rdfs:label :Tooling "模具夹具")
+
+# Class: :UserAccount (系统用户)
+
+AnnotationAssertion(rdfs:comment :UserAccount "登录账号,绑定员工身份与角色权限;数据范围(工厂/车间/产线)决定其可见对象集合。")
+AnnotationAssertion(rdfs:label :UserAccount "系统用户")
+
+# Class: :Warehouse (仓库)
+
+AnnotationAssertion(rdfs:comment :Warehouse "按类型区分原材料库、毛坯库、线边库、成品库、辅料库;委外仓表示供应商处库存。")
+AnnotationAssertion(rdfs:label :Warehouse "仓库")
+
+# Class: :WorkOrder (生产工单)
+
+AnnotationAssertion(rdfs:comment :WorkOrder "生产工单是计划与现场的交接口。状态机:草稿 → 已下达 → 生产中 → 已完工 → 已关闭(可转已取消)。
+业务约束:工单可因 ECN(工艺变更)被判停工,停工未解除时禁止报工(见 services/exec_doc.py 的 report_gate);该 ECN 模型不在本次本体范围内。")
+AnnotationAssertion(rdfs:label :WorkOrder "生产工单")
+
+# Class: :WorkOrderOperation (工单工序)
+
+AnnotationAssertion(rdfs:comment :WorkOrderOperation "工单在工艺路线上的展开,记录计划量/合格量/不良量与实际起止。顺序(seq)是有业务含义的:上一道工序未转来足量合格品时,本道不得超量报工。")
+AnnotationAssertion(rdfs:label :WorkOrderOperation "工单工序")
+
+# Class: :Workshop (车间)
+
+AnnotationAssertion(rdfs:comment :Workshop "工厂下的生产单元,按类型区分铸造、机加、仓储等;车间类型决定下辖产线的工艺属性。")
+AnnotationAssertion(rdfs:label :Workshop "车间")
+
+# Class: :Workstation (工位)
+
+AnnotationAssertion(rdfs:comment :Workstation "产线上的作业点,可绑定设备。工位组(group)表示可互相替代的同类工位(如 CNC 群组),是排产时并行分配设备与模具的单位。")
+AnnotationAssertion(rdfs:label :Workstation "工位")
+
+
+HasKey(:Equipment () (:equipmentCode))
+HasKey(:FirstArticleRelease () (:firstArticleCode))
+HasKey(:LotHold () (:lotHoldCode))
+HasKey(:NonconformanceReport () (:ncrCode))
+HasKey(:WorkOrder () (:workOrderCode))
+)

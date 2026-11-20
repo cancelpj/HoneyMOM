@@ -1,0 +1,890 @@
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+@prefix hm:   <https://example.org/ontology/honeymom#> .
+
+# =====================================================================
+# HoneyMOM 制造运营本体 (HoneyMOM Manufacturing Operations Ontology)
+#
+# 来源: github.com/agentthink/Indu-mom (HoneyMOM by 蜂元科技/HoneyMeta)
+# 模型来源: honeymom/schema*.py 静态抽取 + honeymom/services/*.py 业务规则核对
+# 建模方法: Palantir Foundry Ontology 的对象类型/属性/链接类型三段式
+#
+# 范围 (Scope):
+#   覆盖 ISA-95 Level 3 运营主干 —— 主数据、生产执行、质量、设备保障、
+#   仓储物流、计划 MRP,以及销售/采购/采集三个接口域。
+#   不覆盖: 财务凭证与成本核算、AI 助手、标签打印、包装发运、委外加工、
+#           客诉召回、IATF 受控文件流、驻外接口表。
+#
+# 命名空间: https://example.org/ontology/honeymom# 为**占位符**,
+#           上线前替换为贵司真实 IRI;替换时需同时改全部 hm: 前缀与
+#           owl:hasKey / owl:inverseOf 中的引用。
+#
+# 边界声明: 本本体是 OWL 知识模型,不是 Foundry 原生导出格式,也不能直接
+#           导入 Foundry。运行时闸门(如报工放行)由代码执行,本体只做语义
+#           表达与说明,不代表 OWL 公理能自动拦截违规操作。
+# =====================================================================
+
+<https://example.org/ontology/honeymom>
+    a owl:Ontology ;
+    rdfs:label "HoneyMOM 制造运营本体" ;
+    rdfs:comment """HoneyMOM 离散制造 MES / MOM 系统的业务本体。对象类型对应业务概念,链接类型对应业务关联,数据属性对应业务属性。建模依据来自源码 honeymom/schema*.py 的实体定义与 honeymom/services/ 中的实际业务规则,不是数据库表的机械镜像。""" ;
+    owl:versionInfo "0.1.0 — 基于 Indu-mom 仓库 main 分支抽取,2026-11-16" .
+
+# =====================================================================
+# 一、主数据 (Master Data)
+# 工厂 / 车间 / 产线 / 工位 的空间层级,物料,工艺,人员
+# =====================================================================
+
+hm:Plant a owl:Class ;
+    rdfs:label "工厂" ;
+    rdfs:comment "制造实体,是车间与销售订单/采购订单的收货与发货主体。" .
+
+hm:Workshop a owl:Class ;
+    rdfs:label "车间" ;
+    rdfs:comment "工厂下的生产单元,按类型区分铸造、机加、仓储等;车间类型决定下辖产线的工艺属性。" .
+
+hm:ProductionLine a owl:Class ;
+    rdfs:label "产线" ;
+    rdfs:comment "车间下的连续生产单元,工位与设备挂靠其上;工单可在产线上排产。" .
+
+hm:Process a owl:Class ;
+    rdfs:label "工序" ;
+    rdfs:comment "可被排产与报工的最小制造步骤(如熔炼、造型浇注、机加工)。工序带标准节拍,是 OEE 性能率与排产时长的计算基准。" .
+
+hm:Workstation a owl:Class ;
+    rdfs:label "工位" ;
+    rdfs:comment "产线上的作业点,可绑定设备。工位组(group)表示可互相替代的同类工位(如 CNC 群组),是排产时并行分配设备与模具的单位。" .
+
+hm:Material a owl:Class ;
+    rdfs:label "物料" ;
+    rdfs:comment "可被生产消耗或对外销售的对象,承载规格、单位、安全库存、单价、单重。物料类型(mtype)在系统中为单值枚举,故其子类互斥。" .
+
+hm:RawMaterial a owl:Class ;
+    rdfs:label "原材料" ;
+    rdfs:subClassOf hm:Material ;
+    rdfs:comment "物料类型取值之一:原材料。与其他物料类型子类互斥(mtype 单值枚举)。" .
+
+hm:SemiFinishedMaterial a owl:Class ;
+    rdfs:label "半成品" ;
+    rdfs:subClassOf hm:Material ;
+    rdfs:comment "物料类型取值之一:半成品。经一道或多道工序加工后进入下一工序的中间件。" .
+
+hm:FinishedProduct a owl:Class ;
+    rdfs:label "成品" ;
+    rdfs:subClassOf hm:Material ;
+    rdfs:comment "物料类型取值之一:成品。可入库、发运并对应销售订单行。" .
+
+hm:AuxiliaryMaterial a owl:Class ;
+    rdfs:label "辅料" ;
+    rdfs:subClassOf hm:Material ;
+    rdfs:comment "物料类型取值之一:辅料。参与生产但不构成产品主体。" .
+
+hm:Consumable a owl:Class ;
+    rdfs:label "易耗品" ;
+    rdfs:subClassOf hm:Material ;
+    rdfs:comment "物料类型取值之一:易耗品。如刀具、砂料等按消耗扣减的物料。" .
+
+hm:RawMaterial owl:disjointWith hm:SemiFinishedMaterial, hm:FinishedProduct, hm:AuxiliaryMaterial, hm:Consumable .
+hm:SemiFinishedMaterial owl:disjointWith hm:FinishedProduct, hm:AuxiliaryMaterial, hm:Consumable .
+hm:FinishedProduct owl:disjointWith hm:AuxiliaryMaterial, hm:Consumable .
+hm:AuxiliaryMaterial owl:disjointWith hm:Consumable .
+
+hm:BillOfMaterials a owl:Class ;
+    rdfs:label "BOM" ;
+    rdfs:comment "物料清单:一个产品由哪些子件按多少用量组成。多层 BOM 展开是 MRP 运算(netting)的基础。" .
+
+hm:Gauge a owl:Class ;
+    rdfs:label "量检具" ;
+    rdfs:comment """量具/检具台账。带校准到期状态:检验记录要求引用一把在有效期内的量具,过期量具不能用于出具有效检验结论。""" .
+
+hm:GaugeCalibration a owl:Class ;
+    rdfs:label "校准记录" ;
+    rdfs:comment "量检具的一次校准,含校准日期、结果与到期日;到期后量具不可用于检验。" .
+
+hm:Routing a owl:Class ;
+    rdfs:label "工艺路线" ;
+    rdfs:comment "产品的工艺版本,带生效/作废状态;一条路线由若干有序工艺步骤构成,工单下达时冻结引用某一版本。" .
+
+hm:RoutingStep a owl:Class ;
+    rdfs:label "工艺步骤" ;
+    rdfs:comment "工艺路线上的一道工序。携带决定现场行为的三个开关:是否检验点、是否首检放行、报工方式(设备自动/人工/扫码);并指定工位组与标准节拍。" .
+
+hm:Shift a owl:Class ;
+    rdfs:label "班次" ;
+    rdfs:comment "排产与考勤使用的时间段。active=false 的班次不参与排产,设备只在启用班次内工作。" .
+
+hm:Team a owl:Class ;
+    rdfs:label "班组" ;
+    rdfs:comment "人员的组织单元,归属某个班次,班组长是排产技能覆盖判断的组织边界。" .
+
+hm:Employee a owl:Class ;
+    rdfs:label "员工" ;
+    rdfs:comment "作业人员。能否操作某工序由 OperatorSkill 决定,不由岗位名称决定。" .
+
+hm:OperatorSkill a owl:Class ;
+    rdfs:label "人员技能" ;
+    rdfs:comment "员工在某工序/工位组上的技能等级(学徒/熟练/骨干/可带教),带有效期。排产时若某工序在某个班次内没有合格操作工,产出约束标记「无合格操作工」。" .
+
+hm:Changeover a owl:Class ;
+    rdfs:label "换型时间" ;
+    rdfs:comment "设备由前一产品切换到后一产品所需的准备时长。排产时在上一单产品不同时追加该时长,并产出「换型」提示。" .
+
+# =====================================================================
+# 二、生产执行 (Production Execution)
+# 订单落地为工单,拆解为工序,现场以报工记录产出
+# =====================================================================
+
+hm:WorkOrder a owl:Class ;
+    rdfs:label "生产工单" ;
+    rdfs:comment """生产工单是计划与现场的交接口。状态机:草稿 → 已下达 → 生产中 → 已完工 → 已关闭(可转已取消)。
+业务约束:工单可因 ECN(工艺变更)被判停工,停工未解除时禁止报工(见 services/exec_doc.py 的 report_gate);该 ECN 模型不在本次本体范围内。""" ;
+    owl:hasKey ( hm:workOrderCode ) .
+
+hm:WorkOrderOperation a owl:Class ;
+    rdfs:label "工单工序" ;
+    rdfs:comment """工单在工艺路线上的展开,记录计划量/合格量/不良量与实际起止。顺序(seq)是有业务含义的:上一道工序未转来足量合格品时,本道不得超量报工。""" .
+
+hm:ProductionReport a owl:Class ;
+    rdfs:label "报工记录" ;
+    rdfs:comment """现场产出记录,来源含设备自动、人工、手机扫码、扫码枪、工位终端。系统实际执行的放行闸门( services/gates.py submit_report )依次为:
+(1) 幂等键 idem_key 重复提交 → 识别为重复提交,不重复计数;
+(2) 零件所属批次处于冻结中 → 阻断;
+(3) 本次合格数+不良数必须大于 0;
+(4) 不得超过上道工序转来的合格数减去本道已报数(跳序/超量);
+(5) 不得超过工序计划量 ×(1+report_over_pct/100)(超计划);
+(6) 工序标记首检放行时,须已首检放行;
+(7) ECN 停工中的工单 → 阻断。
+以上为运行时规则,本体仅记录其语义,不以 OWL 公理表达为可执行约束。""" .
+
+hm:MaterialIssue a owl:Class ;
+    rdfs:label "领料退料" ;
+    rdfs:comment "工单领用或退回物料的流水,带批次维度。批次冻结期间,出库方向会被拦截。" .
+
+hm:KittingRecord a owl:Class ;
+    rdfs:label "物料齐套" ;
+    rdfs:comment "工单各物料的齐套状态(齐套/部分/缺料)与预计到料时间。缺料工单在预计到料时间之后才能开工,这是排产的主要输入之一。" .
+
+hm:Part a owl:Class ;
+    rdfs:label "在制品" ;
+    rdfs:comment """一件一码的实物追踪对象。状态流转:毛坯库 → 在制 → 检验合格 → 成品入库 → 已发运,旁路有返修中、冻结、报废。
+铸造场景下携带炉次、浇包、砂型、型腔、浇注温度、残镁、型砂水分等追溯参数;机加场景下携带加工机床。""" .
+
+hm:PartEvent a owl:Class ;
+    rdfs:label "零件事件" ;
+    rdfs:comment "零件在现场的时序事件流(流转、检验、冻结等),与 Part 一对多,按时间回放可重建当前状态。" .
+
+hm:Andon a owl:Class ;
+    rdfs:label "安灯" ;
+    rdfs:comment "现场异常呼叫,分设备/质量/物料/安全等类型,状态从待响应到处理中到已关闭。可由人工发起或由设备自动触发。" .
+
+hm:MaterialRequest a owl:Class ;
+    rdfs:label "物料申请" ;
+    rdfs:comment "缺料时的请领单,挂在工单与仓库上。" .
+
+hm:ScheduleProposal a owl:Class ;
+    rdfs:label "排程调整建议" ;
+    rdfs:comment "what-if 排产假设(设备停机、到料推迟、模具保养、优先级调整)落成的建议,带受影响工单与原因。采纳后写入主数据并重排。" .
+
+hm:Attendance a owl:Class ;
+    rdfs:label "上下工记录" ;
+    rdfs:comment "员工按班次的出勤记录,是工时与人工成本的基础。" .
+
+# =====================================================================
+# 三、质量管理 (Quality)
+# 检验模板驱动检验,不合格品驱动返修与 8D
+# =====================================================================
+
+hm:DefectCode a owl:Class ;
+    rdfs:label "缺陷代码" ;
+    rdfs:comment "缺陷字典,带类别(铸造/机加/外观/其他)与严重度(致命/严重/轻微),可绑定责任工序用于根因追溯。" .
+
+hm:InspectionTemplate a owl:Class ;
+    rdfs:label "检验模板" ;
+    rdfs:comment "检验的模板定义,按物料或工序适用,含抽样规则。模板下挂检验项目,项目带上下限与关键特性标记。" .
+
+hm:InspectionItem a owl:Class ;
+    rdfs:label "检验项目" ;
+    rdfs:comment "模板下的一条待检项:特性代码、量具类型、上下限、关键/特殊特性标记。首检放行的判定依据即这些项目的上下限。" .
+
+hm:InspectionRecord a owl:Class ;
+    rdfs:label "检验记录" ;
+    rdfs:comment "一次检验的执行结果,结论为合格/不合格/待判。检验类型为单值枚举,故其子类互斥。" .
+
+hm:IncomingInspection a owl:Class ;
+    rdfs:label "来料检验" ;
+    rdfs:subClassOf hm:InspectionRecord ;
+    rdfs:comment "检验类型取值之一:来料。对应采购收货时的进货检验。" .
+
+hm:InProcessInspection a owl:Class ;
+    rdfs:label "过程检验" ;
+    rdfs:subClassOf hm:InspectionRecord ;
+    rdfs:comment "检验类型取值之一:过程。生产过程中在检验点执行。" .
+
+hm:FirstArticleInspection a owl:Class ;
+    rdfs:label "首件检验" ;
+    rdfs:subClassOf hm:InspectionRecord ;
+    rdfs:comment "检验类型取值之一:首件。首检放行单的证据来源。" .
+
+hm:FinalInspection a owl:Class ;
+    rdfs:label "出货检验" ;
+    rdfs:subClassOf hm:InspectionRecord ;
+    rdfs:comment "检验类型取值之一:出货。成品发货前的最终检验。" .
+
+hm:PatrolInspection a owl:Class ;
+    rdfs:label "巡检" ;
+    rdfs:subClassOf hm:InspectionRecord ;
+    rdfs:comment "检验类型取值之一:巡检。班中周期性抽查。" .
+
+hm:IncomingInspection owl:disjointWith hm:InProcessInspection, hm:FirstArticleInspection, hm:FinalInspection, hm:PatrolInspection .
+hm:InProcessInspection owl:disjointWith hm:FirstArticleInspection, hm:FinalInspection, hm:PatrolInspection .
+hm:FirstArticleInspection owl:disjointWith hm:FinalInspection, hm:PatrolInspection .
+hm:FinalInspection owl:disjointWith hm:PatrolInspection .
+
+hm:InspectionValue a owl:Class ;
+    rdfs:label "检验值" ;
+    rdfs:comment "单个检验项的实测值,绑定量具。合格判定按上下限,判定结论回写到检验记录。" .
+
+hm:NonconformanceReport a owl:Class ;
+    rdfs:label "不合格品" ;
+    rdfs:comment """不合格品报告(NCR),带处置(待处置/返修/报废/让步接收/退供应商)与状态(待处理/评审中/已关闭)。首检不合格时自动登记 NCR 且不予放行。""" ;
+    owl:hasKey ( hm:ncrCode ) .
+
+hm:ReworkOrder a owl:Class ;
+    rdfs:label "返修记录" ;
+    rdfs:comment """返修单,必须处于「进行中」才能流转结果;返修完成后须复检(引用一条检验记录)并给出复检结论,复检不合格则返修不合格。""" .
+
+hm:FirstArticleRelease a owl:Class ;
+    rdfs:label "首检放行" ;
+    rdfs:comment """首检单。触发场景:开工、换型、换刀、换班、维修后。工艺步骤勾选「首检放行」时,该工序在放行前不得量产报工;首检判定不合格则不放行并登记 NCR。""" ;
+    owl:hasKey ( hm:firstArticleCode ) .
+
+hm:LotHold a owl:Class ;
+    rdfs:label "批次冻结" ;
+    rdfs:comment """对某个批次(炉次)的冻结单。冻结期间:该批次零件禁止报工、禁止出库/移库;解冻时按冻结后的事件流恢复零件真实状态。""" ;
+    owl:hasKey ( hm:lotHoldCode ) .
+
+# =====================================================================
+# 四、设备保障 (Equipment)
+# 状态采集 → OEE 三率;点检保养、维修、模具与停机计划
+# =====================================================================
+
+hm:Equipment a owl:Class ;
+    rdfs:label "设备" ;
+    rdfs:comment """设备台账。带理想节拍(ideal_cycle_s),这是 OEE 性能率的计算基准;额定功率用于能耗分析。设备状态(运行/待机/换型/停机/离线/报废)由采集数据推导。""" ;
+    owl:hasKey ( hm:equipmentCode ) .
+
+hm:EquipmentStateRecord a owl:Class ;
+    rdfs:label "设备状态记录" ;
+    rdfs:comment """设备状态的时间区间记录(运行/待机/换型/停机),是 OEE 与损失分析的原始依据。
+OEE = 可用率 A × 性能率 P × 质量率 Q:
+A = 运行时间 / 计划时间;
+P = min(1, 理想节拍 × 总产量 / 运行时间);
+Q = 合格数 / 总数。
+损失分为:停机、换型换刀、待机等待、运行。""" .
+
+hm:Alarm a owl:Class ;
+    rdfs:label "报警记录" ;
+    rdfs:comment "设备报警及其确认与处理,时长计入设备损失。" .
+
+hm:MaintenancePlan a owl:Class ;
+    rdfs:label "点检保养计划" ;
+    rdfs:comment "点检/保养/润滑计划,带周期天数与下次到期日,指定负责人。" .
+
+hm:MaintenanceRecord a owl:Class ;
+    rdfs:label "点检保养记录" ;
+    rdfs:comment "计划的一次执行结果(正常/异常)。" .
+
+hm:RepairOrder a owl:Class ;
+    rdfs:label "维修工单" ;
+    rdfs:comment """维修工单,状态:已报修 → 已派工 → 维修中 → 已修复 → 已验收。未修复完成的工单所涉设备在排产时视为不可用。""" .
+
+hm:Tooling a owl:Class ;
+    rdfs:label "模具夹具" ;
+    rdfs:comment """模具/芯盒/夹具/检具。带当前模次与寿命模次。排产约束:同一套模具同一时间只能在一台设备上;保养中的模具要到预计可用时间才能占用;剩余模次不足以完成本单时产出「模具寿命不足」提示。""" .
+
+hm:DowntimePlan a owl:Class ;
+    rdfs:label "设备停机计划" ;
+    rdfs:comment "已登记的设备不可用时段(计划保养、维修、放假停产、试制调试),排产时作为硬约束。" .
+
+# =====================================================================
+# 五、仓储物流 (Inventory & Logistics)
+# =====================================================================
+
+hm:Warehouse a owl:Class ;
+    rdfs:label "仓库" ;
+    rdfs:comment "按类型区分原材料库、毛坯库、线边库、成品库、辅料库;委外仓表示供应商处库存。" .
+
+hm:StorageLocation a owl:Class ;
+    rdfs:label "库位" ;
+    rdfs:comment "仓库内的库位,带容量。库存精确到库位。" .
+
+hm:Stock a owl:Class ;
+    rdfs:label "库存" ;
+    rdfs:comment "物料在仓库/库位上的当前数量,按批次(lot)分列。冻结批次仍占用库存,但不可出库。" .
+
+hm:StockTransaction a owl:Class ;
+    rdfs:label "出入库记录" ;
+    rdfs:comment "库存流水:入库/出库/移库/盘点调整。移库含调入仓库。出库与移库方向受批次冻结拦截。" .
+
+hm:Shipment a owl:Class ;
+    rdfs:label "发运记录" ;
+    rdfs:comment "成品发运,对应工单与客户。" .
+
+# =====================================================================
+# 六、计划 MRP (Planning)
+# =====================================================================
+
+hm:DemandForecast a owl:Class ;
+    rdfs:label "需求预测" ;
+    rdfs:comment "物料在某日期的预测需求量,可关联客户。" .
+
+hm:MaterialPlan a owl:Class ;
+    rdfs:label "物料计划参数" ;
+    rdfs:comment """物料的采购/制造属性:自制或外购、提前期、最小批量、批量倍数、安全库存、损耗率、默认供应商与默认仓库。MRP 运算按这些参数净算需求。""" .
+
+hm:MrpRun a owl:Class ;
+    rdfs:label "MRP 运算" ;
+    rdfs:comment "一次物料需求计划运算,带计划期与运算状态;新运算取代旧运算。" .
+
+hm:MrpSuggestion a owl:Class ;
+    rdfs:label "MRP 建议" ;
+    rdfs:comment """MRP 净算后的建议(计划生产/计划采购/提前/推迟),带需求 pegging 溯源与产能检查结果。可下发为生产工单或采购订单。""" .
+
+# =====================================================================
+# 七、销售与采购接口 (Order-to-Plan Interfaces)
+# =====================================================================
+
+hm:Customer a owl:Class ;
+    rdfs:label "客户" ;
+    rdfs:comment "销售对象,带信用额度与结算方式;信用检查是销售订单状态流转的一环。" .
+
+hm:Quotation a owl:Class ;
+    rdfs:label "报价单" ;
+    rdfs:comment "对外报价,可转为销售订单。" .
+
+hm:SalesOrder a owl:Class ;
+    rdfs:label "销售订单" ;
+    rdfs:comment """客户订单。状态:草稿 → 信用待批 → 已确认 → 部分发货 → 已发完 → 已关闭。按单生产(mto)时,订单行会派生生产工单。""" .
+
+hm:SalesOrderLine a owl:Class ;
+    rdfs:label "销售订单行" ;
+    rdfs:comment "订单的产品明细行,带数量、单价、交期与已发/已退数量;按单生产时关联到具体工单。" .
+
+hm:DeliverySchedule a owl:Class ;
+    rdfs:label "交货计划" ;
+    rdfs:comment "订单行下的分批交货安排,交期是排产的时间锚点。" .
+
+hm:Supplier a owl:Class ;
+    rdfs:label "供应商" ;
+    rdfs:comment "供货方,带资格(合格/试用/停用)与绩效得分;停用供应商不能下采购订单。" .
+
+hm:PurchaseRequisition a owl:Class ;
+    rdfs:label "请购单" ;
+    rdfs:comment "采购需求,可由 MRP 建议生成。" .
+
+hm:PurchaseOrder a owl:Class ;
+    rdfs:label "采购订单" ;
+    rdfs:comment "对供应商的采购承诺,收货时转入库并触发来料检验。" .
+
+hm:PurchaseOrderLine a owl:Class ;
+    rdfs:label "采购订单行" ;
+    rdfs:comment "采购明细,带已收/合格入库/不合格数量,不合格部分可退供。" .
+
+# =====================================================================
+# 八、采集与系统接入 (Connectivity & System)
+# =====================================================================
+
+hm:UserAccount a owl:Class ;
+    rdfs:label "系统用户" ;
+    rdfs:comment "登录账号,绑定员工身份与角色权限;数据范围(工厂/车间/产线)决定其可见对象集合。" .
+
+hm:DataSource a owl:Class ;
+    rdfs:label "数据源" ;
+    rdfs:comment "现场设备接入点,协议含 MQTT(UNS)、OPC UA、Modbus TCP。" .
+
+hm:TagPoint a owl:Class ;
+    rdfs:label "采集点" ;
+    rdfs:comment """设备点位定义,带地址、类型、量程缩放、采集周期与报警上下限。用途(运行状态/报警/功率/产量/主轴负载/温度/质量值)决定该点位被映射成哪类业务记录;接入时逐点确认语义,确认前不可投产。""" .
+
+# =====================================================================
+# 九、链接类型 (Object Properties) —— 业务关联
+# =====================================================================
+
+# ---- 主数据 ----
+hm:containsWorkshop a owl:ObjectProperty ; rdfs:label "包含车间" ; rdfs:domain hm:Plant ; rdfs:range hm:Workshop ;
+    rdfs:comment "工厂组织车间。".
+hm:containsLine a owl:ObjectProperty ; rdfs:label "包含产线" ; rdfs:domain hm:Workshop ; rdfs:range hm:ProductionLine .
+hm:containsWorkstation a owl:ObjectProperty ; rdfs:label "包含工位" ; rdfs:domain hm:ProductionLine ; rdfs:range hm:Workstation .
+hm:performsProcess a owl:ObjectProperty ; rdfs:label "执行工序" ; rdfs:domain hm:Workstation ; rdfs:range hm:Process .
+hm:hostsEquipment a owl:ObjectProperty ; rdfs:label "承载设备" ; rdfs:domain hm:Workstation ; rdfs:range hm:Equipment .
+hm:bomProduct a owl:ObjectProperty ; rdfs:label "BOM 产品" ; rdfs:domain hm:BillOfMaterials ; rdfs:range hm:Material ;
+    rdfs:comment "BOM 的父件方向,与 bomComponent 互为逆关系。" .
+hm:bomComponent a owl:ObjectProperty ; rdfs:label "BOM 子件" ; rdfs:domain hm:BillOfMaterials ; rdfs:range hm:Material .
+hm:bomProduct owl:inverseOf hm:bomComponent .
+hm:appliesToProduct a owl:ObjectProperty ; rdfs:label "适用产品" ; rdfs:domain hm:Routing ; rdfs:range hm:Material ;
+    rdfs:comment "工艺路线适用的产品(与 BOM 的产品语义一致,但分属不同主数据:一个是物料结构,一个是工艺结构)。" .
+hm:belongsToRouting a owl:ObjectProperty ; rdfs:label "所属工艺路线" ; rdfs:domain hm:RoutingStep ; rdfs:range hm:Routing .
+hm:requiresProcess a owl:ObjectProperty ; rdfs:label "对应工序" ; rdfs:domain hm:RoutingStep ; rdfs:range hm:Process .
+hm:worksInShift a owl:ObjectProperty ; rdfs:label "归属班次" ; rdfs:domain hm:Team ; rdfs:range hm:Shift .
+hm:belongsToTeam a owl:ObjectProperty ; rdfs:label "所属班组" ; rdfs:domain hm:Employee ; rdfs:range hm:Team .
+hm:heldByEmployee a owl:ObjectProperty ; rdfs:label "技能持有人" ; rdfs:domain hm:OperatorSkill ; rdfs:range hm:Employee .
+hm:coversProcess a owl:ObjectProperty ; rdfs:label "覆盖工序" ; rdfs:domain hm:OperatorSkill ; rdfs:range hm:Process .
+hm:appliesToEquipment a owl:ObjectProperty ; rdfs:label "适用设备" ; rdfs:domain hm:OperatorSkill ; rdfs:range hm:Equipment .
+hm:changeoverFromProduct a owl:ObjectProperty ; rdfs:label "换型前产品" ; rdfs:domain hm:Changeover ; rdfs:range hm:Material .
+hm:changeoverToProduct a owl:ObjectProperty ; rdfs:label "换型后产品" ; rdfs:domain hm:Changeover ; rdfs:range hm:Material .
+
+# ---- 生产执行 ----
+hm:producesProduct a owl:ObjectProperty ; rdfs:label "生产产品" ; rdfs:domain hm:WorkOrder ; rdfs:range hm:Material .
+hm:followsRouting a owl:ObjectProperty ; rdfs:label "遵循工艺路线" ; rdfs:domain hm:WorkOrder ; rdfs:range hm:Routing .
+hm:scheduledOnLine a owl:ObjectProperty ; rdfs:label "排产产线" ; rdfs:domain hm:WorkOrder ; rdfs:range hm:ProductionLine .
+hm:fulfillsSalesOrder a owl:ObjectProperty ; rdfs:label "履行销售订单" ; rdfs:domain hm:WorkOrder ; rdfs:range hm:SalesOrder ;
+    rdfs:comment "按单生产(MTO)时建立:该工单是为这张销售订单生产的。" .
+hm:hasOperation a owl:ObjectProperty ; rdfs:label "包含工序" ; rdfs:domain hm:WorkOrder ; rdfs:range hm:WorkOrderOperation .
+hm:belongsToWorkOrder a owl:ObjectProperty ; rdfs:label "所属工单" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range hm:WorkOrder .
+hm:hasOperation owl:inverseOf hm:belongsToWorkOrder .
+hm:operationCoversProcess a owl:ObjectProperty ; rdfs:label "工序对应作业" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range hm:Process .
+hm:operationAssignedTo a owl:ObjectProperty ; rdfs:label "派工给" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range hm:Employee .
+hm:reportsOnWorkOrder a owl:ObjectProperty ; rdfs:label "报工工单" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:WorkOrder .
+hm:reportsOnOperation a owl:ObjectProperty ; rdfs:label "报工工序" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:WorkOrderOperation .
+hm:reportForProcess a owl:ObjectProperty ; rdfs:label "报工作业" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:Process .
+hm:performedBy a owl:ObjectProperty ; rdfs:label "报工人" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:Employee .
+hm:reportedOnEquipment a owl:ObjectProperty ; rdfs:label "报工设备" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:Equipment .
+hm:classifiedByDefect a owl:ObjectProperty ; rdfs:label "缺陷分类" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:DefectCode .
+hm:reportedDuringShift a owl:ObjectProperty ; rdfs:label "报工班次" ; rdfs:domain hm:ProductionReport ; rdfs:range hm:Shift .
+hm:issuesMaterial a owl:ObjectProperty ; rdfs:label "领退物料" ; rdfs:domain hm:MaterialIssue ; rdfs:range hm:Material .
+hm:issueAgainstWorkOrder a owl:ObjectProperty ; rdfs:label "领退对应工单" ; rdfs:domain hm:MaterialIssue ; rdfs:range hm:WorkOrder .
+hm:issuedFromWarehouse a owl:ObjectProperty ; rdfs:label "出入仓库" ; rdfs:domain hm:MaterialIssue ; rdfs:range hm:Warehouse .
+hm:issueHandledBy a owl:ObjectProperty ; rdfs:label "经办人" ; rdfs:domain hm:MaterialIssue ; rdfs:range hm:Employee .
+hm:kittingForWorkOrder a owl:ObjectProperty ; rdfs:label "齐套工单" ; rdfs:domain hm:KittingRecord ; rdfs:range hm:WorkOrder .
+hm:kittingForMaterial a owl:ObjectProperty ; rdfs:label "齐套物料" ; rdfs:domain hm:KittingRecord ; rdfs:range hm:Material .
+hm:partIsProduct a owl:ObjectProperty ; rdfs:label "零件对应产品" ; rdfs:domain hm:Part ; rdfs:range hm:Material .
+hm:partBelongsToWorkOrder a owl:ObjectProperty ; rdfs:label "零件所属工单" ; rdfs:domain hm:Part ; rdfs:range hm:WorkOrder .
+hm:eventOfPart a owl:ObjectProperty ; rdfs:label "零件事件归属" ; rdfs:domain hm:PartEvent ; rdfs:range hm:Part .
+hm:raisedOnEquipment a owl:ObjectProperty ; rdfs:label "发起设备" ; rdfs:domain hm:Andon ; rdfs:range hm:Equipment .
+hm:requestsMaterial a owl:ObjectProperty ; rdfs:label "申请物料" ; rdfs:domain hm:MaterialRequest ; rdfs:range hm:Material .
+hm:requestFromWarehouse a owl:ObjectProperty ; rdfs:label "申请仓库" ; rdfs:domain hm:MaterialRequest ; rdfs:range hm:Warehouse .
+hm:requestForWorkOrder a owl:ObjectProperty ; rdfs:label "申请工单" ; rdfs:domain hm:MaterialRequest ; rdfs:range hm:WorkOrder .
+hm:proposesForWorkOrder a owl:ObjectProperty ; rdfs:label "建议针对工单" ; rdfs:domain hm:ScheduleProposal ; rdfs:range hm:WorkOrder .
+hm:attendanceOfEmployee a owl:ObjectProperty ; rdfs:label "出勤员工" ; rdfs:domain hm:Attendance ; rdfs:range hm:Employee .
+hm:attendanceInShift a owl:ObjectProperty ; rdfs:label "出勤班次" ; rdfs:domain hm:Attendance ; rdfs:range hm:Shift .
+
+# ---- 质量 ----
+hm:defectOwnedByProcess a owl:ObjectProperty ; rdfs:label "责任工序" ; rdfs:domain hm:DefectCode ; rdfs:range hm:Process .
+hm:templateAppliesToMaterial a owl:ObjectProperty ; rdfs:label "适用物料" ; rdfs:domain hm:InspectionTemplate ; rdfs:range hm:Material .
+hm:templateAppliesToProcess a owl:ObjectProperty ; rdfs:label "适用工序" ; rdfs:domain hm:InspectionTemplate ; rdfs:range hm:Process .
+hm:itemBelongsToTemplate a owl:ObjectProperty ; rdfs:label "所属检验模板" ; rdfs:domain hm:InspectionItem ; rdfs:range hm:InspectionTemplate .
+hm:recordUsesTemplate a owl:ObjectProperty ; rdfs:label "使用检验模板" ; rdfs:domain hm:InspectionRecord ; rdfs:range hm:InspectionTemplate .
+hm:recordAgainstWorkOrder a owl:ObjectProperty ; rdfs:label "检验工单" ; rdfs:domain hm:InspectionRecord ; rdfs:range hm:WorkOrder .
+hm:inspectedBy a owl:ObjectProperty ; rdfs:label "检验员" ; rdfs:domain hm:InspectionRecord ; rdfs:range hm:Employee .
+hm:measuredWithGauge a owl:ObjectProperty ; rdfs:label "使用量具" ; rdfs:domain hm:InspectionRecord ; rdfs:range hm:Gauge ;
+    rdfs:comment "检验记录的主量具。检验项目声明量具类型,录入时必须选一把同类型且在校准有效期内的量具。" .
+hm:valueMeasuredWithGauge a owl:ObjectProperty ; rdfs:label "测量量具" ; rdfs:domain hm:InspectionValue ; rdfs:range hm:Gauge .
+hm:calibrationForGauge a owl:ObjectProperty ; rdfs:label "校准对象" ; rdfs:domain hm:GaugeCalibration ; rdfs:range hm:Gauge .
+hm:valueBelongsToRecord a owl:ObjectProperty ; rdfs:label "所属检验记录" ; rdfs:domain hm:InspectionValue ; rdfs:range hm:InspectionRecord .
+hm:valueForItem a owl:ObjectProperty ; rdfs:label "对应检验项目" ; rdfs:domain hm:InspectionValue ; rdfs:range hm:InspectionItem .
+hm:ncrAgainstWorkOrder a owl:ObjectProperty ; rdfs:label "不合格工单" ; rdfs:domain hm:NonconformanceReport ; rdfs:range hm:WorkOrder .
+hm:ncrOfMaterial a owl:ObjectProperty ; rdfs:label "不合格物料" ; rdfs:domain hm:NonconformanceReport ; rdfs:range hm:Material .
+hm:ncrByDefect a owl:ObjectProperty ; rdfs:label "缺陷分类" ; rdfs:domain hm:NonconformanceReport ; rdfs:range hm:DefectCode .
+hm:reworkRemediates a owl:ObjectProperty ; rdfs:label "返修不合格品" ; rdfs:domain hm:ReworkOrder ; rdfs:range hm:NonconformanceReport .
+hm:reworkPerformedBy a owl:ObjectProperty ; rdfs:label "返修人" ; rdfs:domain hm:ReworkOrder ; rdfs:range hm:Employee .
+hm:reworkRecheckedBy a owl:ObjectProperty ; rdfs:label "复检单" ; rdfs:domain hm:ReworkOrder ; rdfs:range hm:InspectionRecord .
+hm:faiForWorkOrder a owl:ObjectProperty ; rdfs:label "首检工单" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range hm:WorkOrder .
+hm:faiForOperation a owl:ObjectProperty ; rdfs:label "首检工序" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range hm:WorkOrderOperation .
+hm:faiForProcess a owl:ObjectProperty ; rdfs:label "首检作业" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range hm:Process .
+hm:faiOnEquipment a owl:ObjectProperty ; rdfs:label "首检设备" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range hm:Equipment .
+hm:faiEvidencedBy a owl:ObjectProperty ; rdfs:label "首检证据" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range hm:InspectionRecord .
+hm:holdAppliesToMaterial a owl:ObjectProperty ; rdfs:label "冻结物料" ; rdfs:domain hm:LotHold ; rdfs:range hm:Material .
+
+# ---- 设备 ----
+hm:equipmentOnLine a owl:ObjectProperty ; rdfs:label "所属产线" ; rdfs:domain hm:Equipment ; rdfs:range hm:ProductionLine .
+hm:stateOfEquipment a owl:ObjectProperty ; rdfs:label "设备状态记录" ; rdfs:domain hm:EquipmentStateRecord ; rdfs:range hm:Equipment .
+hm:alarmOnEquipment a owl:ObjectProperty ; rdfs:label "报警设备" ; rdfs:domain hm:Alarm ; rdfs:range hm:Equipment .
+hm:planForEquipment a owl:ObjectProperty ; rdfs:label "保养设备" ; rdfs:domain hm:MaintenancePlan ; rdfs:range hm:Equipment .
+hm:planOwnedBy a owl:ObjectProperty ; rdfs:label "计划负责人" ; rdfs:domain hm:MaintenancePlan ; rdfs:range hm:Employee .
+hm:recordFulfillsPlan a owl:ObjectProperty ; rdfs:label "执行计划" ; rdfs:domain hm:MaintenanceRecord ; rdfs:range hm:MaintenancePlan .
+hm:recordOnEquipment a owl:ObjectProperty ; rdfs:label "保养设备" ; rdfs:domain hm:MaintenanceRecord ; rdfs:range hm:Equipment .
+hm:recordExecutedBy a owl:ObjectProperty ; rdfs:label "执行人" ; rdfs:domain hm:MaintenanceRecord ; rdfs:range hm:Employee .
+hm:repairForEquipment a owl:ObjectProperty ; rdfs:label "维修设备" ; rdfs:domain hm:RepairOrder ; rdfs:range hm:Equipment .
+hm:repairAssignedTo a owl:ObjectProperty ; rdfs:label "维修人" ; rdfs:domain hm:RepairOrder ; rdfs:range hm:Employee .
+hm:toolingForProduct a owl:ObjectProperty ; rdfs:label "适用产品" ; rdfs:domain hm:Tooling ; rdfs:range hm:Material .
+hm:toolingForProcess a owl:ObjectProperty ; rdfs:label "适用工序" ; rdfs:domain hm:Tooling ; rdfs:range hm:Process .
+hm:toolingOnEquipment a owl:ObjectProperty ; rdfs:label "所在设备" ; rdfs:domain hm:Tooling ; rdfs:range hm:Equipment .
+hm:downtimeAffectsEquipment a owl:ObjectProperty ; rdfs:label "停机设备" ; rdfs:domain hm:DowntimePlan ; rdfs:range hm:Equipment .
+
+# ---- 仓储 ----
+hm:locationInsideWarehouse a owl:ObjectProperty ; rdfs:label "所在仓库" ; rdfs:domain hm:StorageLocation ; rdfs:range hm:Warehouse .
+hm:stockHoldsMaterial a owl:ObjectProperty ; rdfs:label "库存物料" ; rdfs:domain hm:Stock ; rdfs:range hm:Material .
+hm:stockInWarehouse a owl:ObjectProperty ; rdfs:label "库存仓库" ; rdfs:domain hm:Stock ; rdfs:range hm:Warehouse .
+hm:stockAtLocation a owl:ObjectProperty ; rdfs:label "库存库位" ; rdfs:domain hm:Stock ; rdfs:range hm:StorageLocation .
+hm:txnMovesMaterial a owl:ObjectProperty ; rdfs:label "出入库物料" ; rdfs:domain hm:StockTransaction ; rdfs:range hm:Material .
+hm:txnFromWarehouse a owl:ObjectProperty ; rdfs:label "来源仓库" ; rdfs:domain hm:StockTransaction ; rdfs:range hm:Warehouse .
+hm:txnAtLocation a owl:ObjectProperty ; rdfs:label "出入库库位" ; rdfs:domain hm:StockTransaction ; rdfs:range hm:StorageLocation .
+hm:txnToWarehouse a owl:ObjectProperty ; rdfs:label "调入仓库" ; rdfs:domain hm:StockTransaction ; rdfs:range hm:Warehouse ;
+    rdfs:comment "移库时的目标仓库。".
+hm:shipmentOfWorkOrder a owl:ObjectProperty ; rdfs:label "发运工单" ; rdfs:domain hm:Shipment ; rdfs:range hm:WorkOrder .
+
+# ---- 计划 MRP ----
+hm:forecastForMaterial a owl:ObjectProperty ; rdfs:label "预测物料" ; rdfs:domain hm:DemandForecast ; rdfs:range hm:Material .
+hm:forecastFromCustomer a owl:ObjectProperty ; rdfs:label "预测客户" ; rdfs:domain hm:DemandForecast ; rdfs:range hm:Customer .
+hm:materialPlanForMaterial a owl:ObjectProperty ; rdfs:label "计划物料" ; rdfs:domain hm:MaterialPlan ; rdfs:range hm:Material .
+hm:materialPlanDefaultSupplier a owl:ObjectProperty ; rdfs:label "默认供应商" ; rdfs:domain hm:MaterialPlan ; rdfs:range hm:Supplier .
+hm:materialPlanDefaultWarehouse a owl:ObjectProperty ; rdfs:label "默认仓库" ; rdfs:domain hm:MaterialPlan ; rdfs:range hm:Warehouse .
+hm:suggestionFromRun a owl:ObjectProperty ; rdfs:label "所属 MRP 运算" ; rdfs:domain hm:MrpSuggestion ; rdfs:range hm:MrpRun .
+hm:suggestionForMaterial a owl:ObjectProperty ; rdfs:label "建议物料" ; rdfs:domain hm:MrpSuggestion ; rdfs:range hm:Material .
+hm:suggestionToSupplier a owl:ObjectProperty ; rdfs:label "建议供应商" ; rdfs:domain hm:MrpSuggestion ; rdfs:range hm:Supplier .
+hm:suggestionGeneratesWorkOrder a owl:ObjectProperty ; rdfs:label "生成生产工单" ; rdfs:domain hm:MrpSuggestion ; rdfs:range hm:WorkOrder .
+hm:suggestionGeneratesRequisition a owl:ObjectProperty ; rdfs:label "生成请购单" ; rdfs:domain hm:MrpSuggestion ; rdfs:range hm:PurchaseRequisition .
+hm:suggestionGeneratesPurchaseOrder a owl:ObjectProperty ; rdfs:label "生成采购订单" ; rdfs:domain hm:MrpSuggestion ; rdfs:range hm:PurchaseOrder .
+
+# ---- 销售与采购 ----
+hm:placedByCustomer a owl:ObjectProperty ; rdfs:label "下单客户" ; rdfs:domain hm:SalesOrder ; rdfs:range hm:Customer .
+hm:fulfilledAtPlant a owl:ObjectProperty ; rdfs:label "履行工厂" ; rdfs:domain hm:SalesOrder ; rdfs:range hm:Plant .
+hm:derivedFromQuotation a owl:ObjectProperty ; rdfs:label "源自报价单" ; rdfs:domain hm:SalesOrder ; rdfs:range hm:Quotation .
+hm:quotationIssuedTo a owl:ObjectProperty ; rdfs:label "报价客户" ; rdfs:domain hm:Quotation ; rdfs:range hm:Customer .
+hm:lineBelongsToOrder a owl:ObjectProperty ; rdfs:label "所属销售订单" ; rdfs:domain hm:SalesOrderLine ; rdfs:range hm:SalesOrder .
+hm:lineForMaterial a owl:ObjectProperty ; rdfs:label "订单物料" ; rdfs:domain hm:SalesOrderLine ; rdfs:range hm:Material .
+hm:lineProducedByWorkOrder a owl:ObjectProperty ; rdfs:label "由工单生产" ; rdfs:domain hm:SalesOrderLine ; rdfs:range hm:WorkOrder .
+hm:scheduleForOrderLine a owl:ObjectProperty ; rdfs:label "交货计划所属订单行" ; rdfs:domain hm:DeliverySchedule ; rdfs:range hm:SalesOrderLine .
+hm:orderPlacedWithSupplier a owl:ObjectProperty ; rdfs:label "采购供应商" ; rdfs:domain hm:PurchaseOrder ; rdfs:range hm:Supplier .
+hm:orderReceivedAtPlant a owl:ObjectProperty ; rdfs:label "收货工厂" ; rdfs:domain hm:PurchaseOrder ; rdfs:range hm:Plant .
+hm:poLineBelongsToOrder a owl:ObjectProperty ; rdfs:label "所属采购订单" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range hm:PurchaseOrder .
+hm:poLineForMaterial a owl:ObjectProperty ; rdfs:label "采购物料" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range hm:Material .
+hm:poLineFromRequisition a owl:ObjectProperty ; rdfs:label "来源请购单" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range hm:PurchaseRequisition .
+hm:requisitionRequestsMaterial a owl:ObjectProperty ; rdfs:label "请购物料" ; rdfs:domain hm:PurchaseRequisition ; rdfs:range hm:Material .
+hm:requisitionSuggestedSupplier a owl:ObjectProperty ; rdfs:label "建议供应商" ; rdfs:domain hm:PurchaseRequisition ; rdfs:range hm:Supplier .
+hm:requisitionConvertedToOrder a owl:ObjectProperty ; rdfs:label "转为采购订单" ; rdfs:domain hm:PurchaseRequisition ; rdfs:range hm:PurchaseOrder .
+
+# ---- 采集与系统 ----
+hm:tagOnEquipment a owl:ObjectProperty ; rdfs:label "点位设备" ; rdfs:domain hm:TagPoint ; rdfs:range hm:Equipment .
+hm:tagFromDataSource a owl:ObjectProperty ; rdfs:label "点位数据源" ; rdfs:domain hm:TagPoint ; rdfs:range hm:DataSource .
+hm:userLinkedToEmployee a owl:ObjectProperty ; rdfs:label "关联员工" ; rdfs:domain hm:UserAccount ; rdfs:range hm:Employee .
+
+# =====================================================================
+# 十、数据属性 (Datatype Properties) —— 业务属性
+# =====================================================================
+
+# ---- 主数据属性 ----
+hm:plantCode a owl:DatatypeProperty ; rdfs:label "工厂编码" ; rdfs:domain hm:Plant ; rdfs:range xsd:string .
+hm:plantName a owl:DatatypeProperty ; rdfs:label "工厂名称" ; rdfs:domain hm:Plant ; rdfs:range xsd:string .
+hm:plantAddress a owl:DatatypeProperty ; rdfs:label "工厂地址" ; rdfs:domain hm:Plant ; rdfs:range xsd:string .
+hm:workshopType a owl:DatatypeProperty ; rdfs:label "车间类型" ; rdfs:domain hm:Workshop ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:铸造 / 机加 / 仓储 / 其他。" ; a owl:FunctionalProperty .
+hm:lineCode a owl:DatatypeProperty ; rdfs:label "产线编码" ; rdfs:domain hm:ProductionLine ; rdfs:range xsd:string .
+hm:lineName a owl:DatatypeProperty ; rdfs:label "产线名称" ; rdfs:domain hm:ProductionLine ; rdfs:range xsd:string .
+hm:processCode a owl:DatatypeProperty ; rdfs:label "工序编码" ; rdfs:domain hm:Process ; rdfs:range xsd:string .
+hm:processName a owl:DatatypeProperty ; rdfs:label "工序名称" ; rdfs:domain hm:Process ; rdfs:range xsd:string .
+hm:processType a owl:DatatypeProperty ; rdfs:label "工序类型" ; rdfs:domain hm:Process ; rdfs:range xsd:string ;
+    rdfs:comment "枚举含熔炼、球化孕育、造型浇注、冷却落砂、清理抛丸、来料、机加工、去毛刺、检测、入库等。" .
+hm:standardCycleSeconds a owl:DatatypeProperty ; rdfs:label "标准节拍" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:decimal ;
+    rdfs:comment "完成一件的理论秒数。用于排产时长计算与 OEE 性能率基准。" .
+hm:workstationGroup a owl:DatatypeProperty ; rdfs:label "工位组" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:string ;
+    rdfs:comment "同组工位可互相替代(如 CNC、MOLD1)。排产时按工位组整体分配设备与模具。" .
+hm:materialCode a owl:DatatypeProperty ; rdfs:label "物料编码" ; rdfs:domain hm:Material ; rdfs:range xsd:string .
+hm:materialName a owl:DatatypeProperty ; rdfs:label "物料名称" ; rdfs:domain hm:Material ; rdfs:range xsd:string .
+hm:materialSpec a owl:DatatypeProperty ; rdfs:label "规格" ; rdfs:domain hm:Material ; rdfs:range xsd:string .
+hm:materialUnit a owl:DatatypeProperty ; rdfs:label "单位" ; rdfs:domain hm:Material ; rdfs:range xsd:string .
+hm:materialType a owl:DatatypeProperty ; rdfs:label "物料类型" ; rdfs:domain hm:Material ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:原材料 / 半成品 / 成品 / 辅料 / 易耗品。单值,故与 Material 的子类划分对应。" ; a owl:FunctionalProperty .
+hm:safetyStock a owl:DatatypeProperty ; rdfs:label "安全库存" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:decimal .
+hm:unitPrice a owl:DatatypeProperty ; rdfs:label "单价" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:元。" .
+hm:unitWeightKg a owl:DatatypeProperty ; rdfs:label "单重" ; rdfs:domain hm:Material ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:千克。" .
+hm:bomQuantity a owl:DatatypeProperty ; rdfs:label "用量" ; rdfs:domain hm:BillOfMaterials ; rdfs:range xsd:decimal .
+hm:routingVersion a owl:DatatypeProperty ; rdfs:label "工艺版本" ; rdfs:domain hm:Routing ; rdfs:range xsd:string .
+hm:routingStatus a owl:DatatypeProperty ; rdfs:label "工艺路线状态" ; rdfs:domain hm:Routing ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:草稿 / 生效 / 作废。" ; a owl:FunctionalProperty .
+hm:stepSequence a owl:DatatypeProperty ; rdfs:label "步骤顺序" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:integer ;
+    rdfs:comment "有序值,是「不得跳序报工」与「不得超过上道转来数量」的判定基础。" .
+hm:stepIsInspectionPoint a owl:DatatypeProperty ; rdfs:label "检验点" ; rdfs:domain hm:RoutingStep ; rdfs:range xsd:boolean .
+hm:stepRequiresFirstArticle a owl:DatatypeProperty ; rdfs:label "首检放行" ; rdfs:domain hm:RoutingStep ; rdfs:range xsd:boolean ;
+    rdfs:comment "为真时,该工序在首检放行前不得量产报工。" .
+hm:stepReportMode a owl:DatatypeProperty ; rdfs:label "报工方式" ; rdfs:domain hm:RoutingStep ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:设备自动 / 人工 / 扫码。决定现场以何种方式产生报工记录。" .
+hm:stepInstruction a owl:DatatypeProperty ; rdfs:label "作业指示" ; rdfs:domain hm:RoutingStep ; rdfs:range xsd:string .
+hm:shiftStartTime a owl:DatatypeProperty ; rdfs:label "班次开始" ; rdfs:domain hm:Shift ; rdfs:range xsd:string ;
+    rdfs:comment "时刻,格式 HH:MM。" .
+hm:shiftEndTime a owl:DatatypeProperty ; rdfs:label "班次结束" ; rdfs:domain hm:Shift ; rdfs:range xsd:string .
+hm:shiftActive a owl:DatatypeProperty ; rdfs:label "排产启用" ; rdfs:domain hm:Shift ; rdfs:range xsd:boolean ;
+    rdfs:comment "为假时该班次不参与排产,设备不在该时段内作业。" .
+hm:skillLevel a owl:DatatypeProperty ; rdfs:label "技能等级" ; rdfs:domain hm:OperatorSkill ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:学徒(需带教) / 熟练 / 骨干 / 可带教。" .
+hm:skillValidUntil a owl:DatatypeProperty ; rdfs:label "技能有效期至" ; rdfs:domain hm:OperatorSkill ; rdfs:range xsd:date .
+hm:changeoverMinutes a owl:DatatypeProperty ; rdfs:label "换型时长" ; rdfs:domain hm:Changeover ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:分钟。" .
+
+# ---- 生产属性 ----
+hm:workOrderCode a owl:DatatypeProperty ; rdfs:label "工单号" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:string ;
+    rdfs:comment "系统自动编号,格式 WO{日期}{流水}。是工单的业务身份。" .
+hm:workOrderStatus a owl:DatatypeProperty ; rdfs:label "工单状态" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:草稿 / 已下达 / 生产中 / 已完工 / 已关闭 / 已取消。由动作驱动,非直接编辑。" ; a owl:FunctionalProperty .
+hm:workOrderQty a owl:DatatypeProperty ; rdfs:label "计划数量" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:integer .
+hm:workOrderQtyDone a owl:DatatypeProperty ; rdfs:label "完工数量" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:integer ;
+    rdfs:comment "由报工汇总,系统只读。" .
+hm:workOrderQtyScrap a owl:DatatypeProperty ; rdfs:label "报废数量" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:integer .
+hm:workOrderPriority a owl:DatatypeProperty ; rdfs:label "优先级" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:integer ;
+    rdfs:comment "1 为最高。有限产能排程按优先级与交期排序。" .
+hm:plannedStartTime a owl:DatatypeProperty ; rdfs:label "计划开始" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:dateTime .
+hm:dueDate a owl:DatatypeProperty ; rdfs:label "交期" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:dateTime ;
+    rdfs:comment "生产工单为交期时刻,销售订单行与采购行为日期。" .
+hm:releasedAt a owl:DatatypeProperty ; rdfs:label "下达时间" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:dateTime .
+hm:completedAt a owl:DatatypeProperty ; rdfs:label "完工时间" ; rdfs:domain hm:WorkOrder ; rdfs:range xsd:dateTime .
+hm:operationPlannedQty a owl:DatatypeProperty ; rdfs:label "工序计划量" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range xsd:integer ;
+    rdfs:comment "超计划报工的基准,允许超出上限由超报比例参数控制。" .
+hm:operationGoodQty a owl:DatatypeProperty ; rdfs:label "工序合格量" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range xsd:integer .
+hm:operationNgQty a owl:DatatypeProperty ; rdfs:label "工序不良量" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range xsd:integer .
+hm:operationStatus a owl:DatatypeProperty ; rdfs:label "工序状态" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:待开工 / 可开工 / 进行中 / 完成。" ; a owl:FunctionalProperty .
+hm:actualStartTime a owl:DatatypeProperty ; rdfs:label "实际开始" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range xsd:dateTime .
+hm:actualEndTime a owl:DatatypeProperty ; rdfs:label "实际结束" ; rdfs:domain hm:WorkOrderOperation ; rdfs:range xsd:dateTime .
+hm:reportCode a owl:DatatypeProperty ; rdfs:label "报工单号" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:string .
+hm:reportIdempotencyKey a owl:DatatypeProperty ; rdfs:label "幂等键" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:string ;
+    rdfs:comment "同一幂等键重复提交被识别为重复提交,不重复计数,是防止重复报工的兜底。" .
+hm:reportGoodQty a owl:DatatypeProperty ; rdfs:label "报工合格数" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:integer .
+hm:reportNgQty a owl:DatatypeProperty ; rdfs:label "报工不良数" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:integer .
+hm:reportSource a owl:DatatypeProperty ; rdfs:label "报工来源" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:设备自动 / 人工 / 手机扫码 / 扫码枪 / 工位终端。" .
+hm:reportStartTime a owl:DatatypeProperty ; rdfs:label "报工开始" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:dateTime .
+hm:reportEndTime a owl:DatatypeProperty ; rdfs:label "报工结束" ; rdfs:domain hm:ProductionReport ; rdfs:range xsd:dateTime .
+hm:issueKind a owl:DatatypeProperty ; rdfs:label "领退类型" ; rdfs:domain hm:MaterialIssue ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:领料 / 退料。" .
+hm:issueQty a owl:DatatypeProperty ; rdfs:label "领退数量" ; rdfs:domain hm:MaterialIssue ; rdfs:range xsd:decimal .
+hm:lotCode a owl:DatatypeProperty ; rdfs:label "批次号" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:string ;
+    rdfs:comment "批次/炉次标识。冻结、追溯、抽样都以批次为维度。" .
+hm:kittingStatus a owl:DatatypeProperty ; rdfs:label "齐套状态" ; rdfs:domain hm:KittingRecord ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:齐套 / 部分 / 缺料。缺料工单在预计到料后才可开工。" .
+hm:kittingQtyNeeded a owl:DatatypeProperty ; rdfs:label "齐套需求量" ; rdfs:domain hm:KittingRecord ; rdfs:range xsd:decimal .
+hm:kittingQtyReady a owl:DatatypeProperty ; rdfs:label "齐套已备量" ; rdfs:domain hm:KittingRecord ; rdfs:range xsd:decimal .
+hm:estimatedArrivalTime a owl:DatatypeProperty ; rdfs:label "预计到料时间" ; rdfs:domain hm:KittingRecord ; rdfs:range xsd:dateTime .
+hm:partSerialNumber a owl:DatatypeProperty ; rdfs:label "零件码" ; rdfs:domain hm:Part ; rdfs:range xsd:string ;
+    rdfs:comment "一件一码的实物身份,贯穿报工、检验、冻结、发运。" .
+hm:partStatus a owl:DatatypeProperty ; rdfs:label "零件状态" ; rdfs:domain hm:Part ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:在制 / 检验合格 / 成品入库 / 已发运 / 报废 / 毛坯库 / 返修中 / 冻结。" ; a owl:FunctionalProperty .
+hm:partCurrentStation a owl:DatatypeProperty ; rdfs:label "当前位置" ; rdfs:domain hm:Part ; rdfs:range xsd:string .
+hm:partHeatNumber a owl:DatatypeProperty ; rdfs:label "炉次" ; rdfs:domain hm:Part ; rdfs:range xsd:string ;
+    rdfs:comment "铸造炉次号,是机加缺陷反查熔炼过程的追溯锚点。" .
+hm:partPourTemperature a owl:DatatypeProperty ; rdfs:label "浇注温度" ; rdfs:domain hm:Part ; rdfs:range xsd:decimal .
+hm:partResidualMagnesium a owl:DatatypeProperty ; rdfs:label "残镁" ; rdfs:domain hm:Part ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:%,与浇注温度、型砂水分共同参与缺陷相关性分析。" .
+hm:partReworkCount a owl:DatatypeProperty ; rdfs:label "返修次数" ; rdfs:domain hm:Part ; rdfs:range xsd:integer .
+hm:partEventType a owl:DatatypeProperty ; rdfs:label "事件类型" ; rdfs:domain hm:PartEvent ; rdfs:range xsd:string ;
+    rdfs:comment "如流转、检验、冻结等事件名。" .
+hm:partEventTime a owl:DatatypeProperty ; rdfs:label "事件时间" ; rdfs:domain hm:PartEvent ; rdfs:range xsd:dateTime .
+hm:andonType a owl:DatatypeProperty ; rdfs:label "安灯类型" ; rdfs:domain hm:Andon ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:设备 / 质量 / 物料 / 安全 / 其他。" .
+hm:andonStatus a owl:DatatypeProperty ; rdfs:label "安灯状态" ; rdfs:domain hm:Andon ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:待响应 / 处理中 / 已关闭。" ; a owl:FunctionalProperty .
+hm:andonDescription a owl:DatatypeProperty ; rdfs:label "问题描述" ; rdfs:domain hm:Andon ; rdfs:range xsd:string .
+hm:andonRaisedAt a owl:DatatypeProperty ; rdfs:label "发起时间" ; rdfs:domain hm:Andon ; rdfs:range xsd:dateTime .
+hm:andonSource a owl:DatatypeProperty ; rdfs:label "安灯来源" ; rdfs:domain hm:Andon ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:人工 / 设备自动 / 智能体。" .
+hm:requestQty a owl:DatatypeProperty ; rdfs:label "申请数量" ; rdfs:domain hm:MaterialRequest ; rdfs:range xsd:decimal .
+hm:proposalStatus a owl:DatatypeProperty ; rdfs:label "建议状态" ; rdfs:domain hm:ScheduleProposal ; rdfs:range xsd:string .
+hm:attendanceTime a owl:DatatypeProperty ; rdfs:label "出勤时间" ; rdfs:domain hm:Attendance ; rdfs:range xsd:dateTime .
+
+# ---- 质量属性 ----
+hm:gaugeCode a owl:DatatypeProperty ; rdfs:label "量具编号" ; rdfs:domain hm:Gauge ; rdfs:range xsd:string .
+hm:gaugeName a owl:DatatypeProperty ; rdfs:label "量具名称" ; rdfs:domain hm:Gauge ; rdfs:range xsd:string .
+hm:gaugeType a owl:DatatypeProperty ; rdfs:label "量具类型" ; rdfs:domain hm:Gauge ; rdfs:range xsd:string ;
+    rdfs:comment "量具类别。检验项声明所需量具类型,录入时按类型匹配。" .
+hm:gaugeCalibrationDue a owl:DatatypeProperty ; rdfs:label "校准到期日" ; rdfs:domain hm:Gauge ; rdfs:range xsd:date ;
+    rdfs:comment "到期后该量具不可用于出具有效检验结论。" .
+hm:calibrationCode a owl:DatatypeProperty ; rdfs:label "校准单号" ; rdfs:domain hm:GaugeCalibration ; rdfs:range xsd:string .
+hm:calibrationDate a owl:DatatypeProperty ; rdfs:label "校准日期" ; rdfs:domain hm:GaugeCalibration ; rdfs:range xsd:date .
+hm:calibrationResult a owl:DatatypeProperty ; rdfs:label "校准结果" ; rdfs:domain hm:GaugeCalibration ; rdfs:range xsd:string .
+hm:defectCategory a owl:DatatypeProperty ; rdfs:label "缺陷类别" ; rdfs:domain hm:DefectCode ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:铸造 / 机加 / 外观 / 其他。" .
+hm:defectSeverity a owl:DatatypeProperty ; rdfs:label "严重度" ; rdfs:domain hm:DefectCode ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:致命 / 严重 / 轻微。" .
+hm:templateCode a owl:DatatypeProperty ; rdfs:label "检验模板编码" ; rdfs:domain hm:InspectionTemplate ; rdfs:range xsd:string .
+hm:templateName a owl:DatatypeProperty ; rdfs:label "检验模板名称" ; rdfs:domain hm:InspectionTemplate ; rdfs:range xsd:string .
+hm:inspectionType a owl:DatatypeProperty ; rdfs:label "检验类型" ; rdfs:domain hm:InspectionRecord ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:来料 / 过程 / 首件 / 出货 / 巡检。单值,与 InspectionRecord 的子类划分对应。" ; a owl:FunctionalProperty .
+hm:inspectionResult a owl:DatatypeProperty ; rdfs:label "检验结论" ; rdfs:domain hm:InspectionRecord ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:合格 / 不合格 / 待判。" .
+hm:inspectionSampleQty a owl:DatatypeProperty ; rdfs:label "样本数" ; rdfs:domain hm:InspectionRecord ; rdfs:range xsd:integer .
+hm:inspectionNgQty a owl:DatatypeProperty ; rdfs:label "不合格数" ; rdfs:domain hm:InspectionRecord ; rdfs:range xsd:integer .
+hm:inspectionTime a owl:DatatypeProperty ; rdfs:label "检验时间" ; rdfs:domain hm:InspectionRecord ; rdfs:range xsd:dateTime .
+hm:inspectionCode a owl:DatatypeProperty ; rdfs:label "检验单号" ; rdfs:domain hm:InspectionRecord ; rdfs:range xsd:string .
+hm:itemName a owl:DatatypeProperty ; rdfs:label "检验项目名" ; rdfs:domain hm:InspectionItem ; rdfs:range xsd:string .
+hm:itemCharacteristicCode a owl:DatatypeProperty ; rdfs:label "特性代码" ; rdfs:domain hm:InspectionItem ; rdfs:range xsd:string .
+hm:itemLowerLimit a owl:DatatypeProperty ; rdfs:label "下限" ; rdfs:domain hm:InspectionItem ; rdfs:range xsd:decimal .
+hm:itemUpperLimit a owl:DatatypeProperty ; rdfs:label "上限" ; rdfs:domain hm:InspectionItem ; rdfs:range xsd:decimal ;
+    rdfs:comment "首检放行的判定依据:实测值落在上下限内即合格。" .
+hm:itemIsKeyCharacteristic a owl:DatatypeProperty ; rdfs:label "关键特性" ; rdfs:domain hm:InspectionItem ; rdfs:range xsd:boolean .
+hm:itemSpecialCharacteristic a owl:DatatypeProperty ; rdfs:label "特殊特性" ; rdfs:domain hm:InspectionItem ; rdfs:range xsd:string .
+hm:inspectionValueNumber a owl:DatatypeProperty ; rdfs:label "实测值" ; rdfs:domain hm:InspectionValue ; rdfs:range xsd:decimal .
+hm:inspectionValueText a owl:DatatypeProperty ; rdfs:label "文字结果" ; rdfs:domain hm:InspectionValue ; rdfs:range xsd:string .
+hm:inspectionValueOk a owl:DatatypeProperty ; rdfs:label "是否合格" ; rdfs:domain hm:InspectionValue ; rdfs:range xsd:boolean .
+hm:ncrCode a owl:DatatypeProperty ; rdfs:label "NCR 号" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:string .
+hm:ncrDisposition a owl:DatatypeProperty ; rdfs:label "处置方式" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:待处置 / 返修 / 报废 / 让步接收 / 退供应商。" .
+hm:ncrStatus a owl:DatatypeProperty ; rdfs:label "NCR 状态" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:待处理 / 评审中 / 已关闭。" ; a owl:FunctionalProperty .
+hm:ncrQty a owl:DatatypeProperty ; rdfs:label "不合格数量" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:integer .
+hm:ncrFoundAt a owl:DatatypeProperty ; rdfs:label "发现时间" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:dateTime .
+hm:ncrRootCause a owl:DatatypeProperty ; rdfs:label "原因分析" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:string .
+hm:ncrCorrectiveAction a owl:DatatypeProperty ; rdfs:label "纠正措施" ; rdfs:domain hm:NonconformanceReport ; rdfs:range xsd:string .
+hm:reworkResult a owl:DatatypeProperty ; rdfs:label "返修结果" ; rdfs:domain hm:ReworkOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:合格 / 仍不合格 / 进行中。只有「进行中」才能流转结果。" .
+hm:reworkMethod a owl:DatatypeProperty ; rdfs:label "返修方法" ; rdfs:domain hm:ReworkOrder ; rdfs:range xsd:string .
+hm:recheckResult a owl:DatatypeProperty ; rdfs:label "复检结论" ; rdfs:domain hm:ReworkOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:合格 / 不合格。" .
+hm:firstArticleCode a owl:DatatypeProperty ; rdfs:label "首检单号" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range xsd:string .
+hm:firstArticleTrigger a owl:DatatypeProperty ; rdfs:label "触发场景" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:开工 / 换型 / 换刀 / 换班 / 维修后。" .
+hm:firstArticleStatus a owl:DatatypeProperty ; rdfs:label "首检状态" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:待检 / 已放行 / 不放行。已放行是量产报工的前置条件。" ; a owl:FunctionalProperty .
+hm:decidedAt a owl:DatatypeProperty ; rdfs:label "判定时间" ; rdfs:domain hm:FirstArticleRelease ; rdfs:range xsd:dateTime .
+hm:lotHoldCode a owl:DatatypeProperty ; rdfs:label "冻结单号" ; rdfs:domain hm:LotHold ; rdfs:range xsd:string .
+hm:lotHoldStatus a owl:DatatypeProperty ; rdfs:label "冻结状态" ; rdfs:domain hm:LotHold ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:冻结中 / 已解冻。" ; a owl:FunctionalProperty .
+hm:lotHoldReason a owl:DatatypeProperty ; rdfs:label "冻结原因" ; rdfs:domain hm:LotHold ; rdfs:range xsd:string .
+hm:lotHoldedAt a owl:DatatypeProperty ; rdfs:label "冻结时间" ; rdfs:domain hm:LotHold ; rdfs:range xsd:dateTime .
+hm:lotReleasedAt a owl:DatatypeProperty ; rdfs:label "解冻时间" ; rdfs:domain hm:LotHold ; rdfs:range xsd:dateTime .
+
+# ---- 设备属性 ----
+hm:equipmentCode a owl:DatatypeProperty ; rdfs:label "设备编号" ; rdfs:domain hm:Equipment ; rdfs:range xsd:string .
+hm:equipmentName a owl:DatatypeProperty ; rdfs:label "设备名称" ; rdfs:domain hm:Equipment ; rdfs:range xsd:string .
+hm:equipmentType a owl:DatatypeProperty ; rdfs:label "设备类型" ; rdfs:domain hm:Equipment ; rdfs:range xsd:string ;
+    rdfs:comment "枚举含中频炉、球化站、砂处理、造型线、冷却线、抛丸机、加工中心、去毛刺单元、检测站、立体仓库、AGV 等。" .
+hm:equipmentStatus a owl:DatatypeProperty ; rdfs:label "设备状态" ; rdfs:domain hm:Equipment ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:运行 / 待机 / 换型 / 停机 / 离线 / 报废。由采集数据推导,系统只读。" ; a owl:FunctionalProperty .
+hm:idealCycleSeconds a owl:DatatypeProperty ; rdfs:label "理想节拍" ; rdfs:domain hm:Equipment ; rdfs:range xsd:decimal ;
+    rdfs:comment "设备在最佳状态下的单件理论秒数,是 OEE 性能率的分子基准:理想产量 = 理想节拍 × 总产量 / 运行时间。" .
+hm:ratedPowerKw a owl:DatatypeProperty ; rdfs:label "额定功率" ; rdfs:domain hm:Equipment ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:kW,用于小时电耗与能耗分析。" .
+hm:equipmentInstallDate a owl:DatatypeProperty ; rdfs:label "投用日期" ; rdfs:domain hm:Equipment ; rdfs:range xsd:date .
+hm:equipmentVendor a owl:DatatypeProperty ; rdfs:label "设备厂家" ; rdfs:domain hm:Equipment ; rdfs:range xsd:string .
+hm:equipmentStateName a owl:DatatypeProperty ; rdfs:label "状态名称" ; rdfs:domain hm:EquipmentStateRecord ; rdfs:range xsd:string ;
+    rdfs:comment "如运行、待机、换型、停机、离线。" .
+hm:stateStartTime a owl:DatatypeProperty ; rdfs:label "状态开始" ; rdfs:domain hm:EquipmentStateRecord ; rdfs:range xsd:dateTime .
+hm:stateEndTime a owl:DatatypeProperty ; rdfs:label "状态结束" ; rdfs:domain hm:EquipmentStateRecord ; rdfs:range xsd:dateTime ;
+    rdfs:comment "空值表示该状态持续至今。" .
+hm:stateDurationSeconds a owl:DatatypeProperty ; rdfs:label "状态时长" ; rdfs:domain hm:EquipmentStateRecord ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:秒。" .
+hm:alarmMessage a owl:DatatypeProperty ; rdfs:label "报警内容" ; rdfs:domain hm:Alarm ; rdfs:range xsd:string .
+hm:alarmStartTime a owl:DatatypeProperty ; rdfs:label "报警开始" ; rdfs:domain hm:Alarm ; rdfs:range xsd:dateTime .
+hm:alarmDurationSeconds a owl:DatatypeProperty ; rdfs:label "报警时长" ; rdfs:domain hm:Alarm ; rdfs:range xsd:decimal .
+hm:maintenanceType a owl:DatatypeProperty ; rdfs:label "保养类型" ; rdfs:domain hm:MaintenancePlan ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:日常点检 / 定期保养 / 润滑。" .
+hm:maintenanceCycleDays a owl:DatatypeProperty ; rdfs:label "保养周期" ; rdfs:domain hm:MaintenancePlan ; rdfs:range xsd:integer ;
+    rdfs:comment "单位:天。" .
+hm:maintenanceNextDue a owl:DatatypeProperty ; rdfs:label "下次到期" ; rdfs:domain hm:MaintenancePlan ; rdfs:range xsd:date .
+hm:maintenanceResult a owl:DatatypeProperty ; rdfs:label "保养结果" ; rdfs:domain hm:MaintenanceRecord ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:正常 / 异常。" .
+hm:repairFault a owl:DatatypeProperty ; rdfs:label "故障描述" ; rdfs:domain hm:RepairOrder ; rdfs:range xsd:string .
+hm:repairLevel a owl:DatatypeProperty ; rdfs:label "紧急程度" ; rdfs:domain hm:RepairOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:紧急 / 一般。" .
+hm:repairStatus a owl:DatatypeProperty ; rdfs:label "维修状态" ; rdfs:domain hm:RepairOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:已报修 / 已派工 / 维修中 / 已修复 / 已验收。未验收的维修单使设备在排产时不可用。" ; a owl:FunctionalProperty .
+hm:repairDowntimeMinutes a owl:DatatypeProperty ; rdfs:label "维修停机时长" ; rdfs:domain hm:RepairOrder ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:分钟,计入设备损失。" .
+hm:toolingType a owl:DatatypeProperty ; rdfs:label "模具类型" ; rdfs:domain hm:Tooling ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:模板/模具 / 芯盒 / 夹具 / 检具 / 其他。" .
+hm:toolingShots a owl:DatatypeProperty ; rdfs:label "当前模次" ; rdfs:domain hm:Tooling ; rdfs:range xsd:integer .
+hm:toolingLifeShots a owl:DatatypeProperty ; rdfs:label "寿命模次" ; rdfs:domain hm:Tooling ; rdfs:range xsd:integer ;
+    rdfs:comment "剩余模次不足以完成本单时,排产产出「模具寿命不足」提示。" .
+hm:toolingStatus a owl:DatatypeProperty ; rdfs:label "模具状态" ; rdfs:domain hm:Tooling ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:可用 / 在用 / 保养维修中 / 报废。" ; a owl:FunctionalProperty .
+hm:toolingAvailableFrom a owl:DatatypeProperty ; rdfs:label "预计可用时间" ; rdfs:domain hm:Tooling ; rdfs:range xsd:dateTime .
+hm:downtimeKind a owl:DatatypeProperty ; rdfs:label "停机类型" ; rdfs:domain hm:DowntimePlan ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:计划保养 / 维修 / 放假停产 / 试制调试 / 其他。" .
+hm:downtimeStartTime a owl:DatatypeProperty ; rdfs:label "停机开始" ; rdfs:domain hm:DowntimePlan ; rdfs:range xsd:dateTime .
+hm:downtimeEndTime a owl:DatatypeProperty ; rdfs:label "停机结束" ; rdfs:domain hm:DowntimePlan ; rdfs:range xsd:dateTime .
+
+# ---- 仓储属性 ----
+hm:warehouseType a owl:DatatypeProperty ; rdfs:label "仓库类型" ; rdfs:domain hm:Warehouse ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:原材料库 / 毛坯库 / 线边库 / 成品库 / 辅料库 / 委外仓。" .
+hm:locationCode a owl:DatatypeProperty ; rdfs:label "库位编码" ; rdfs:domain hm:StorageLocation ; rdfs:range xsd:string .
+hm:locationCapacity a owl:DatatypeProperty ; rdfs:label "库位容量" ; rdfs:domain hm:StorageLocation ; rdfs:range xsd:integer .
+hm:stockQty a owl:DatatypeProperty ; rdfs:label "库存数量" ; rdfs:domain hm:Stock ; rdfs:range xsd:decimal .
+hm:transactionType a owl:DatatypeProperty ; rdfs:label "出入库类型" ; rdfs:domain hm:StockTransaction ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:入库 / 出库 / 移库 / 盘点调整。出库与移库方向受批次冻结拦截。" .
+hm:transactionQty a owl:DatatypeProperty ; rdfs:label "出入库数量" ; rdfs:domain hm:StockTransaction ; rdfs:range xsd:decimal .
+hm:transactionTime a owl:DatatypeProperty ; rdfs:label "出入库时间" ; rdfs:domain hm:StockTransaction ; rdfs:range xsd:dateTime .
+hm:shipmentCode a owl:DatatypeProperty ; rdfs:label "发运单号" ; rdfs:domain hm:Shipment ; rdfs:range xsd:string .
+hm:shipmentQty a owl:DatatypeProperty ; rdfs:label "发运数量" ; rdfs:domain hm:Shipment ; rdfs:range xsd:integer .
+hm:shipmentTime a owl:DatatypeProperty ; rdfs:label "发运时间" ; rdfs:domain hm:Shipment ; rdfs:range xsd:dateTime .
+
+# ---- 计划 MRP 属性 ----
+hm:forecastQty a owl:DatatypeProperty ; rdfs:label "预测数量" ; rdfs:domain hm:DemandForecast ; rdfs:range xsd:decimal .
+hm:forecastDueDate a owl:DatatypeProperty ; rdfs:label "需求日期" ; rdfs:domain hm:DemandForecast ; rdfs:range xsd:date .
+hm:makeOrBuy a owl:DatatypeProperty ; rdfs:label "自制或外购" ; rdfs:domain hm:MaterialPlan ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:自制 / 外购。决定 MRP 净算后产生工单还是采购申请。" .
+hm:leadTimeDays a owl:DatatypeProperty ; rdfs:label "提前期" ; rdfs:domain hm:MaterialPlan ; rdfs:range xsd:integer ;
+    rdfs:comment "单位:天,MRP 用它做交期倒推。" .
+hm:minimumLotQty a owl:DatatypeProperty ; rdfs:label "最小批量" ; rdfs:domain hm:MaterialPlan ; rdfs:range xsd:decimal .
+hm:lotMultiple a owl:DatatypeProperty ; rdfs:label "批量倍数" ; rdfs:domain hm:MaterialPlan ; rdfs:range xsd:decimal .
+hm:scrapRatePct a owl:DatatypeProperty ; rdfs:label "损耗率" ; rdfs:domain hm:MaterialPlan ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:%,MRP 净算时放大需求量。" .
+hm:mrpRunCode a owl:DatatypeProperty ; rdfs:label "MRP 运算号" ; rdfs:domain hm:MrpRun ; rdfs:range xsd:string .
+hm:mrpRunAt a owl:DatatypeProperty ; rdfs:label "运算时间" ; rdfs:domain hm:MrpRun ; rdfs:range xsd:dateTime .
+hm:mrpHorizonDays a owl:DatatypeProperty ; rdfs:label "计划期" ; rdfs:domain hm:MrpRun ; rdfs:range xsd:integer ;
+    rdfs:comment "单位:天,运算的时间跨度。" .
+hm:mrpRunStatus a owl:DatatypeProperty ; rdfs:label "运算状态" ; rdfs:domain hm:MrpRun ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:已完成 / 已被新运算取代。" .
+hm:suggestionKind a owl:DatatypeProperty ; rdfs:label "建议类型" ; rdfs:domain hm:MrpSuggestion ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:计划生产 / 计划采购 / 提前 / 推迟。" .
+hm:suggestionQty a owl:DatatypeProperty ; rdfs:label "建议数量" ; rdfs:domain hm:MrpSuggestion ; rdfs:range xsd:decimal .
+hm:suggestionLevel a owl:DatatypeProperty ; rdfs:label "BOM 层级" ; rdfs:domain hm:MrpSuggestion ; rdfs:range xsd:integer ;
+    rdfs:comment "多级 BOM 展开后的层级,用于展示净算过程。" .
+hm:needDate a owl:DatatypeProperty ; rdfs:label "需求日期" ; rdfs:domain hm:MrpSuggestion ; rdfs:range xsd:date .
+hm:releaseDate a owl:DatatypeProperty ; rdfs:label "建议下达日期" ; rdfs:domain hm:MrpSuggestion ; rdfs:range xsd:date ;
+    rdfs:comment "按提前期从需求日期倒推得到。" .
+hm:suggestionStatus a owl:DatatypeProperty ; rdfs:label "建议状态" ; rdfs:domain hm:MrpSuggestion ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:待处理 / 已调整 / 已下达 / 已忽略。" ; a owl:FunctionalProperty .
+
+# ---- 销售与采购属性 ----
+hm:customerName a owl:DatatypeProperty ; rdfs:label "客户名称" ; rdfs:domain hm:Customer ; rdfs:range xsd:string .
+hm:creditLimit a owl:DatatypeProperty ; rdfs:label "信用额度" ; rdfs:domain hm:Customer ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:元;0 或空表示不控制。销售订单状态流转中的信用检查依据。" .
+hm:quotationCode a owl:DatatypeProperty ; rdfs:label "报价单号" ; rdfs:domain hm:Quotation ; rdfs:range xsd:string .
+hm:salesOrderCode a owl:DatatypeProperty ; rdfs:label "销售订单号" ; rdfs:domain hm:SalesOrder ; rdfs:range xsd:string .
+hm:salesOrderStatus a owl:DatatypeProperty ; rdfs:label "销售订单状态" ; rdfs:domain hm:SalesOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:草稿 / 信用待批 / 已确认 / 部分发货 / 已发完 / 已关闭 / 已取消。" ; a owl:FunctionalProperty .
+hm:salesOrderDate a owl:DatatypeProperty ; rdfs:label "下单日期" ; rdfs:domain hm:SalesOrder ; rdfs:range xsd:date .
+hm:orderAmount a owl:DatatypeProperty ; rdfs:label "订单金额" ; rdfs:domain rdfs:Resource ; rdfs:range xsd:decimal ;
+    rdfs:comment "单位:元。" .
+hm:isMakeToOrder a owl:DatatypeProperty ; rdfs:label "按单生产" ; rdfs:domain hm:SalesOrder ; rdfs:range xsd:boolean ;
+    rdfs:comment "为真时该订单派生生产工单,是需求到工单的转换点。" .
+hm:lineQty a owl:DatatypeProperty ; rdfs:label "订单行数量" ; rdfs:domain hm:SalesOrderLine ; rdfs:range xsd:decimal .
+hm:lineQtyShipped a owl:DatatypeProperty ; rdfs:label "已发数量" ; rdfs:domain hm:SalesOrderLine ; rdfs:range xsd:decimal .
+hm:scheduleQty a owl:DatatypeProperty ; rdfs:label "交货数量" ; rdfs:domain hm:DeliverySchedule ; rdfs:range xsd:decimal .
+hm:scheduleDueDate a owl:DatatypeProperty ; rdfs:label "交货日期" ; rdfs:domain hm:DeliverySchedule ; rdfs:range xsd:date .
+hm:supplierName a owl:DatatypeProperty ; rdfs:label "供应商名称" ; rdfs:domain hm:Supplier ; rdfs:range xsd:string .
+hm:supplierQualification a owl:DatatypeProperty ; rdfs:label "供应商资格" ; rdfs:domain hm:Supplier ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:合格 / 试用 / 停用。停用供应商不能下采购订单。" .
+hm:supplierRating a owl:DatatypeProperty ; rdfs:label "供应商绩效" ; rdfs:domain hm:Supplier ; rdfs:range xsd:decimal .
+hm:requisitionCode a owl:DatatypeProperty ; rdfs:label "请购单号" ; rdfs:domain hm:PurchaseRequisition ; rdfs:range xsd:string .
+hm:requisitionQty a owl:DatatypeProperty ; rdfs:label "请购数量" ; rdfs:domain hm:PurchaseRequisition ; rdfs:range xsd:decimal .
+hm:requisitionStatus a owl:DatatypeProperty ; rdfs:label "请购状态" ; rdfs:domain hm:PurchaseRequisition ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:草稿 / 待审批 / 已批准 / 已下单 / 已驳回 / 已取消。" ; a owl:FunctionalProperty .
+hm:purchaseOrderCode a owl:DatatypeProperty ; rdfs:label "采购订单号" ; rdfs:domain hm:PurchaseOrder ; rdfs:range xsd:string .
+hm:purchaseOrderStatus a owl:DatatypeProperty ; rdfs:label "采购订单状态" ; rdfs:domain hm:PurchaseOrder ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:草稿 / 已审批 / 已下发 / 部分到货 / 已到齐 / 已关闭 / 已取消。" ; a owl:FunctionalProperty .
+hm:poLineQty a owl:DatatypeProperty ; rdfs:label "采购数量" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range xsd:decimal .
+hm:poLineQtyReceived a owl:DatatypeProperty ; rdfs:label "已收数量" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range xsd:decimal .
+hm:poLineQtyAccepted a owl:DatatypeProperty ; rdfs:label "合格入库数量" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range xsd:decimal .
+hm:poLineQtyRejected a owl:DatatypeProperty ; rdfs:label "不合格数量" ; rdfs:domain hm:PurchaseOrderLine ; rdfs:range xsd:decimal .
+
+# ---- 采集与系统属性 ----
+hm:username a owl:DatatypeProperty ; rdfs:label "账号" ; rdfs:domain hm:UserAccount ; rdfs:range xsd:string .
+hm:userDisplayName a owl:DatatypeProperty ; rdfs:label "姓名" ; rdfs:domain hm:UserAccount ; rdfs:range xsd:string .
+hm:userRoles a owl:DatatypeProperty ; rdfs:label "角色" ; rdfs:domain hm:UserAccount ; rdfs:range xsd:string ;
+    rdfs:comment "角色决定页面、按钮与 API 权限。" .
+hm:dataSourceProtocol a owl:DatatypeProperty ; rdfs:label "接入协议" ; rdfs:domain hm:DataSource ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:MQTT (UNS) / OPC UA / Modbus TCP。" .
+hm:dataSourceEndpoint a owl:DatatypeProperty ; rdfs:label "接入地址" ; rdfs:domain hm:DataSource ; rdfs:range xsd:string .
+hm:tagName a owl:DatatypeProperty ; rdfs:label "点位名称" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:string .
+hm:tagAddress a owl:DatatypeProperty ; rdfs:label "点位地址" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:string .
+hm:tagRole a owl:DatatypeProperty ; rdfs:label "点位用途" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:string ;
+    rdfs:comment "枚举:运行状态 / 报警 / 功率 / 电能 / 产量 / 主轴负载 / 温度 / 质量值 / 其他。用途决定该点位被映射成哪类业务记录。" .
+hm:tagPeriodMs a owl:DatatypeProperty ; rdfs:label "采集周期" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:integer ;
+    rdfs:comment "单位:毫秒。" .
+hm:tagAlarmLower a owl:DatatypeProperty ; rdfs:label "报警下限" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:decimal .
+hm:tagAlarmUpper a owl:DatatypeProperty ; rdfs:label "报警上限" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:decimal .
+hm:tagConfirmed a owl:DatatypeProperty ; rdfs:label "语义已确认" ; rdfs:domain hm:TagPoint ; rdfs:range xsd:boolean ;
+    rdfs:comment "接入时逐点确认语义;未确认的点位不投产,这是设备接入的业务闸门。" .

@@ -1,0 +1,4951 @@
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: : <https://example.org/ontology/honeymom>
+
+
+
+Ontology: <https://example.org/ontology/honeymom>
+
+
+Annotations: 
+    rdfs:comment "HoneyMOM 离散制造 MES / MOM 系统的业务本体。对象类型对应业务概念,链接类型对应业务关联,数据属性对应业务属性。建模依据来自源码 honeymom/schema*.py 的实体定义与 honeymom/services/ 中的实际业务规则,不是数据库表的机械镜像。",
+    rdfs:label "HoneyMOM 制造运营本体",
+    owl:versionInfo "0.1.0 — 基于 Indu-mom 仓库 main 分支抽取,2026-11-16"
+
+AnnotationProperty: owl:versionInfo
+
+    
+AnnotationProperty: rdfs:comment
+
+    
+AnnotationProperty: rdfs:label
+
+    
+Datatype: xsd:boolean
+
+    
+Datatype: xsd:date
+
+    
+Datatype: xsd:dateTime
+
+    
+Datatype: xsd:decimal
+
+    
+Datatype: xsd:integer
+
+    
+Datatype: xsd:string
+
+    
+ObjectProperty: <https://example.org/ontology/honeymom#alarmOnEquipment>
+
+    Annotations: 
+        rdfs:label "报警设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Alarm>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#appliesToEquipment>
+
+    Annotations: 
+        rdfs:label "适用设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#OperatorSkill>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#appliesToProduct>
+
+    Annotations: 
+        rdfs:comment "工艺路线适用的产品(与 BOM 的产品语义一致,但分属不同主数据:一个是物料结构,一个是工艺结构)。",
+        rdfs:label "适用产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Routing>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#attendanceInShift>
+
+    Annotations: 
+        rdfs:label "出勤班次"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Attendance>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Shift>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#attendanceOfEmployee>
+
+    Annotations: 
+        rdfs:label "出勤员工"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Attendance>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#belongsToRouting>
+
+    Annotations: 
+        rdfs:label "所属工艺路线"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RoutingStep>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Routing>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#belongsToTeam>
+
+    Annotations: 
+        rdfs:label "所属班组"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Team>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#belongsToWorkOrder>
+
+    Annotations: 
+        rdfs:label "所属工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    InverseOf: 
+        <https://example.org/ontology/honeymom#hasOperation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#bomComponent>
+
+    Annotations: 
+        rdfs:label "BOM 子件"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#BillOfMaterials>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    InverseOf: 
+        <https://example.org/ontology/honeymom#bomProduct>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#bomProduct>
+
+    Annotations: 
+        rdfs:comment "BOM 的父件方向,与 bomComponent 互为逆关系。",
+        rdfs:label "BOM 产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#BillOfMaterials>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    InverseOf: 
+        <https://example.org/ontology/honeymom#bomComponent>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#calibrationForGauge>
+
+    Annotations: 
+        rdfs:label "校准对象"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#GaugeCalibration>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#changeoverFromProduct>
+
+    Annotations: 
+        rdfs:label "换型前产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Changeover>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#changeoverToProduct>
+
+    Annotations: 
+        rdfs:label "换型后产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Changeover>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#classifiedByDefect>
+
+    Annotations: 
+        rdfs:label "缺陷分类"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#DefectCode>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#containsLine>
+
+    Annotations: 
+        rdfs:label "包含产线"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Workshop>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#ProductionLine>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#containsWorkshop>
+
+    Annotations: 
+        rdfs:comment "工厂组织车间。",
+        rdfs:label "包含车间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Plant>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Workshop>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#containsWorkstation>
+
+    Annotations: 
+        rdfs:label "包含工位"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Workstation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#coversProcess>
+
+    Annotations: 
+        rdfs:label "覆盖工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#OperatorSkill>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#defectOwnedByProcess>
+
+    Annotations: 
+        rdfs:label "责任工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DefectCode>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#derivedFromQuotation>
+
+    Annotations: 
+        rdfs:label "源自报价单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Quotation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#downtimeAffectsEquipment>
+
+    Annotations: 
+        rdfs:label "停机设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DowntimePlan>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#equipmentOnLine>
+
+    Annotations: 
+        rdfs:label "所属产线"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#ProductionLine>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#eventOfPart>
+
+    Annotations: 
+        rdfs:label "零件事件归属"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PartEvent>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#faiEvidencedBy>
+
+    Annotations: 
+        rdfs:label "首检证据"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#faiForOperation>
+
+    Annotations: 
+        rdfs:label "首检工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#faiForProcess>
+
+    Annotations: 
+        rdfs:label "首检作业"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#faiForWorkOrder>
+
+    Annotations: 
+        rdfs:label "首检工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#faiOnEquipment>
+
+    Annotations: 
+        rdfs:label "首检设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#followsRouting>
+
+    Annotations: 
+        rdfs:label "遵循工艺路线"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Routing>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#forecastForMaterial>
+
+    Annotations: 
+        rdfs:label "预测物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DemandForecast>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#forecastFromCustomer>
+
+    Annotations: 
+        rdfs:label "预测客户"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DemandForecast>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Customer>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#fulfilledAtPlant>
+
+    Annotations: 
+        rdfs:label "履行工厂"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Plant>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#fulfillsSalesOrder>
+
+    Annotations: 
+        rdfs:comment "按单生产(MTO)时建立:该工单是为这张销售订单生产的。",
+        rdfs:label "履行销售订单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#hasOperation>
+
+    Annotations: 
+        rdfs:label "包含工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    InverseOf: 
+        <https://example.org/ontology/honeymom#belongsToWorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#heldByEmployee>
+
+    Annotations: 
+        rdfs:label "技能持有人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#OperatorSkill>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#holdAppliesToMaterial>
+
+    Annotations: 
+        rdfs:label "冻结物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#LotHold>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#hostsEquipment>
+
+    Annotations: 
+        rdfs:label "承载设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Workstation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#inspectedBy>
+
+    Annotations: 
+        rdfs:label "检验员"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#issueAgainstWorkOrder>
+
+    Annotations: 
+        rdfs:label "领退对应工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialIssue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#issueHandledBy>
+
+    Annotations: 
+        rdfs:label "经办人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialIssue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#issuedFromWarehouse>
+
+    Annotations: 
+        rdfs:label "出入仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialIssue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#issuesMaterial>
+
+    Annotations: 
+        rdfs:label "领退物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialIssue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#itemBelongsToTemplate>
+
+    Annotations: 
+        rdfs:label "所属检验模板"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#InspectionTemplate>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#kittingForMaterial>
+
+    Annotations: 
+        rdfs:label "齐套物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#KittingRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#kittingForWorkOrder>
+
+    Annotations: 
+        rdfs:label "齐套工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#KittingRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#lineBelongsToOrder>
+
+    Annotations: 
+        rdfs:label "所属销售订单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrderLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#lineForMaterial>
+
+    Annotations: 
+        rdfs:label "订单物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrderLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#lineProducedByWorkOrder>
+
+    Annotations: 
+        rdfs:label "由工单生产"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrderLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#locationInsideWarehouse>
+
+    Annotations: 
+        rdfs:label "所在仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StorageLocation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#materialPlanDefaultSupplier>
+
+    Annotations: 
+        rdfs:label "默认供应商"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#materialPlanDefaultWarehouse>
+
+    Annotations: 
+        rdfs:label "默认仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#materialPlanForMaterial>
+
+    Annotations: 
+        rdfs:label "计划物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#measuredWithGauge>
+
+    Annotations: 
+        rdfs:comment "检验记录的主量具。检验项目声明量具类型,录入时必须选一把同类型且在校准有效期内的量具。",
+        rdfs:label "使用量具"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#ncrAgainstWorkOrder>
+
+    Annotations: 
+        rdfs:label "不合格工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#ncrByDefect>
+
+    Annotations: 
+        rdfs:label "缺陷分类"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#DefectCode>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#ncrOfMaterial>
+
+    Annotations: 
+        rdfs:label "不合格物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#operationAssignedTo>
+
+    Annotations: 
+        rdfs:label "派工给"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#operationCoversProcess>
+
+    Annotations: 
+        rdfs:label "工序对应作业"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#orderPlacedWithSupplier>
+
+    Annotations: 
+        rdfs:label "采购供应商"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#orderReceivedAtPlant>
+
+    Annotations: 
+        rdfs:label "收货工厂"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Plant>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#partBelongsToWorkOrder>
+
+    Annotations: 
+        rdfs:label "零件所属工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#partIsProduct>
+
+    Annotations: 
+        rdfs:label "零件对应产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#performedBy>
+
+    Annotations: 
+        rdfs:label "报工人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#performsProcess>
+
+    Annotations: 
+        rdfs:label "执行工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Workstation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#placedByCustomer>
+
+    Annotations: 
+        rdfs:label "下单客户"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Customer>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#planForEquipment>
+
+    Annotations: 
+        rdfs:label "保养设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenancePlan>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#planOwnedBy>
+
+    Annotations: 
+        rdfs:label "计划负责人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenancePlan>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#poLineBelongsToOrder>
+
+    Annotations: 
+        rdfs:label "所属采购订单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#poLineForMaterial>
+
+    Annotations: 
+        rdfs:label "采购物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#poLineFromRequisition>
+
+    Annotations: 
+        rdfs:label "来源请购单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#producesProduct>
+
+    Annotations: 
+        rdfs:label "生产产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#proposesForWorkOrder>
+
+    Annotations: 
+        rdfs:label "建议针对工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ScheduleProposal>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#quotationIssuedTo>
+
+    Annotations: 
+        rdfs:label "报价客户"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Quotation>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Customer>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#raisedOnEquipment>
+
+    Annotations: 
+        rdfs:label "发起设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Andon>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#recordAgainstWorkOrder>
+
+    Annotations: 
+        rdfs:label "检验工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#recordExecutedBy>
+
+    Annotations: 
+        rdfs:label "执行人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenanceRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#recordFulfillsPlan>
+
+    Annotations: 
+        rdfs:label "执行计划"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenanceRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#MaintenancePlan>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#recordOnEquipment>
+
+    Annotations: 
+        rdfs:label "保养设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenanceRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#recordUsesTemplate>
+
+    Annotations: 
+        rdfs:label "使用检验模板"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#InspectionTemplate>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#repairAssignedTo>
+
+    Annotations: 
+        rdfs:label "维修人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RepairOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#repairForEquipment>
+
+    Annotations: 
+        rdfs:label "维修设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RepairOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reportForProcess>
+
+    Annotations: 
+        rdfs:label "报工作业"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reportedDuringShift>
+
+    Annotations: 
+        rdfs:label "报工班次"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Shift>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reportedOnEquipment>
+
+    Annotations: 
+        rdfs:label "报工设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reportsOnOperation>
+
+    Annotations: 
+        rdfs:label "报工工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reportsOnWorkOrder>
+
+    Annotations: 
+        rdfs:label "报工工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requestForWorkOrder>
+
+    Annotations: 
+        rdfs:label "申请工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialRequest>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requestFromWarehouse>
+
+    Annotations: 
+        rdfs:label "申请仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialRequest>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requestsMaterial>
+
+    Annotations: 
+        rdfs:label "申请物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialRequest>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requiresProcess>
+
+    Annotations: 
+        rdfs:label "对应工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RoutingStep>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requisitionConvertedToOrder>
+
+    Annotations: 
+        rdfs:label "转为采购订单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requisitionRequestsMaterial>
+
+    Annotations: 
+        rdfs:label "请购物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#requisitionSuggestedSupplier>
+
+    Annotations: 
+        rdfs:label "建议供应商"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reworkPerformedBy>
+
+    Annotations: 
+        rdfs:label "返修人"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ReworkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reworkRecheckedBy>
+
+    Annotations: 
+        rdfs:label "复检单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ReworkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#reworkRemediates>
+
+    Annotations: 
+        rdfs:label "返修不合格品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ReworkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#scheduleForOrderLine>
+
+    Annotations: 
+        rdfs:label "交货计划所属订单行"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DeliverySchedule>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#SalesOrderLine>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#scheduledOnLine>
+
+    Annotations: 
+        rdfs:label "排产产线"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#ProductionLine>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#shipmentOfWorkOrder>
+
+    Annotations: 
+        rdfs:label "发运工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shipment>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#stateOfEquipment>
+
+    Annotations: 
+        rdfs:label "设备状态记录"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#EquipmentStateRecord>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#stockAtLocation>
+
+    Annotations: 
+        rdfs:label "库存库位"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Stock>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#StorageLocation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#stockHoldsMaterial>
+
+    Annotations: 
+        rdfs:label "库存物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Stock>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#stockInWarehouse>
+
+    Annotations: 
+        rdfs:label "库存仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Stock>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#suggestionForMaterial>
+
+    Annotations: 
+        rdfs:label "建议物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#suggestionFromRun>
+
+    Annotations: 
+        rdfs:label "所属 MRP 运算"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#MrpRun>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#suggestionGeneratesPurchaseOrder>
+
+    Annotations: 
+        rdfs:label "生成采购订单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#suggestionGeneratesRequisition>
+
+    Annotations: 
+        rdfs:label "生成请购单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#suggestionGeneratesWorkOrder>
+
+    Annotations: 
+        rdfs:label "生成生产工单"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#suggestionToSupplier>
+
+    Annotations: 
+        rdfs:label "建议供应商"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#tagFromDataSource>
+
+    Annotations: 
+        rdfs:label "点位数据源"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#DataSource>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#tagOnEquipment>
+
+    Annotations: 
+        rdfs:label "点位设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#templateAppliesToMaterial>
+
+    Annotations: 
+        rdfs:label "适用物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionTemplate>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#templateAppliesToProcess>
+
+    Annotations: 
+        rdfs:label "适用工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionTemplate>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#toolingForProcess>
+
+    Annotations: 
+        rdfs:label "适用工序"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#toolingForProduct>
+
+    Annotations: 
+        rdfs:label "适用产品"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#toolingOnEquipment>
+
+    Annotations: 
+        rdfs:label "所在设备"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#txnAtLocation>
+
+    Annotations: 
+        rdfs:label "出入库库位"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#StorageLocation>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#txnFromWarehouse>
+
+    Annotations: 
+        rdfs:label "来源仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#txnMovesMaterial>
+
+    Annotations: 
+        rdfs:label "出入库物料"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#txnToWarehouse>
+
+    Annotations: 
+        rdfs:comment "移库时的目标仓库。",
+        rdfs:label "调入仓库"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#userLinkedToEmployee>
+
+    Annotations: 
+        rdfs:label "关联员工"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#UserAccount>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Employee>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#valueBelongsToRecord>
+
+    Annotations: 
+        rdfs:label "所属检验记录"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionValue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#valueForItem>
+
+    Annotations: 
+        rdfs:label "对应检验项目"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionValue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#valueMeasuredWithGauge>
+
+    Annotations: 
+        rdfs:label "测量量具"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionValue>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    
+ObjectProperty: <https://example.org/ontology/honeymom#worksInShift>
+
+    Annotations: 
+        rdfs:label "归属班次"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Team>
+    
+    Range: 
+        <https://example.org/ontology/honeymom#Shift>
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#actualEndTime>
+
+    Annotations: 
+        rdfs:label "实际结束"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#actualStartTime>
+
+    Annotations: 
+        rdfs:label "实际开始"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#alarmDurationSeconds>
+
+    Annotations: 
+        rdfs:label "报警时长"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Alarm>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#alarmMessage>
+
+    Annotations: 
+        rdfs:label "报警内容"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Alarm>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#alarmStartTime>
+
+    Annotations: 
+        rdfs:label "报警开始"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Alarm>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#andonDescription>
+
+    Annotations: 
+        rdfs:label "问题描述"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Andon>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#andonRaisedAt>
+
+    Annotations: 
+        rdfs:label "发起时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Andon>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#andonSource>
+
+    Annotations: 
+        rdfs:comment "枚举:人工 / 设备自动 / 智能体。",
+        rdfs:label "安灯来源"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Andon>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#andonStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:待响应 / 处理中 / 已关闭。",
+        rdfs:label "安灯状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Andon>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#andonType>
+
+    Annotations: 
+        rdfs:comment "枚举:设备 / 质量 / 物料 / 安全 / 其他。",
+        rdfs:label "安灯类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Andon>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#attendanceTime>
+
+    Annotations: 
+        rdfs:label "出勤时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Attendance>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#bomQuantity>
+
+    Annotations: 
+        rdfs:label "用量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#BillOfMaterials>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#calibrationCode>
+
+    Annotations: 
+        rdfs:label "校准单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#GaugeCalibration>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#calibrationDate>
+
+    Annotations: 
+        rdfs:label "校准日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#GaugeCalibration>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#calibrationResult>
+
+    Annotations: 
+        rdfs:label "校准结果"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#GaugeCalibration>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#changeoverMinutes>
+
+    Annotations: 
+        rdfs:comment "单位:分钟。",
+        rdfs:label "换型时长"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Changeover>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#completedAt>
+
+    Annotations: 
+        rdfs:label "完工时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#creditLimit>
+
+    Annotations: 
+        rdfs:comment "单位:元;0 或空表示不控制。销售订单状态流转中的信用检查依据。",
+        rdfs:label "信用额度"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Customer>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#customerName>
+
+    Annotations: 
+        rdfs:label "客户名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Customer>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#dataSourceEndpoint>
+
+    Annotations: 
+        rdfs:label "接入地址"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DataSource>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#dataSourceProtocol>
+
+    Annotations: 
+        rdfs:comment "枚举:MQTT (UNS) / OPC UA / Modbus TCP。",
+        rdfs:label "接入协议"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DataSource>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#decidedAt>
+
+    Annotations: 
+        rdfs:label "判定时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#defectCategory>
+
+    Annotations: 
+        rdfs:comment "枚举:铸造 / 机加 / 外观 / 其他。",
+        rdfs:label "缺陷类别"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DefectCode>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#defectSeverity>
+
+    Annotations: 
+        rdfs:comment "枚举:致命 / 严重 / 轻微。",
+        rdfs:label "严重度"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DefectCode>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#downtimeEndTime>
+
+    Annotations: 
+        rdfs:label "停机结束"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DowntimePlan>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#downtimeKind>
+
+    Annotations: 
+        rdfs:comment "枚举:计划保养 / 维修 / 放假停产 / 试制调试 / 其他。",
+        rdfs:label "停机类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DowntimePlan>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#downtimeStartTime>
+
+    Annotations: 
+        rdfs:label "停机开始"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DowntimePlan>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#dueDate>
+
+    Annotations: 
+        rdfs:comment "生产工单为交期时刻,销售订单行与采购行为日期。",
+        rdfs:label "交期"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentCode>
+
+    Annotations: 
+        rdfs:label "设备编号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentInstallDate>
+
+    Annotations: 
+        rdfs:label "投用日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentName>
+
+    Annotations: 
+        rdfs:label "设备名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentStateName>
+
+    Annotations: 
+        rdfs:comment "如运行、待机、换型、停机、离线。",
+        rdfs:label "状态名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#EquipmentStateRecord>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:运行 / 待机 / 换型 / 停机 / 离线 / 报废。由采集数据推导,系统只读。",
+        rdfs:label "设备状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentType>
+
+    Annotations: 
+        rdfs:comment "枚举含中频炉、球化站、砂处理、造型线、冷却线、抛丸机、加工中心、去毛刺单元、检测站、立体仓库、AGV 等。",
+        rdfs:label "设备类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#equipmentVendor>
+
+    Annotations: 
+        rdfs:label "设备厂家"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#estimatedArrivalTime>
+
+    Annotations: 
+        rdfs:label "预计到料时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#KittingRecord>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#firstArticleCode>
+
+    Annotations: 
+        rdfs:label "首检单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#firstArticleStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:待检 / 已放行 / 不放行。已放行是量产报工的前置条件。",
+        rdfs:label "首检状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#firstArticleTrigger>
+
+    Annotations: 
+        rdfs:comment "枚举:开工 / 换型 / 换刀 / 换班 / 维修后。",
+        rdfs:label "触发场景"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#FirstArticleRelease>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#forecastDueDate>
+
+    Annotations: 
+        rdfs:label "需求日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DemandForecast>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#forecastQty>
+
+    Annotations: 
+        rdfs:label "预测数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DemandForecast>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#gaugeCalibrationDue>
+
+    Annotations: 
+        rdfs:comment "到期后该量具不可用于出具有效检验结论。",
+        rdfs:label "校准到期日"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#gaugeCode>
+
+    Annotations: 
+        rdfs:label "量具编号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#gaugeName>
+
+    Annotations: 
+        rdfs:label "量具名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#gaugeType>
+
+    Annotations: 
+        rdfs:comment "量具类别。检验项声明所需量具类型,录入时按类型匹配。",
+        rdfs:label "量具类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Gauge>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#idealCycleSeconds>
+
+    Annotations: 
+        rdfs:comment "设备在最佳状态下的单件理论秒数,是 OEE 性能率的分子基准:理想产量 = 理想节拍 × 总产量 / 运行时间。",
+        rdfs:label "理想节拍"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionCode>
+
+    Annotations: 
+        rdfs:label "检验单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionNgQty>
+
+    Annotations: 
+        rdfs:label "不合格数"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionResult>
+
+    Annotations: 
+        rdfs:comment "枚举:合格 / 不合格 / 待判。",
+        rdfs:label "检验结论"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionSampleQty>
+
+    Annotations: 
+        rdfs:label "样本数"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionTime>
+
+    Annotations: 
+        rdfs:label "检验时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionType>
+
+    Annotations: 
+        rdfs:comment "枚举:来料 / 过程 / 首件 / 出货 / 巡检。单值,与 InspectionRecord 的子类划分对应。",
+        rdfs:label "检验类型"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionValueNumber>
+
+    Annotations: 
+        rdfs:label "实测值"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionValue>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionValueOk>
+
+    Annotations: 
+        rdfs:label "是否合格"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionValue>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#inspectionValueText>
+
+    Annotations: 
+        rdfs:label "文字结果"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionValue>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#isMakeToOrder>
+
+    Annotations: 
+        rdfs:comment "为真时该订单派生生产工单,是需求到工单的转换点。",
+        rdfs:label "按单生产"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#issueKind>
+
+    Annotations: 
+        rdfs:comment "枚举:领料 / 退料。",
+        rdfs:label "领退类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialIssue>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#issueQty>
+
+    Annotations: 
+        rdfs:label "领退数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialIssue>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#itemCharacteristicCode>
+
+    Annotations: 
+        rdfs:label "特性代码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#itemIsKeyCharacteristic>
+
+    Annotations: 
+        rdfs:label "关键特性"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#itemLowerLimit>
+
+    Annotations: 
+        rdfs:label "下限"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#itemName>
+
+    Annotations: 
+        rdfs:label "检验项目名"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#itemSpecialCharacteristic>
+
+    Annotations: 
+        rdfs:label "特殊特性"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#itemUpperLimit>
+
+    Annotations: 
+        rdfs:comment "首检放行的判定依据:实测值落在上下限内即合格。",
+        rdfs:label "上限"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionItem>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#kittingQtyNeeded>
+
+    Annotations: 
+        rdfs:label "齐套需求量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#KittingRecord>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#kittingQtyReady>
+
+    Annotations: 
+        rdfs:label "齐套已备量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#KittingRecord>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#kittingStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:齐套 / 部分 / 缺料。缺料工单在预计到料后才可开工。",
+        rdfs:label "齐套状态"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#KittingRecord>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#leadTimeDays>
+
+    Annotations: 
+        rdfs:comment "单位:天,MRP 用它做交期倒推。",
+        rdfs:label "提前期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lineCode>
+
+    Annotations: 
+        rdfs:label "产线编码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionLine>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lineName>
+
+    Annotations: 
+        rdfs:label "产线名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionLine>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lineQty>
+
+    Annotations: 
+        rdfs:label "订单行数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrderLine>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lineQtyShipped>
+
+    Annotations: 
+        rdfs:label "已发数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrderLine>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#locationCapacity>
+
+    Annotations: 
+        rdfs:label "库位容量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StorageLocation>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#locationCode>
+
+    Annotations: 
+        rdfs:label "库位编码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StorageLocation>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotCode>
+
+    Annotations: 
+        rdfs:comment "批次/炉次标识。冻结、追溯、抽样都以批次为维度。",
+        rdfs:label "批次号"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotHoldCode>
+
+    Annotations: 
+        rdfs:label "冻结单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#LotHold>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotHoldReason>
+
+    Annotations: 
+        rdfs:label "冻结原因"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#LotHold>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotHoldStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:冻结中 / 已解冻。",
+        rdfs:label "冻结状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#LotHold>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotHoldedAt>
+
+    Annotations: 
+        rdfs:label "冻结时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#LotHold>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotMultiple>
+
+    Annotations: 
+        rdfs:label "批量倍数"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#lotReleasedAt>
+
+    Annotations: 
+        rdfs:label "解冻时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#LotHold>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#maintenanceCycleDays>
+
+    Annotations: 
+        rdfs:comment "单位:天。",
+        rdfs:label "保养周期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenancePlan>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#maintenanceNextDue>
+
+    Annotations: 
+        rdfs:label "下次到期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenancePlan>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#maintenanceResult>
+
+    Annotations: 
+        rdfs:comment "枚举:正常 / 异常。",
+        rdfs:label "保养结果"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenanceRecord>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#maintenanceType>
+
+    Annotations: 
+        rdfs:comment "枚举:日常点检 / 定期保养 / 润滑。",
+        rdfs:label "保养类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaintenancePlan>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#makeOrBuy>
+
+    Annotations: 
+        rdfs:comment "枚举:自制 / 外购。决定 MRP 净算后产生工单还是采购申请。",
+        rdfs:label "自制或外购"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#materialCode>
+
+    Annotations: 
+        rdfs:label "物料编码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#materialName>
+
+    Annotations: 
+        rdfs:label "物料名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#materialSpec>
+
+    Annotations: 
+        rdfs:label "规格"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#materialType>
+
+    Annotations: 
+        rdfs:comment "枚举:原材料 / 半成品 / 成品 / 辅料 / 易耗品。单值,故与 Material 的子类划分对应。",
+        rdfs:label "物料类型"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#materialUnit>
+
+    Annotations: 
+        rdfs:label "单位"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#minimumLotQty>
+
+    Annotations: 
+        rdfs:label "最小批量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#mrpHorizonDays>
+
+    Annotations: 
+        rdfs:comment "单位:天,运算的时间跨度。",
+        rdfs:label "计划期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpRun>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#mrpRunAt>
+
+    Annotations: 
+        rdfs:label "运算时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpRun>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#mrpRunCode>
+
+    Annotations: 
+        rdfs:label "MRP 运算号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpRun>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#mrpRunStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:已完成 / 已被新运算取代。",
+        rdfs:label "运算状态"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpRun>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrCode>
+
+    Annotations: 
+        rdfs:label "NCR 号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrCorrectiveAction>
+
+    Annotations: 
+        rdfs:label "纠正措施"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrDisposition>
+
+    Annotations: 
+        rdfs:comment "枚举:待处置 / 返修 / 报废 / 让步接收 / 退供应商。",
+        rdfs:label "处置方式"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrFoundAt>
+
+    Annotations: 
+        rdfs:label "发现时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrQty>
+
+    Annotations: 
+        rdfs:label "不合格数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrRootCause>
+
+    Annotations: 
+        rdfs:label "原因分析"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ncrStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:待处理 / 评审中 / 已关闭。",
+        rdfs:label "NCR 状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#NonconformanceReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#needDate>
+
+    Annotations: 
+        rdfs:label "需求日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#operationGoodQty>
+
+    Annotations: 
+        rdfs:label "工序合格量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#operationNgQty>
+
+    Annotations: 
+        rdfs:label "工序不良量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#operationPlannedQty>
+
+    Annotations: 
+        rdfs:comment "超计划报工的基准,允许超出上限由超报比例参数控制。",
+        rdfs:label "工序计划量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#operationStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:待开工 / 可开工 / 进行中 / 完成。",
+        rdfs:label "工序状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrderOperation>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#orderAmount>
+
+    Annotations: 
+        rdfs:comment "单位:元。",
+        rdfs:label "订单金额"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partCurrentStation>
+
+    Annotations: 
+        rdfs:label "当前位置"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partEventTime>
+
+    Annotations: 
+        rdfs:label "事件时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PartEvent>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partEventType>
+
+    Annotations: 
+        rdfs:comment "如流转、检验、冻结等事件名。",
+        rdfs:label "事件类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PartEvent>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partHeatNumber>
+
+    Annotations: 
+        rdfs:comment "铸造炉次号,是机加缺陷反查熔炼过程的追溯锚点。",
+        rdfs:label "炉次"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partPourTemperature>
+
+    Annotations: 
+        rdfs:label "浇注温度"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partResidualMagnesium>
+
+    Annotations: 
+        rdfs:comment "单位:%,与浇注温度、型砂水分共同参与缺陷相关性分析。",
+        rdfs:label "残镁"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partReworkCount>
+
+    Annotations: 
+        rdfs:label "返修次数"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partSerialNumber>
+
+    Annotations: 
+        rdfs:comment "一件一码的实物身份,贯穿报工、检验、冻结、发运。",
+        rdfs:label "零件码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#partStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:在制 / 检验合格 / 成品入库 / 已发运 / 报废 / 毛坯库 / 返修中 / 冻结。",
+        rdfs:label "零件状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Part>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#plannedStartTime>
+
+    Annotations: 
+        rdfs:label "计划开始"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#plantAddress>
+
+    Annotations: 
+        rdfs:label "工厂地址"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Plant>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#plantCode>
+
+    Annotations: 
+        rdfs:label "工厂编码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Plant>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#plantName>
+
+    Annotations: 
+        rdfs:label "工厂名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Plant>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#poLineQty>
+
+    Annotations: 
+        rdfs:label "采购数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#poLineQtyAccepted>
+
+    Annotations: 
+        rdfs:label "合格入库数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#poLineQtyReceived>
+
+    Annotations: 
+        rdfs:label "已收数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#poLineQtyRejected>
+
+    Annotations: 
+        rdfs:label "不合格数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrderLine>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#processCode>
+
+    Annotations: 
+        rdfs:label "工序编码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#processName>
+
+    Annotations: 
+        rdfs:label "工序名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#processType>
+
+    Annotations: 
+        rdfs:comment "枚举含熔炼、球化孕育、造型浇注、冷却落砂、清理抛丸、来料、机加工、去毛刺、检测、入库等。",
+        rdfs:label "工序类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Process>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#proposalStatus>
+
+    Annotations: 
+        rdfs:label "建议状态"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ScheduleProposal>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#purchaseOrderCode>
+
+    Annotations: 
+        rdfs:label "采购订单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#purchaseOrderStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:草稿 / 已审批 / 已下发 / 部分到货 / 已到齐 / 已关闭 / 已取消。",
+        rdfs:label "采购订单状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#quotationCode>
+
+    Annotations: 
+        rdfs:label "报价单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Quotation>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#ratedPowerKw>
+
+    Annotations: 
+        rdfs:comment "单位:kW,用于小时电耗与能耗分析。",
+        rdfs:label "额定功率"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Equipment>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#recheckResult>
+
+    Annotations: 
+        rdfs:comment "枚举:合格 / 不合格。",
+        rdfs:label "复检结论"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ReworkOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#releaseDate>
+
+    Annotations: 
+        rdfs:comment "按提前期从需求日期倒推得到。",
+        rdfs:label "建议下达日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#releasedAt>
+
+    Annotations: 
+        rdfs:label "下达时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#repairDowntimeMinutes>
+
+    Annotations: 
+        rdfs:comment "单位:分钟,计入设备损失。",
+        rdfs:label "维修停机时长"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RepairOrder>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#repairFault>
+
+    Annotations: 
+        rdfs:label "故障描述"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RepairOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#repairLevel>
+
+    Annotations: 
+        rdfs:comment "枚举:紧急 / 一般。",
+        rdfs:label "紧急程度"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RepairOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#repairStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:已报修 / 已派工 / 维修中 / 已修复 / 已验收。未验收的维修单使设备在排产时不可用。",
+        rdfs:label "维修状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RepairOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportCode>
+
+    Annotations: 
+        rdfs:label "报工单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportEndTime>
+
+    Annotations: 
+        rdfs:label "报工结束"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportGoodQty>
+
+    Annotations: 
+        rdfs:label "报工合格数"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportIdempotencyKey>
+
+    Annotations: 
+        rdfs:comment "同一幂等键重复提交被识别为重复提交,不重复计数,是防止重复报工的兜底。",
+        rdfs:label "幂等键"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportNgQty>
+
+    Annotations: 
+        rdfs:label "报工不良数"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportSource>
+
+    Annotations: 
+        rdfs:comment "枚举:设备自动 / 人工 / 手机扫码 / 扫码枪 / 工位终端。",
+        rdfs:label "报工来源"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reportStartTime>
+
+    Annotations: 
+        rdfs:label "报工开始"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ProductionReport>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#requestQty>
+
+    Annotations: 
+        rdfs:label "申请数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialRequest>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#requisitionCode>
+
+    Annotations: 
+        rdfs:label "请购单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#requisitionQty>
+
+    Annotations: 
+        rdfs:label "请购数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#requisitionStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:草稿 / 待审批 / 已批准 / 已下单 / 已驳回 / 已取消。",
+        rdfs:label "请购状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#PurchaseRequisition>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reworkMethod>
+
+    Annotations: 
+        rdfs:label "返修方法"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ReworkOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#reworkResult>
+
+    Annotations: 
+        rdfs:comment "枚举:合格 / 仍不合格 / 进行中。只有「进行中」才能流转结果。",
+        rdfs:label "返修结果"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#ReworkOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#routingStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:草稿 / 生效 / 作废。",
+        rdfs:label "工艺路线状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Routing>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#routingVersion>
+
+    Annotations: 
+        rdfs:label "工艺版本"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Routing>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#safetyStock>
+
+    Annotations: 
+        rdfs:label "安全库存"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#salesOrderCode>
+
+    Annotations: 
+        rdfs:label "销售订单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#salesOrderDate>
+
+    Annotations: 
+        rdfs:label "下单日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#salesOrderStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:草稿 / 信用待批 / 已确认 / 部分发货 / 已发完 / 已关闭 / 已取消。",
+        rdfs:label "销售订单状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#SalesOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#scheduleDueDate>
+
+    Annotations: 
+        rdfs:label "交货日期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DeliverySchedule>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#scheduleQty>
+
+    Annotations: 
+        rdfs:label "交货数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#DeliverySchedule>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#scrapRatePct>
+
+    Annotations: 
+        rdfs:comment "单位:%,MRP 净算时放大需求量。",
+        rdfs:label "损耗率"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MaterialPlan>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#shiftActive>
+
+    Annotations: 
+        rdfs:comment "为假时该班次不参与排产,设备不在该时段内作业。",
+        rdfs:label "排产启用"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shift>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#shiftEndTime>
+
+    Annotations: 
+        rdfs:label "班次结束"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shift>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#shiftStartTime>
+
+    Annotations: 
+        rdfs:comment "时刻,格式 HH:MM。",
+        rdfs:label "班次开始"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shift>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#shipmentCode>
+
+    Annotations: 
+        rdfs:label "发运单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shipment>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#shipmentQty>
+
+    Annotations: 
+        rdfs:label "发运数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shipment>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#shipmentTime>
+
+    Annotations: 
+        rdfs:label "发运时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Shipment>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#skillLevel>
+
+    Annotations: 
+        rdfs:comment "枚举:学徒(需带教) / 熟练 / 骨干 / 可带教。",
+        rdfs:label "技能等级"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#OperatorSkill>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#skillValidUntil>
+
+    Annotations: 
+        rdfs:label "技能有效期至"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#OperatorSkill>
+    
+    Range: 
+        xsd:date
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#standardCycleSeconds>
+
+    Annotations: 
+        rdfs:comment "完成一件的理论秒数。用于排产时长计算与 OEE 性能率基准。",
+        rdfs:label "标准节拍"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stateDurationSeconds>
+
+    Annotations: 
+        rdfs:comment "单位:秒。",
+        rdfs:label "状态时长"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#EquipmentStateRecord>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stateEndTime>
+
+    Annotations: 
+        rdfs:comment "空值表示该状态持续至今。",
+        rdfs:label "状态结束"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#EquipmentStateRecord>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stateStartTime>
+
+    Annotations: 
+        rdfs:label "状态开始"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#EquipmentStateRecord>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stepInstruction>
+
+    Annotations: 
+        rdfs:label "作业指示"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RoutingStep>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stepIsInspectionPoint>
+
+    Annotations: 
+        rdfs:label "检验点"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RoutingStep>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stepReportMode>
+
+    Annotations: 
+        rdfs:comment "枚举:设备自动 / 人工 / 扫码。决定现场以何种方式产生报工记录。",
+        rdfs:label "报工方式"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RoutingStep>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stepRequiresFirstArticle>
+
+    Annotations: 
+        rdfs:comment "为真时,该工序在首检放行前不得量产报工。",
+        rdfs:label "首检放行"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#RoutingStep>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stepSequence>
+
+    Annotations: 
+        rdfs:comment "有序值,是「不得跳序报工」与「不得超过上道转来数量」的判定基础。",
+        rdfs:label "步骤顺序"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#stockQty>
+
+    Annotations: 
+        rdfs:label "库存数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Stock>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#suggestionKind>
+
+    Annotations: 
+        rdfs:comment "枚举:计划生产 / 计划采购 / 提前 / 推迟。",
+        rdfs:label "建议类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#suggestionLevel>
+
+    Annotations: 
+        rdfs:comment "多级 BOM 展开后的层级,用于展示净算过程。",
+        rdfs:label "BOM 层级"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#suggestionQty>
+
+    Annotations: 
+        rdfs:label "建议数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#suggestionStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:待处理 / 已调整 / 已下达 / 已忽略。",
+        rdfs:label "建议状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#MrpSuggestion>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#supplierName>
+
+    Annotations: 
+        rdfs:label "供应商名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#supplierQualification>
+
+    Annotations: 
+        rdfs:comment "枚举:合格 / 试用 / 停用。停用供应商不能下采购订单。",
+        rdfs:label "供应商资格"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#supplierRating>
+
+    Annotations: 
+        rdfs:label "供应商绩效"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Supplier>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagAddress>
+
+    Annotations: 
+        rdfs:label "点位地址"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagAlarmLower>
+
+    Annotations: 
+        rdfs:label "报警下限"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagAlarmUpper>
+
+    Annotations: 
+        rdfs:label "报警上限"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagConfirmed>
+
+    Annotations: 
+        rdfs:comment "接入时逐点确认语义;未确认的点位不投产,这是设备接入的业务闸门。",
+        rdfs:label "语义已确认"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:boolean
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagName>
+
+    Annotations: 
+        rdfs:label "点位名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagPeriodMs>
+
+    Annotations: 
+        rdfs:comment "单位:毫秒。",
+        rdfs:label "采集周期"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#tagRole>
+
+    Annotations: 
+        rdfs:comment "枚举:运行状态 / 报警 / 功率 / 电能 / 产量 / 主轴负载 / 温度 / 质量值 / 其他。用途决定该点位被映射成哪类业务记录。",
+        rdfs:label "点位用途"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#TagPoint>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#templateCode>
+
+    Annotations: 
+        rdfs:label "检验模板编码"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionTemplate>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#templateName>
+
+    Annotations: 
+        rdfs:label "检验模板名称"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#InspectionTemplate>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#toolingAvailableFrom>
+
+    Annotations: 
+        rdfs:label "预计可用时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#toolingLifeShots>
+
+    Annotations: 
+        rdfs:comment "剩余模次不足以完成本单时,排产产出「模具寿命不足」提示。",
+        rdfs:label "寿命模次"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#toolingShots>
+
+    Annotations: 
+        rdfs:label "当前模次"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#toolingStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:可用 / 在用 / 保养维修中 / 报废。",
+        rdfs:label "模具状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#toolingType>
+
+    Annotations: 
+        rdfs:comment "枚举:模板/模具 / 芯盒 / 夹具 / 检具 / 其他。",
+        rdfs:label "模具类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Tooling>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#transactionQty>
+
+    Annotations: 
+        rdfs:label "出入库数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#transactionTime>
+
+    Annotations: 
+        rdfs:label "出入库时间"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        xsd:dateTime
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#transactionType>
+
+    Annotations: 
+        rdfs:comment "枚举:入库 / 出库 / 移库 / 盘点调整。出库与移库方向受批次冻结拦截。",
+        rdfs:label "出入库类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#StockTransaction>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#unitPrice>
+
+    Annotations: 
+        rdfs:comment "单位:元。",
+        rdfs:label "单价"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#unitWeightKg>
+
+    Annotations: 
+        rdfs:comment "单位:千克。",
+        rdfs:label "单重"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    Range: 
+        xsd:decimal
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#userDisplayName>
+
+    Annotations: 
+        rdfs:label "姓名"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#UserAccount>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#userRoles>
+
+    Annotations: 
+        rdfs:comment "角色决定页面、按钮与 API 权限。",
+        rdfs:label "角色"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#UserAccount>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#username>
+
+    Annotations: 
+        rdfs:label "账号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#UserAccount>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#warehouseType>
+
+    Annotations: 
+        rdfs:comment "枚举:原材料库 / 毛坯库 / 线边库 / 成品库 / 辅料库 / 委外仓。",
+        rdfs:label "仓库类型"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Warehouse>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workOrderCode>
+
+    Annotations: 
+        rdfs:comment "系统自动编号,格式 WO{日期}{流水}。是工单的业务身份。",
+        rdfs:label "工单号"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workOrderPriority>
+
+    Annotations: 
+        rdfs:comment "1 为最高。有限产能排程按优先级与交期排序。",
+        rdfs:label "优先级"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workOrderQty>
+
+    Annotations: 
+        rdfs:label "计划数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workOrderQtyDone>
+
+    Annotations: 
+        rdfs:comment "由报工汇总,系统只读。",
+        rdfs:label "完工数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workOrderQtyScrap>
+
+    Annotations: 
+        rdfs:label "报废数量"
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:integer
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workOrderStatus>
+
+    Annotations: 
+        rdfs:comment "枚举:草稿 / 已下达 / 生产中 / 已完工 / 已关闭 / 已取消。由动作驱动,非直接编辑。",
+        rdfs:label "工单状态"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#WorkOrder>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workshopType>
+
+    Annotations: 
+        rdfs:comment "枚举:铸造 / 机加 / 仓储 / 其他。",
+        rdfs:label "车间类型"
+    
+    Characteristics: 
+        Functional
+    
+    Domain: 
+        <https://example.org/ontology/honeymom#Workshop>
+    
+    Range: 
+        xsd:string
+    
+    
+DataProperty: <https://example.org/ontology/honeymom#workstationGroup>
+
+    Annotations: 
+        rdfs:comment "同组工位可互相替代(如 CNC、MOLD1)。排产时按工位组整体分配设备与模具。",
+        rdfs:label "工位组"
+    
+    Domain: 
+        rdfs:Resource
+    
+    Range: 
+        xsd:string
+    
+    
+Class: <https://example.org/ontology/honeymom#Alarm>
+
+    Annotations: 
+        rdfs:comment "设备报警及其确认与处理,时长计入设备损失。",
+        rdfs:label "报警记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#Andon>
+
+    Annotations: 
+        rdfs:comment "现场异常呼叫,分设备/质量/物料/安全等类型,状态从待响应到处理中到已关闭。可由人工发起或由设备自动触发。",
+        rdfs:label "安灯"
+    
+    
+Class: <https://example.org/ontology/honeymom#Attendance>
+
+    Annotations: 
+        rdfs:comment "员工按班次的出勤记录,是工时与人工成本的基础。",
+        rdfs:label "上下工记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#AuxiliaryMaterial>
+
+    Annotations: 
+        rdfs:comment "物料类型取值之一:辅料。参与生产但不构成产品主体。",
+        rdfs:label "辅料"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#Consumable>, <https://example.org/ontology/honeymom#FinishedProduct>, <https://example.org/ontology/honeymom#RawMaterial>, <https://example.org/ontology/honeymom#SemiFinishedMaterial>
+    
+    
+Class: <https://example.org/ontology/honeymom#BillOfMaterials>
+
+    Annotations: 
+        rdfs:comment "物料清单:一个产品由哪些子件按多少用量组成。多层 BOM 展开是 MRP 运算(netting)的基础。",
+        rdfs:label "BOM"
+    
+    
+Class: <https://example.org/ontology/honeymom#Changeover>
+
+    Annotations: 
+        rdfs:comment "设备由前一产品切换到后一产品所需的准备时长。排产时在上一单产品不同时追加该时长,并产出「换型」提示。",
+        rdfs:label "换型时间"
+    
+    
+Class: <https://example.org/ontology/honeymom#Consumable>
+
+    Annotations: 
+        rdfs:comment "物料类型取值之一:易耗品。如刀具、砂料等按消耗扣减的物料。",
+        rdfs:label "易耗品"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#AuxiliaryMaterial>, <https://example.org/ontology/honeymom#FinishedProduct>, <https://example.org/ontology/honeymom#RawMaterial>, <https://example.org/ontology/honeymom#SemiFinishedMaterial>
+    
+    
+Class: <https://example.org/ontology/honeymom#Customer>
+
+    Annotations: 
+        rdfs:comment "销售对象,带信用额度与结算方式;信用检查是销售订单状态流转的一环。",
+        rdfs:label "客户"
+    
+    
+Class: <https://example.org/ontology/honeymom#DataSource>
+
+    Annotations: 
+        rdfs:comment "现场设备接入点,协议含 MQTT(UNS)、OPC UA、Modbus TCP。",
+        rdfs:label "数据源"
+    
+    
+Class: <https://example.org/ontology/honeymom#DefectCode>
+
+    Annotations: 
+        rdfs:comment "缺陷字典,带类别(铸造/机加/外观/其他)与严重度(致命/严重/轻微),可绑定责任工序用于根因追溯。",
+        rdfs:label "缺陷代码"
+    
+    
+Class: <https://example.org/ontology/honeymom#DeliverySchedule>
+
+    Annotations: 
+        rdfs:comment "订单行下的分批交货安排,交期是排产的时间锚点。",
+        rdfs:label "交货计划"
+    
+    
+Class: <https://example.org/ontology/honeymom#DemandForecast>
+
+    Annotations: 
+        rdfs:comment "物料在某日期的预测需求量,可关联客户。",
+        rdfs:label "需求预测"
+    
+    
+Class: <https://example.org/ontology/honeymom#DowntimePlan>
+
+    Annotations: 
+        rdfs:comment "已登记的设备不可用时段(计划保养、维修、放假停产、试制调试),排产时作为硬约束。",
+        rdfs:label "设备停机计划"
+    
+    
+Class: <https://example.org/ontology/honeymom#Employee>
+
+    Annotations: 
+        rdfs:comment "作业人员。能否操作某工序由 OperatorSkill 决定,不由岗位名称决定。",
+        rdfs:label "员工"
+    
+    
+Class: <https://example.org/ontology/honeymom#Equipment>
+
+    Annotations: 
+        rdfs:comment "设备台账。带理想节拍(ideal_cycle_s),这是 OEE 性能率的计算基准;额定功率用于能耗分析。设备状态(运行/待机/换型/停机/离线/报废)由采集数据推导。",
+        rdfs:label "设备"
+    
+    HasKey: 
+        <https://example.org/ontology/honeymom#equipmentCode>
+    
+    
+Class: <https://example.org/ontology/honeymom#EquipmentStateRecord>
+
+    Annotations: 
+        rdfs:comment "设备状态的时间区间记录(运行/待机/换型/停机),是 OEE 与损失分析的原始依据。
+OEE = 可用率 A × 性能率 P × 质量率 Q:
+A = 运行时间 / 计划时间;
+P = min(1, 理想节拍 × 总产量 / 运行时间);
+Q = 合格数 / 总数。
+损失分为:停机、换型换刀、待机等待、运行。",
+        rdfs:label "设备状态记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#FinalInspection>
+
+    Annotations: 
+        rdfs:comment "检验类型取值之一:出货。成品发货前的最终检验。",
+        rdfs:label "出货检验"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#FirstArticleInspection>, <https://example.org/ontology/honeymom#InProcessInspection>, <https://example.org/ontology/honeymom#IncomingInspection>, <https://example.org/ontology/honeymom#PatrolInspection>
+    
+    
+Class: <https://example.org/ontology/honeymom#FinishedProduct>
+
+    Annotations: 
+        rdfs:comment "物料类型取值之一:成品。可入库、发运并对应销售订单行。",
+        rdfs:label "成品"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#AuxiliaryMaterial>, <https://example.org/ontology/honeymom#Consumable>, <https://example.org/ontology/honeymom#RawMaterial>, <https://example.org/ontology/honeymom#SemiFinishedMaterial>
+    
+    
+Class: <https://example.org/ontology/honeymom#FirstArticleInspection>
+
+    Annotations: 
+        rdfs:comment "检验类型取值之一:首件。首检放行单的证据来源。",
+        rdfs:label "首件检验"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#FinalInspection>, <https://example.org/ontology/honeymom#InProcessInspection>, <https://example.org/ontology/honeymom#IncomingInspection>, <https://example.org/ontology/honeymom#PatrolInspection>
+    
+    
+Class: <https://example.org/ontology/honeymom#FirstArticleRelease>
+
+    Annotations: 
+        rdfs:comment "首检单。触发场景:开工、换型、换刀、换班、维修后。工艺步骤勾选「首检放行」时,该工序在放行前不得量产报工;首检判定不合格则不放行并登记 NCR。",
+        rdfs:label "首检放行"
+    
+    HasKey: 
+        <https://example.org/ontology/honeymom#firstArticleCode>
+    
+    
+Class: <https://example.org/ontology/honeymom#Gauge>
+
+    Annotations: 
+        rdfs:comment "量具/检具台账。带校准到期状态:检验记录要求引用一把在有效期内的量具,过期量具不能用于出具有效检验结论。",
+        rdfs:label "量检具"
+    
+    
+Class: <https://example.org/ontology/honeymom#GaugeCalibration>
+
+    Annotations: 
+        rdfs:comment "量检具的一次校准,含校准日期、结果与到期日;到期后量具不可用于检验。",
+        rdfs:label "校准记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#InProcessInspection>
+
+    Annotations: 
+        rdfs:comment "检验类型取值之一:过程。生产过程中在检验点执行。",
+        rdfs:label "过程检验"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#FinalInspection>, <https://example.org/ontology/honeymom#FirstArticleInspection>, <https://example.org/ontology/honeymom#IncomingInspection>, <https://example.org/ontology/honeymom#PatrolInspection>
+    
+    
+Class: <https://example.org/ontology/honeymom#IncomingInspection>
+
+    Annotations: 
+        rdfs:comment "检验类型取值之一:来料。对应采购收货时的进货检验。",
+        rdfs:label "来料检验"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#FinalInspection>, <https://example.org/ontology/honeymom#FirstArticleInspection>, <https://example.org/ontology/honeymom#InProcessInspection>, <https://example.org/ontology/honeymom#PatrolInspection>
+    
+    
+Class: <https://example.org/ontology/honeymom#InspectionItem>
+
+    Annotations: 
+        rdfs:comment "模板下的一条待检项:特性代码、量具类型、上下限、关键/特殊特性标记。首检放行的判定依据即这些项目的上下限。",
+        rdfs:label "检验项目"
+    
+    
+Class: <https://example.org/ontology/honeymom#InspectionRecord>
+
+    Annotations: 
+        rdfs:comment "一次检验的执行结果,结论为合格/不合格/待判。检验类型为单值枚举,故其子类互斥。",
+        rdfs:label "检验记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#InspectionTemplate>
+
+    Annotations: 
+        rdfs:comment "检验的模板定义,按物料或工序适用,含抽样规则。模板下挂检验项目,项目带上下限与关键特性标记。",
+        rdfs:label "检验模板"
+    
+    
+Class: <https://example.org/ontology/honeymom#InspectionValue>
+
+    Annotations: 
+        rdfs:comment "单个检验项的实测值,绑定量具。合格判定按上下限,判定结论回写到检验记录。",
+        rdfs:label "检验值"
+    
+    
+Class: <https://example.org/ontology/honeymom#KittingRecord>
+
+    Annotations: 
+        rdfs:comment "工单各物料的齐套状态(齐套/部分/缺料)与预计到料时间。缺料工单在预计到料时间之后才能开工,这是排产的主要输入之一。",
+        rdfs:label "物料齐套"
+    
+    
+Class: <https://example.org/ontology/honeymom#LotHold>
+
+    Annotations: 
+        rdfs:comment "对某个批次(炉次)的冻结单。冻结期间:该批次零件禁止报工、禁止出库/移库;解冻时按冻结后的事件流恢复零件真实状态。",
+        rdfs:label "批次冻结"
+    
+    HasKey: 
+        <https://example.org/ontology/honeymom#lotHoldCode>
+    
+    
+Class: <https://example.org/ontology/honeymom#MaintenancePlan>
+
+    Annotations: 
+        rdfs:comment "点检/保养/润滑计划,带周期天数与下次到期日,指定负责人。",
+        rdfs:label "点检保养计划"
+    
+    
+Class: <https://example.org/ontology/honeymom#MaintenanceRecord>
+
+    Annotations: 
+        rdfs:comment "计划的一次执行结果(正常/异常)。",
+        rdfs:label "点检保养记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#Material>
+
+    Annotations: 
+        rdfs:comment "可被生产消耗或对外销售的对象,承载规格、单位、安全库存、单价、单重。物料类型(mtype)在系统中为单值枚举,故其子类互斥。",
+        rdfs:label "物料"
+    
+    
+Class: <https://example.org/ontology/honeymom#MaterialIssue>
+
+    Annotations: 
+        rdfs:comment "工单领用或退回物料的流水,带批次维度。批次冻结期间,出库方向会被拦截。",
+        rdfs:label "领料退料"
+    
+    
+Class: <https://example.org/ontology/honeymom#MaterialPlan>
+
+    Annotations: 
+        rdfs:comment "物料的采购/制造属性:自制或外购、提前期、最小批量、批量倍数、安全库存、损耗率、默认供应商与默认仓库。MRP 运算按这些参数净算需求。",
+        rdfs:label "物料计划参数"
+    
+    
+Class: <https://example.org/ontology/honeymom#MaterialRequest>
+
+    Annotations: 
+        rdfs:comment "缺料时的请领单,挂在工单与仓库上。",
+        rdfs:label "物料申请"
+    
+    
+Class: <https://example.org/ontology/honeymom#MrpRun>
+
+    Annotations: 
+        rdfs:comment "一次物料需求计划运算,带计划期与运算状态;新运算取代旧运算。",
+        rdfs:label "MRP 运算"
+    
+    
+Class: <https://example.org/ontology/honeymom#MrpSuggestion>
+
+    Annotations: 
+        rdfs:comment "MRP 净算后的建议(计划生产/计划采购/提前/推迟),带需求 pegging 溯源与产能检查结果。可下发为生产工单或采购订单。",
+        rdfs:label "MRP 建议"
+    
+    
+Class: <https://example.org/ontology/honeymom#NonconformanceReport>
+
+    Annotations: 
+        rdfs:comment "不合格品报告(NCR),带处置(待处置/返修/报废/让步接收/退供应商)与状态(待处理/评审中/已关闭)。首检不合格时自动登记 NCR 且不予放行。",
+        rdfs:label "不合格品"
+    
+    HasKey: 
+        <https://example.org/ontology/honeymom#ncrCode>
+    
+    
+Class: <https://example.org/ontology/honeymom#OperatorSkill>
+
+    Annotations: 
+        rdfs:comment "员工在某工序/工位组上的技能等级(学徒/熟练/骨干/可带教),带有效期。排产时若某工序在某个班次内没有合格操作工,产出约束标记「无合格操作工」。",
+        rdfs:label "人员技能"
+    
+    
+Class: <https://example.org/ontology/honeymom#Part>
+
+    Annotations: 
+        rdfs:comment "一件一码的实物追踪对象。状态流转:毛坯库 → 在制 → 检验合格 → 成品入库 → 已发运,旁路有返修中、冻结、报废。
+铸造场景下携带炉次、浇包、砂型、型腔、浇注温度、残镁、型砂水分等追溯参数;机加场景下携带加工机床。",
+        rdfs:label "在制品"
+    
+    
+Class: <https://example.org/ontology/honeymom#PartEvent>
+
+    Annotations: 
+        rdfs:comment "零件在现场的时序事件流(流转、检验、冻结等),与 Part 一对多,按时间回放可重建当前状态。",
+        rdfs:label "零件事件"
+    
+    
+Class: <https://example.org/ontology/honeymom#PatrolInspection>
+
+    Annotations: 
+        rdfs:comment "检验类型取值之一:巡检。班中周期性抽查。",
+        rdfs:label "巡检"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#InspectionRecord>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#FinalInspection>, <https://example.org/ontology/honeymom#FirstArticleInspection>, <https://example.org/ontology/honeymom#InProcessInspection>, <https://example.org/ontology/honeymom#IncomingInspection>
+    
+    
+Class: <https://example.org/ontology/honeymom#Plant>
+
+    Annotations: 
+        rdfs:comment "制造实体,是车间与销售订单/采购订单的收货与发货主体。",
+        rdfs:label "工厂"
+    
+    
+Class: <https://example.org/ontology/honeymom#Process>
+
+    Annotations: 
+        rdfs:comment "可被排产与报工的最小制造步骤(如熔炼、造型浇注、机加工)。工序带标准节拍,是 OEE 性能率与排产时长的计算基准。",
+        rdfs:label "工序"
+    
+    
+Class: <https://example.org/ontology/honeymom#ProductionLine>
+
+    Annotations: 
+        rdfs:comment "车间下的连续生产单元,工位与设备挂靠其上;工单可在产线上排产。",
+        rdfs:label "产线"
+    
+    
+Class: <https://example.org/ontology/honeymom#ProductionReport>
+
+    Annotations: 
+        rdfs:comment "现场产出记录,来源含设备自动、人工、手机扫码、扫码枪、工位终端。系统实际执行的放行闸门( services/gates.py submit_report )依次为:
+(1) 幂等键 idem_key 重复提交 → 识别为重复提交,不重复计数;
+(2) 零件所属批次处于冻结中 → 阻断;
+(3) 本次合格数+不良数必须大于 0;
+(4) 不得超过上道工序转来的合格数减去本道已报数(跳序/超量);
+(5) 不得超过工序计划量 ×(1+report_over_pct/100)(超计划);
+(6) 工序标记首检放行时,须已首检放行;
+(7) ECN 停工中的工单 → 阻断。
+以上为运行时规则,本体仅记录其语义,不以 OWL 公理表达为可执行约束。",
+        rdfs:label "报工记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#PurchaseOrder>
+
+    Annotations: 
+        rdfs:comment "对供应商的采购承诺,收货时转入库并触发来料检验。",
+        rdfs:label "采购订单"
+    
+    
+Class: <https://example.org/ontology/honeymom#PurchaseOrderLine>
+
+    Annotations: 
+        rdfs:comment "采购明细,带已收/合格入库/不合格数量,不合格部分可退供。",
+        rdfs:label "采购订单行"
+    
+    
+Class: <https://example.org/ontology/honeymom#PurchaseRequisition>
+
+    Annotations: 
+        rdfs:comment "采购需求,可由 MRP 建议生成。",
+        rdfs:label "请购单"
+    
+    
+Class: <https://example.org/ontology/honeymom#Quotation>
+
+    Annotations: 
+        rdfs:comment "对外报价,可转为销售订单。",
+        rdfs:label "报价单"
+    
+    
+Class: <https://example.org/ontology/honeymom#RawMaterial>
+
+    Annotations: 
+        rdfs:comment "物料类型取值之一:原材料。与其他物料类型子类互斥(mtype 单值枚举)。",
+        rdfs:label "原材料"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#AuxiliaryMaterial>, <https://example.org/ontology/honeymom#Consumable>, <https://example.org/ontology/honeymom#FinishedProduct>, <https://example.org/ontology/honeymom#SemiFinishedMaterial>
+    
+    
+Class: <https://example.org/ontology/honeymom#RepairOrder>
+
+    Annotations: 
+        rdfs:comment "维修工单,状态:已报修 → 已派工 → 维修中 → 已修复 → 已验收。未修复完成的工单所涉设备在排产时视为不可用。",
+        rdfs:label "维修工单"
+    
+    
+Class: <https://example.org/ontology/honeymom#ReworkOrder>
+
+    Annotations: 
+        rdfs:comment "返修单,必须处于「进行中」才能流转结果;返修完成后须复检(引用一条检验记录)并给出复检结论,复检不合格则返修不合格。",
+        rdfs:label "返修记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#Routing>
+
+    Annotations: 
+        rdfs:comment "产品的工艺版本,带生效/作废状态;一条路线由若干有序工艺步骤构成,工单下达时冻结引用某一版本。",
+        rdfs:label "工艺路线"
+    
+    
+Class: <https://example.org/ontology/honeymom#RoutingStep>
+
+    Annotations: 
+        rdfs:comment "工艺路线上的一道工序。携带决定现场行为的三个开关:是否检验点、是否首检放行、报工方式(设备自动/人工/扫码);并指定工位组与标准节拍。",
+        rdfs:label "工艺步骤"
+    
+    
+Class: <https://example.org/ontology/honeymom#SalesOrder>
+
+    Annotations: 
+        rdfs:comment "客户订单。状态:草稿 → 信用待批 → 已确认 → 部分发货 → 已发完 → 已关闭。按单生产(mto)时,订单行会派生生产工单。",
+        rdfs:label "销售订单"
+    
+    
+Class: <https://example.org/ontology/honeymom#SalesOrderLine>
+
+    Annotations: 
+        rdfs:comment "订单的产品明细行,带数量、单价、交期与已发/已退数量;按单生产时关联到具体工单。",
+        rdfs:label "销售订单行"
+    
+    
+Class: <https://example.org/ontology/honeymom#ScheduleProposal>
+
+    Annotations: 
+        rdfs:comment "what-if 排产假设(设备停机、到料推迟、模具保养、优先级调整)落成的建议,带受影响工单与原因。采纳后写入主数据并重排。",
+        rdfs:label "排程调整建议"
+    
+    
+Class: <https://example.org/ontology/honeymom#SemiFinishedMaterial>
+
+    Annotations: 
+        rdfs:comment "物料类型取值之一:半成品。经一道或多道工序加工后进入下一工序的中间件。",
+        rdfs:label "半成品"
+    
+    SubClassOf: 
+        <https://example.org/ontology/honeymom#Material>
+    
+    DisjointWith: 
+        <https://example.org/ontology/honeymom#AuxiliaryMaterial>, <https://example.org/ontology/honeymom#Consumable>, <https://example.org/ontology/honeymom#FinishedProduct>, <https://example.org/ontology/honeymom#RawMaterial>
+    
+    
+Class: <https://example.org/ontology/honeymom#Shift>
+
+    Annotations: 
+        rdfs:comment "排产与考勤使用的时间段。active=false 的班次不参与排产,设备只在启用班次内工作。",
+        rdfs:label "班次"
+    
+    
+Class: <https://example.org/ontology/honeymom#Shipment>
+
+    Annotations: 
+        rdfs:comment "成品发运,对应工单与客户。",
+        rdfs:label "发运记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#Stock>
+
+    Annotations: 
+        rdfs:comment "物料在仓库/库位上的当前数量,按批次(lot)分列。冻结批次仍占用库存,但不可出库。",
+        rdfs:label "库存"
+    
+    
+Class: <https://example.org/ontology/honeymom#StockTransaction>
+
+    Annotations: 
+        rdfs:comment "库存流水:入库/出库/移库/盘点调整。移库含调入仓库。出库与移库方向受批次冻结拦截。",
+        rdfs:label "出入库记录"
+    
+    
+Class: <https://example.org/ontology/honeymom#StorageLocation>
+
+    Annotations: 
+        rdfs:comment "仓库内的库位,带容量。库存精确到库位。",
+        rdfs:label "库位"
+    
+    
+Class: <https://example.org/ontology/honeymom#Supplier>
+
+    Annotations: 
+        rdfs:comment "供货方,带资格(合格/试用/停用)与绩效得分;停用供应商不能下采购订单。",
+        rdfs:label "供应商"
+    
+    
+Class: <https://example.org/ontology/honeymom#TagPoint>
+
+    Annotations: 
+        rdfs:comment "设备点位定义,带地址、类型、量程缩放、采集周期与报警上下限。用途(运行状态/报警/功率/产量/主轴负载/温度/质量值)决定该点位被映射成哪类业务记录;接入时逐点确认语义,确认前不可投产。",
+        rdfs:label "采集点"
+    
+    
+Class: <https://example.org/ontology/honeymom#Team>
+
+    Annotations: 
+        rdfs:comment "人员的组织单元,归属某个班次,班组长是排产技能覆盖判断的组织边界。",
+        rdfs:label "班组"
+    
+    
+Class: <https://example.org/ontology/honeymom#Tooling>
+
+    Annotations: 
+        rdfs:comment "模具/芯盒/夹具/检具。带当前模次与寿命模次。排产约束:同一套模具同一时间只能在一台设备上;保养中的模具要到预计可用时间才能占用;剩余模次不足以完成本单时产出「模具寿命不足」提示。",
+        rdfs:label "模具夹具"
+    
+    
+Class: <https://example.org/ontology/honeymom#UserAccount>
+
+    Annotations: 
+        rdfs:comment "登录账号,绑定员工身份与角色权限;数据范围(工厂/车间/产线)决定其可见对象集合。",
+        rdfs:label "系统用户"
+    
+    
+Class: <https://example.org/ontology/honeymom#Warehouse>
+
+    Annotations: 
+        rdfs:comment "按类型区分原材料库、毛坯库、线边库、成品库、辅料库;委外仓表示供应商处库存。",
+        rdfs:label "仓库"
+    
+    
+Class: <https://example.org/ontology/honeymom#WorkOrder>
+
+    Annotations: 
+        rdfs:comment "生产工单是计划与现场的交接口。状态机:草稿 → 已下达 → 生产中 → 已完工 → 已关闭(可转已取消)。
+业务约束:工单可因 ECN(工艺变更)被判停工,停工未解除时禁止报工(见 services/exec_doc.py 的 report_gate);该 ECN 模型不在本次本体范围内。",
+        rdfs:label "生产工单"
+    
+    HasKey: 
+        <https://example.org/ontology/honeymom#workOrderCode>
+    
+    
+Class: <https://example.org/ontology/honeymom#WorkOrderOperation>
+
+    Annotations: 
+        rdfs:comment "工单在工艺路线上的展开,记录计划量/合格量/不良量与实际起止。顺序(seq)是有业务含义的:上一道工序未转来足量合格品时,本道不得超量报工。",
+        rdfs:label "工单工序"
+    
+    
+Class: <https://example.org/ontology/honeymom#Workshop>
+
+    Annotations: 
+        rdfs:comment "工厂下的生产单元,按类型区分铸造、机加、仓储等;车间类型决定下辖产线的工艺属性。",
+        rdfs:label "车间"
+    
+    
+Class: <https://example.org/ontology/honeymom#Workstation>
+
+    Annotations: 
+        rdfs:comment "产线上的作业点,可绑定设备。工位组(group)表示可互相替代的同类工位(如 CNC 群组),是排产时并行分配设备与模具的单位。",
+        rdfs:label "工位"
+    
+    
+Class: rdfs:Resource
+
+    

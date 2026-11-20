@@ -1,0 +1,4365 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="https://example.org/ontology/honeymom#"
+     xml:base="https://example.org/ontology/honeymom"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="https://example.org/ontology/honeymom">
+        <rdfs:comment>HoneyMOM 离散制造 MES / MOM 系统的业务本体。对象类型对应业务概念,链接类型对应业务关联,数据属性对应业务属性。建模依据来自源码 honeymom/schema*.py 的实体定义与 honeymom/services/ 中的实际业务规则,不是数据库表的机械镜像。</rdfs:comment>
+        <rdfs:label>HoneyMOM 制造运营本体</rdfs:label>
+        <owl:versionInfo>0.1.0 — 基于 Indu-mom 仓库 main 分支抽取,2026-11-16</owl:versionInfo>
+    </owl:Ontology>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Datatypes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2001/XMLSchema#date -->
+
+    <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#date"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://example.org/ontology/honeymom#alarmOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#alarmOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Alarm"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>报警设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#appliesToEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#appliesToEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#OperatorSkill"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>适用设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#appliesToProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#appliesToProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Routing"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:comment>工艺路线适用的产品(与 BOM 的产品语义一致,但分属不同主数据:一个是物料结构,一个是工艺结构)。</rdfs:comment>
+        <rdfs:label>适用产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#attendanceInShift -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#attendanceInShift">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Attendance"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Shift"/>
+        <rdfs:label>出勤班次</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#attendanceOfEmployee -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#attendanceOfEmployee">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Attendance"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>出勤员工</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#belongsToRouting -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#belongsToRouting">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RoutingStep"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Routing"/>
+        <rdfs:label>所属工艺路线</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#belongsToTeam -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#belongsToTeam">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Team"/>
+        <rdfs:label>所属班组</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#belongsToWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#belongsToWorkOrder">
+        <owl:inverseOf rdf:resource="https://example.org/ontology/honeymom#hasOperation"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>所属工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#bomComponent -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#bomComponent">
+        <owl:inverseOf rdf:resource="https://example.org/ontology/honeymom#bomProduct"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#BillOfMaterials"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>BOM 子件</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#bomProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#bomProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#BillOfMaterials"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:comment>BOM 的父件方向,与 bomComponent 互为逆关系。</rdfs:comment>
+        <rdfs:label>BOM 产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#calibrationForGauge -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#calibrationForGauge">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#GaugeCalibration"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:label>校准对象</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#changeoverFromProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#changeoverFromProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Changeover"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>换型前产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#changeoverToProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#changeoverToProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Changeover"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>换型后产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#classifiedByDefect -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#classifiedByDefect">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#DefectCode"/>
+        <rdfs:label>缺陷分类</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#containsLine -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#containsLine">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Workshop"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#ProductionLine"/>
+        <rdfs:label>包含产线</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#containsWorkshop -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#containsWorkshop">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Plant"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Workshop"/>
+        <rdfs:comment>工厂组织车间。</rdfs:comment>
+        <rdfs:label>包含车间</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#containsWorkstation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#containsWorkstation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Workstation"/>
+        <rdfs:label>包含工位</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#coversProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#coversProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#OperatorSkill"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>覆盖工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#defectOwnedByProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#defectOwnedByProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DefectCode"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>责任工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#derivedFromQuotation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#derivedFromQuotation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Quotation"/>
+        <rdfs:label>源自报价单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#downtimeAffectsEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#downtimeAffectsEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DowntimePlan"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>停机设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentOnLine -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#equipmentOnLine">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#ProductionLine"/>
+        <rdfs:label>所属产线</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#eventOfPart -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#eventOfPart">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PartEvent"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:label>零件事件归属</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#faiEvidencedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#faiEvidencedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:label>首检证据</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#faiForOperation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#faiForOperation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:label>首检工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#faiForProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#faiForProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>首检作业</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#faiForWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#faiForWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>首检工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#faiOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#faiOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>首检设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#followsRouting -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#followsRouting">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Routing"/>
+        <rdfs:label>遵循工艺路线</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#forecastForMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#forecastForMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DemandForecast"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>预测物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#forecastFromCustomer -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#forecastFromCustomer">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DemandForecast"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Customer"/>
+        <rdfs:label>预测客户</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#fulfilledAtPlant -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#fulfilledAtPlant">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Plant"/>
+        <rdfs:label>履行工厂</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#fulfillsSalesOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#fulfillsSalesOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:comment>按单生产(MTO)时建立:该工单是为这张销售订单生产的。</rdfs:comment>
+        <rdfs:label>履行销售订单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#hasOperation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#hasOperation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:label>包含工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#heldByEmployee -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#heldByEmployee">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#OperatorSkill"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>技能持有人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#holdAppliesToMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#holdAppliesToMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#LotHold"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>冻结物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#hostsEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#hostsEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Workstation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>承载设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#inspectedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>检验员</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#issueAgainstWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#issueAgainstWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialIssue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>领退对应工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#issueHandledBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#issueHandledBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialIssue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>经办人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#issuedFromWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#issuedFromWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialIssue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:label>出入仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#issuesMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#issuesMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialIssue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>领退物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemBelongsToTemplate -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#itemBelongsToTemplate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#InspectionTemplate"/>
+        <rdfs:label>所属检验模板</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#kittingForMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#kittingForMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#KittingRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>齐套物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#kittingForWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#kittingForWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#KittingRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>齐套工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineBelongsToOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#lineBelongsToOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrderLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:label>所属销售订单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineForMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#lineForMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrderLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>订单物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineProducedByWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#lineProducedByWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrderLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>由工单生产</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#locationInsideWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#locationInsideWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StorageLocation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:label>所在仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialPlanDefaultSupplier -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#materialPlanDefaultSupplier">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:label>默认供应商</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialPlanDefaultWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#materialPlanDefaultWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:label>默认仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialPlanForMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#materialPlanForMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>计划物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#measuredWithGauge -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#measuredWithGauge">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:comment>检验记录的主量具。检验项目声明量具类型,录入时必须选一把同类型且在校准有效期内的量具。</rdfs:comment>
+        <rdfs:label>使用量具</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrAgainstWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#ncrAgainstWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>不合格工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrByDefect -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#ncrByDefect">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#DefectCode"/>
+        <rdfs:label>缺陷分类</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrOfMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#ncrOfMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>不合格物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#operationAssignedTo -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#operationAssignedTo">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>派工给</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#operationCoversProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#operationCoversProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>工序对应作业</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#orderPlacedWithSupplier -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#orderPlacedWithSupplier">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:label>采购供应商</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#orderReceivedAtPlant -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#orderReceivedAtPlant">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Plant"/>
+        <rdfs:label>收货工厂</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partBelongsToWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#partBelongsToWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>零件所属工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partIsProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#partIsProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>零件对应产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#performedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#performedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>报工人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#performsProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#performsProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Workstation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>执行工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#placedByCustomer -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#placedByCustomer">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Customer"/>
+        <rdfs:label>下单客户</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#planForEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#planForEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenancePlan"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>保养设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#planOwnedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#planOwnedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenancePlan"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>计划负责人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineBelongsToOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#poLineBelongsToOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:label>所属采购订单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineForMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#poLineForMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>采购物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineFromRequisition -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#poLineFromRequisition">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:label>来源请购单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#producesProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#producesProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>生产产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#proposesForWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#proposesForWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ScheduleProposal"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>建议针对工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#quotationIssuedTo -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#quotationIssuedTo">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Quotation"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Customer"/>
+        <rdfs:label>报价客户</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#raisedOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#raisedOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Andon"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>发起设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#recordAgainstWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#recordAgainstWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>检验工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#recordExecutedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#recordExecutedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenanceRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>执行人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#recordFulfillsPlan -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#recordFulfillsPlan">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenanceRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#MaintenancePlan"/>
+        <rdfs:label>执行计划</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#recordOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#recordOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenanceRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>保养设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#recordUsesTemplate -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#recordUsesTemplate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#InspectionTemplate"/>
+        <rdfs:label>使用检验模板</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#repairAssignedTo -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#repairAssignedTo">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RepairOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>维修人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#repairForEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#repairForEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RepairOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>维修设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportForProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reportForProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>报工作业</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportedDuringShift -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reportedDuringShift">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Shift"/>
+        <rdfs:label>报工班次</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportedOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reportedOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>报工设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportsOnOperation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reportsOnOperation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:label>报工工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportsOnWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reportsOnWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>报工工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requestForWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requestForWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialRequest"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>申请工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requestFromWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requestFromWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialRequest"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:label>申请仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requestsMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requestsMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialRequest"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>申请物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requiresProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requiresProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RoutingStep"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>对应工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requisitionConvertedToOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requisitionConvertedToOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:label>转为采购订单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requisitionRequestsMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requisitionRequestsMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>请购物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requisitionSuggestedSupplier -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#requisitionSuggestedSupplier">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:label>建议供应商</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reworkPerformedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reworkPerformedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ReworkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>返修人</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reworkRecheckedBy -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reworkRecheckedBy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ReworkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:label>复检单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reworkRemediates -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#reworkRemediates">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ReworkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:label>返修不合格品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#scheduleForOrderLine -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#scheduleForOrderLine">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DeliverySchedule"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#SalesOrderLine"/>
+        <rdfs:label>交货计划所属订单行</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#scheduledOnLine -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#scheduledOnLine">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#ProductionLine"/>
+        <rdfs:label>排产产线</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shipmentOfWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#shipmentOfWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shipment"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>发运工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stateOfEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#stateOfEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#EquipmentStateRecord"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>设备状态记录</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stockAtLocation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#stockAtLocation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Stock"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#StorageLocation"/>
+        <rdfs:label>库存库位</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stockHoldsMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#stockHoldsMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Stock"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>库存物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stockInWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#stockInWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Stock"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:label>库存仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionForMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#suggestionForMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>建议物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionFromRun -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#suggestionFromRun">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#MrpRun"/>
+        <rdfs:label>所属 MRP 运算</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionGeneratesPurchaseOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#suggestionGeneratesPurchaseOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:label>生成采购订单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionGeneratesRequisition -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#suggestionGeneratesRequisition">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:label>生成请购单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionGeneratesWorkOrder -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#suggestionGeneratesWorkOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:label>生成生产工单</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionToSupplier -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#suggestionToSupplier">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:label>建议供应商</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagFromDataSource -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#tagFromDataSource">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#DataSource"/>
+        <rdfs:label>点位数据源</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#tagOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>点位设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#templateAppliesToMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#templateAppliesToMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionTemplate"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>适用物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#templateAppliesToProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#templateAppliesToProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionTemplate"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>适用工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingForProcess -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#toolingForProcess">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:label>适用工序</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingForProduct -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#toolingForProduct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>适用产品</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingOnEquipment -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#toolingOnEquipment">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:label>所在设备</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#txnAtLocation -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#txnAtLocation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#StorageLocation"/>
+        <rdfs:label>出入库库位</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#txnFromWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#txnFromWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:label>来源仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#txnMovesMaterial -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#txnMovesMaterial">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:label>出入库物料</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#txnToWarehouse -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#txnToWarehouse">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:comment>移库时的目标仓库。</rdfs:comment>
+        <rdfs:label>调入仓库</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#userLinkedToEmployee -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#userLinkedToEmployee">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#UserAccount"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Employee"/>
+        <rdfs:label>关联员工</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#valueBelongsToRecord -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#valueBelongsToRecord">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionValue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:label>所属检验记录</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#valueForItem -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#valueForItem">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionValue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:label>对应检验项目</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#valueMeasuredWithGauge -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#valueMeasuredWithGauge">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionValue"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:label>测量量具</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#worksInShift -->
+
+    <owl:ObjectProperty rdf:about="https://example.org/ontology/honeymom#worksInShift">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Team"/>
+        <rdfs:range rdf:resource="https://example.org/ontology/honeymom#Shift"/>
+        <rdfs:label>归属班次</rdfs:label>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- https://example.org/ontology/honeymom#actualEndTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#actualEndTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>实际结束</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#actualStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#actualStartTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>实际开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#alarmDurationSeconds -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#alarmDurationSeconds">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Alarm"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>报警时长</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#alarmMessage -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#alarmMessage">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Alarm"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>报警内容</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#alarmStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#alarmStartTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Alarm"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>报警开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#andonDescription -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#andonDescription">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Andon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>问题描述</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#andonRaisedAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#andonRaisedAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Andon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>发起时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#andonSource -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#andonSource">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Andon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:人工 / 设备自动 / 智能体。</rdfs:comment>
+        <rdfs:label>安灯来源</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#andonStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#andonStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Andon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:待响应 / 处理中 / 已关闭。</rdfs:comment>
+        <rdfs:label>安灯状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#andonType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#andonType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Andon"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:设备 / 质量 / 物料 / 安全 / 其他。</rdfs:comment>
+        <rdfs:label>安灯类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#attendanceTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#attendanceTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Attendance"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>出勤时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#bomQuantity -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#bomQuantity">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#BillOfMaterials"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>用量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#calibrationCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#calibrationCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#GaugeCalibration"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>校准单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#calibrationDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#calibrationDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#GaugeCalibration"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>校准日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#calibrationResult -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#calibrationResult">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#GaugeCalibration"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>校准结果</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#changeoverMinutes -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#changeoverMinutes">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Changeover"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:分钟。</rdfs:comment>
+        <rdfs:label>换型时长</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#completedAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#completedAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>完工时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#creditLimit -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#creditLimit">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:元;0 或空表示不控制。销售订单状态流转中的信用检查依据。</rdfs:comment>
+        <rdfs:label>信用额度</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#customerName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#customerName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Customer"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>客户名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#dataSourceEndpoint -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#dataSourceEndpoint">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DataSource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>接入地址</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#dataSourceProtocol -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#dataSourceProtocol">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DataSource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:MQTT (UNS) / OPC UA / Modbus TCP。</rdfs:comment>
+        <rdfs:label>接入协议</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#decidedAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#decidedAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>判定时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#defectCategory -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#defectCategory">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DefectCode"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:铸造 / 机加 / 外观 / 其他。</rdfs:comment>
+        <rdfs:label>缺陷类别</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#defectSeverity -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#defectSeverity">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DefectCode"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:致命 / 严重 / 轻微。</rdfs:comment>
+        <rdfs:label>严重度</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#downtimeEndTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#downtimeEndTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DowntimePlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>停机结束</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#downtimeKind -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#downtimeKind">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DowntimePlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:计划保养 / 维修 / 放假停产 / 试制调试 / 其他。</rdfs:comment>
+        <rdfs:label>停机类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#downtimeStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#downtimeStartTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DowntimePlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>停机开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#dueDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#dueDate">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment>生产工单为交期时刻,销售订单行与采购行为日期。</rdfs:comment>
+        <rdfs:label>交期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>设备编号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentInstallDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentInstallDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>投用日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>设备名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentStateName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentStateName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#EquipmentStateRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>如运行、待机、换型、停机、离线。</rdfs:comment>
+        <rdfs:label>状态名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:运行 / 待机 / 换型 / 停机 / 离线 / 报废。由采集数据推导,系统只读。</rdfs:comment>
+        <rdfs:label>设备状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举含中频炉、球化站、砂处理、造型线、冷却线、抛丸机、加工中心、去毛刺单元、检测站、立体仓库、AGV 等。</rdfs:comment>
+        <rdfs:label>设备类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#equipmentVendor -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#equipmentVendor">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>设备厂家</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#estimatedArrivalTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#estimatedArrivalTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#KittingRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>预计到料时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#firstArticleCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#firstArticleCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>首检单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#firstArticleStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#firstArticleStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:待检 / 已放行 / 不放行。已放行是量产报工的前置条件。</rdfs:comment>
+        <rdfs:label>首检状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#firstArticleTrigger -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#firstArticleTrigger">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#FirstArticleRelease"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:开工 / 换型 / 换刀 / 换班 / 维修后。</rdfs:comment>
+        <rdfs:label>触发场景</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#forecastDueDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#forecastDueDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DemandForecast"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>需求日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#forecastQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#forecastQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DemandForecast"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>预测数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#gaugeCalibrationDue -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#gaugeCalibrationDue">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:comment>到期后该量具不可用于出具有效检验结论。</rdfs:comment>
+        <rdfs:label>校准到期日</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#gaugeCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#gaugeCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>量具编号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#gaugeName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#gaugeName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>量具名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#gaugeType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#gaugeType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Gauge"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>量具类别。检验项声明所需量具类型,录入时按类型匹配。</rdfs:comment>
+        <rdfs:label>量具类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#idealCycleSeconds -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#idealCycleSeconds">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>设备在最佳状态下的单件理论秒数,是 OEE 性能率的分子基准:理想产量 = 理想节拍 × 总产量 / 运行时间。</rdfs:comment>
+        <rdfs:label>理想节拍</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>检验单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionNgQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionNgQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>不合格数</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionResult -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionResult">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:合格 / 不合格 / 待判。</rdfs:comment>
+        <rdfs:label>检验结论</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionSampleQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionSampleQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>样本数</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>检验时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionType">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:来料 / 过程 / 首件 / 出货 / 巡检。单值,与 InspectionRecord 的子类划分对应。</rdfs:comment>
+        <rdfs:label>检验类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionValueNumber -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionValueNumber">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionValue"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>实测值</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionValueOk -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionValueOk">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionValue"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label>是否合格</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#inspectionValueText -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#inspectionValueText">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionValue"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>文字结果</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#isMakeToOrder -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#isMakeToOrder">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>为真时该订单派生生产工单,是需求到工单的转换点。</rdfs:comment>
+        <rdfs:label>按单生产</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#issueKind -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#issueKind">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialIssue"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:领料 / 退料。</rdfs:comment>
+        <rdfs:label>领退类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#issueQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#issueQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialIssue"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>领退数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemCharacteristicCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#itemCharacteristicCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>特性代码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemIsKeyCharacteristic -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#itemIsKeyCharacteristic">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label>关键特性</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemLowerLimit -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#itemLowerLimit">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>下限</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#itemName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>检验项目名</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemSpecialCharacteristic -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#itemSpecialCharacteristic">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>特殊特性</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#itemUpperLimit -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#itemUpperLimit">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionItem"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>首检放行的判定依据:实测值落在上下限内即合格。</rdfs:comment>
+        <rdfs:label>上限</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#kittingQtyNeeded -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#kittingQtyNeeded">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#KittingRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>齐套需求量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#kittingQtyReady -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#kittingQtyReady">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#KittingRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>齐套已备量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#kittingStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#kittingStatus">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#KittingRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:齐套 / 部分 / 缺料。缺料工单在预计到料后才可开工。</rdfs:comment>
+        <rdfs:label>齐套状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#leadTimeDays -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#leadTimeDays">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>单位:天,MRP 用它做交期倒推。</rdfs:comment>
+        <rdfs:label>提前期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lineCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>产线编码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lineName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>产线名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lineQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrderLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>订单行数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lineQtyShipped -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lineQtyShipped">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrderLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>已发数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#locationCapacity -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#locationCapacity">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StorageLocation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>库位容量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#locationCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#locationCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StorageLocation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>库位编码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotCode">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>批次/炉次标识。冻结、追溯、抽样都以批次为维度。</rdfs:comment>
+        <rdfs:label>批次号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotHoldCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotHoldCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#LotHold"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>冻结单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotHoldReason -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotHoldReason">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#LotHold"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>冻结原因</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotHoldStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotHoldStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#LotHold"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:冻结中 / 已解冻。</rdfs:comment>
+        <rdfs:label>冻结状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotHoldedAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotHoldedAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#LotHold"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>冻结时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotMultiple -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotMultiple">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>批量倍数</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#lotReleasedAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#lotReleasedAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#LotHold"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>解冻时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#maintenanceCycleDays -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#maintenanceCycleDays">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenancePlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>单位:天。</rdfs:comment>
+        <rdfs:label>保养周期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#maintenanceNextDue -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#maintenanceNextDue">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenancePlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>下次到期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#maintenanceResult -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#maintenanceResult">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenanceRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:正常 / 异常。</rdfs:comment>
+        <rdfs:label>保养结果</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#maintenanceType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#maintenanceType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaintenancePlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:日常点检 / 定期保养 / 润滑。</rdfs:comment>
+        <rdfs:label>保养类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#makeOrBuy -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#makeOrBuy">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:自制 / 外购。决定 MRP 净算后产生工单还是采购申请。</rdfs:comment>
+        <rdfs:label>自制或外购</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#materialCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>物料编码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#materialName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>物料名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialSpec -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#materialSpec">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>规格</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#materialType">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:原材料 / 半成品 / 成品 / 辅料 / 易耗品。单值,故与 Material 的子类划分对应。</rdfs:comment>
+        <rdfs:label>物料类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#materialUnit -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#materialUnit">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>单位</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#minimumLotQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#minimumLotQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>最小批量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#mrpHorizonDays -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#mrpHorizonDays">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>单位:天,运算的时间跨度。</rdfs:comment>
+        <rdfs:label>计划期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#mrpRunAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#mrpRunAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>运算时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#mrpRunCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#mrpRunCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>MRP 运算号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#mrpRunStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#mrpRunStatus">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpRun"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:已完成 / 已被新运算取代。</rdfs:comment>
+        <rdfs:label>运算状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>NCR 号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrCorrectiveAction -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrCorrectiveAction">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>纠正措施</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrDisposition -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrDisposition">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:待处置 / 返修 / 报废 / 让步接收 / 退供应商。</rdfs:comment>
+        <rdfs:label>处置方式</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrFoundAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrFoundAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>发现时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>不合格数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrRootCause -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrRootCause">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>原因分析</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ncrStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ncrStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#NonconformanceReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:待处理 / 评审中 / 已关闭。</rdfs:comment>
+        <rdfs:label>NCR 状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#needDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#needDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>需求日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#operationGoodQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#operationGoodQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>工序合格量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#operationNgQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#operationNgQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>工序不良量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#operationPlannedQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#operationPlannedQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>超计划报工的基准,允许超出上限由超报比例参数控制。</rdfs:comment>
+        <rdfs:label>工序计划量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#operationStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#operationStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrderOperation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:待开工 / 可开工 / 进行中 / 完成。</rdfs:comment>
+        <rdfs:label>工序状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#orderAmount -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#orderAmount">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:元。</rdfs:comment>
+        <rdfs:label>订单金额</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partCurrentStation -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partCurrentStation">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>当前位置</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partEventTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partEventTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PartEvent"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>事件时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partEventType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partEventType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PartEvent"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>如流转、检验、冻结等事件名。</rdfs:comment>
+        <rdfs:label>事件类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partHeatNumber -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partHeatNumber">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>铸造炉次号,是机加缺陷反查熔炼过程的追溯锚点。</rdfs:comment>
+        <rdfs:label>炉次</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partPourTemperature -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partPourTemperature">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>浇注温度</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partResidualMagnesium -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partResidualMagnesium">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:%,与浇注温度、型砂水分共同参与缺陷相关性分析。</rdfs:comment>
+        <rdfs:label>残镁</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partReworkCount -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partReworkCount">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>返修次数</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partSerialNumber -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partSerialNumber">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>一件一码的实物身份,贯穿报工、检验、冻结、发运。</rdfs:comment>
+        <rdfs:label>零件码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#partStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#partStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Part"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:在制 / 检验合格 / 成品入库 / 已发运 / 报废 / 毛坯库 / 返修中 / 冻结。</rdfs:comment>
+        <rdfs:label>零件状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#plannedStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#plannedStartTime">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>计划开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#plantAddress -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#plantAddress">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Plant"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>工厂地址</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#plantCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#plantCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Plant"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>工厂编码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#plantName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#plantName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Plant"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>工厂名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#poLineQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>采购数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineQtyAccepted -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#poLineQtyAccepted">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>合格入库数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineQtyReceived -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#poLineQtyReceived">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>已收数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#poLineQtyRejected -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#poLineQtyRejected">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrderLine"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>不合格数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#processCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#processCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>工序编码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#processName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#processName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>工序名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#processType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#processType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Process"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举含熔炼、球化孕育、造型浇注、冷却落砂、清理抛丸、来料、机加工、去毛刺、检测、入库等。</rdfs:comment>
+        <rdfs:label>工序类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#proposalStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#proposalStatus">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ScheduleProposal"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>建议状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#purchaseOrderCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#purchaseOrderCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>采购订单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#purchaseOrderStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#purchaseOrderStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:草稿 / 已审批 / 已下发 / 部分到货 / 已到齐 / 已关闭 / 已取消。</rdfs:comment>
+        <rdfs:label>采购订单状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#quotationCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#quotationCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Quotation"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>报价单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ratedPowerKw -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#ratedPowerKw">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Equipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:kW,用于小时电耗与能耗分析。</rdfs:comment>
+        <rdfs:label>额定功率</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#recheckResult -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#recheckResult">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ReworkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:合格 / 不合格。</rdfs:comment>
+        <rdfs:label>复检结论</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#releaseDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#releaseDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:comment>按提前期从需求日期倒推得到。</rdfs:comment>
+        <rdfs:label>建议下达日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#releasedAt -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#releasedAt">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>下达时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#repairDowntimeMinutes -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#repairDowntimeMinutes">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RepairOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:分钟,计入设备损失。</rdfs:comment>
+        <rdfs:label>维修停机时长</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#repairFault -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#repairFault">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RepairOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>故障描述</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#repairLevel -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#repairLevel">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RepairOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:紧急 / 一般。</rdfs:comment>
+        <rdfs:label>紧急程度</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#repairStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#repairStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RepairOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:已报修 / 已派工 / 维修中 / 已修复 / 已验收。未验收的维修单使设备在排产时不可用。</rdfs:comment>
+        <rdfs:label>维修状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>报工单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportEndTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportEndTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>报工结束</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportGoodQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportGoodQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>报工合格数</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportIdempotencyKey -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportIdempotencyKey">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>同一幂等键重复提交被识别为重复提交,不重复计数,是防止重复报工的兜底。</rdfs:comment>
+        <rdfs:label>幂等键</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportNgQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportNgQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>报工不良数</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportSource -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportSource">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:设备自动 / 人工 / 手机扫码 / 扫码枪 / 工位终端。</rdfs:comment>
+        <rdfs:label>报工来源</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reportStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reportStartTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ProductionReport"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>报工开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requestQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#requestQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialRequest"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>申请数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requisitionCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#requisitionCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>请购单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requisitionQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#requisitionQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>请购数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#requisitionStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#requisitionStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#PurchaseRequisition"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:草稿 / 待审批 / 已批准 / 已下单 / 已驳回 / 已取消。</rdfs:comment>
+        <rdfs:label>请购状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reworkMethod -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reworkMethod">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ReworkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>返修方法</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#reworkResult -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#reworkResult">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#ReworkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:合格 / 仍不合格 / 进行中。只有「进行中」才能流转结果。</rdfs:comment>
+        <rdfs:label>返修结果</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#routingStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#routingStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Routing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:草稿 / 生效 / 作废。</rdfs:comment>
+        <rdfs:label>工艺路线状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#routingVersion -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#routingVersion">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Routing"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>工艺版本</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#safetyStock -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#safetyStock">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>安全库存</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#salesOrderCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#salesOrderCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>销售订单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#salesOrderDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#salesOrderDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>下单日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#salesOrderStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#salesOrderStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#SalesOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:草稿 / 信用待批 / 已确认 / 部分发货 / 已发完 / 已关闭 / 已取消。</rdfs:comment>
+        <rdfs:label>销售订单状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#scheduleDueDate -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#scheduleDueDate">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DeliverySchedule"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>交货日期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#scheduleQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#scheduleQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#DeliverySchedule"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>交货数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#scrapRatePct -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#scrapRatePct">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MaterialPlan"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:%,MRP 净算时放大需求量。</rdfs:comment>
+        <rdfs:label>损耗率</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shiftActive -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#shiftActive">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shift"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>为假时该班次不参与排产,设备不在该时段内作业。</rdfs:comment>
+        <rdfs:label>排产启用</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shiftEndTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#shiftEndTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shift"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>班次结束</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shiftStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#shiftStartTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shift"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>时刻,格式 HH:MM。</rdfs:comment>
+        <rdfs:label>班次开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shipmentCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#shipmentCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>发运单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shipmentQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#shipmentQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>发运数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#shipmentTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#shipmentTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Shipment"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>发运时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#skillLevel -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#skillLevel">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#OperatorSkill"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:学徒(需带教) / 熟练 / 骨干 / 可带教。</rdfs:comment>
+        <rdfs:label>技能等级</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#skillValidUntil -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#skillValidUntil">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#OperatorSkill"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#date"/>
+        <rdfs:label>技能有效期至</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#standardCycleSeconds -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#standardCycleSeconds">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>完成一件的理论秒数。用于排产时长计算与 OEE 性能率基准。</rdfs:comment>
+        <rdfs:label>标准节拍</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stateDurationSeconds -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stateDurationSeconds">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#EquipmentStateRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:秒。</rdfs:comment>
+        <rdfs:label>状态时长</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stateEndTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stateEndTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#EquipmentStateRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:comment>空值表示该状态持续至今。</rdfs:comment>
+        <rdfs:label>状态结束</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stateStartTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stateStartTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#EquipmentStateRecord"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>状态开始</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stepInstruction -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stepInstruction">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RoutingStep"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>作业指示</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stepIsInspectionPoint -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stepIsInspectionPoint">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RoutingStep"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:label>检验点</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stepReportMode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stepReportMode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RoutingStep"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:设备自动 / 人工 / 扫码。决定现场以何种方式产生报工记录。</rdfs:comment>
+        <rdfs:label>报工方式</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stepRequiresFirstArticle -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stepRequiresFirstArticle">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#RoutingStep"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>为真时,该工序在首检放行前不得量产报工。</rdfs:comment>
+        <rdfs:label>首检放行</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stepSequence -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stepSequence">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>有序值,是「不得跳序报工」与「不得超过上道转来数量」的判定基础。</rdfs:comment>
+        <rdfs:label>步骤顺序</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#stockQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#stockQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Stock"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>库存数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionKind -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#suggestionKind">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:计划生产 / 计划采购 / 提前 / 推迟。</rdfs:comment>
+        <rdfs:label>建议类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionLevel -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#suggestionLevel">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>多级 BOM 展开后的层级,用于展示净算过程。</rdfs:comment>
+        <rdfs:label>BOM 层级</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#suggestionQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>建议数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#suggestionStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#suggestionStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#MrpSuggestion"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:待处理 / 已调整 / 已下达 / 已忽略。</rdfs:comment>
+        <rdfs:label>建议状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#supplierName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#supplierName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>供应商名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#supplierQualification -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#supplierQualification">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:合格 / 试用 / 停用。停用供应商不能下采购订单。</rdfs:comment>
+        <rdfs:label>供应商资格</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#supplierRating -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#supplierRating">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Supplier"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>供应商绩效</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagAddress -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagAddress">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>点位地址</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagAlarmLower -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagAlarmLower">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>报警下限</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagAlarmUpper -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagAlarmUpper">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>报警上限</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagConfirmed -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagConfirmed">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#boolean"/>
+        <rdfs:comment>接入时逐点确认语义;未确认的点位不投产,这是设备接入的业务闸门。</rdfs:comment>
+        <rdfs:label>语义已确认</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>点位名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagPeriodMs -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagPeriodMs">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>单位:毫秒。</rdfs:comment>
+        <rdfs:label>采集周期</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#tagRole -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#tagRole">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#TagPoint"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:运行状态 / 报警 / 功率 / 电能 / 产量 / 主轴负载 / 温度 / 质量值 / 其他。用途决定该点位被映射成哪类业务记录。</rdfs:comment>
+        <rdfs:label>点位用途</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#templateCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#templateCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionTemplate"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>检验模板编码</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#templateName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#templateName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#InspectionTemplate"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>检验模板名称</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingAvailableFrom -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#toolingAvailableFrom">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>预计可用时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingLifeShots -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#toolingLifeShots">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>剩余模次不足以完成本单时,排产产出「模具寿命不足」提示。</rdfs:comment>
+        <rdfs:label>寿命模次</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingShots -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#toolingShots">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>当前模次</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#toolingStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:可用 / 在用 / 保养维修中 / 报废。</rdfs:comment>
+        <rdfs:label>模具状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#toolingType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#toolingType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Tooling"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:模板/模具 / 芯盒 / 夹具 / 检具 / 其他。</rdfs:comment>
+        <rdfs:label>模具类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#transactionQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#transactionQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:label>出入库数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#transactionTime -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#transactionTime">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#dateTime"/>
+        <rdfs:label>出入库时间</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#transactionType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#transactionType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#StockTransaction"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:入库 / 出库 / 移库 / 盘点调整。出库与移库方向受批次冻结拦截。</rdfs:comment>
+        <rdfs:label>出入库类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#unitPrice -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#unitPrice">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:元。</rdfs:comment>
+        <rdfs:label>单价</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#unitWeightKg -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#unitWeightKg">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#decimal"/>
+        <rdfs:comment>单位:千克。</rdfs:comment>
+        <rdfs:label>单重</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#userDisplayName -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#userDisplayName">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#UserAccount"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>姓名</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#userRoles -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#userRoles">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#UserAccount"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>角色决定页面、按钮与 API 权限。</rdfs:comment>
+        <rdfs:label>角色</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#username -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#username">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#UserAccount"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:label>账号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#warehouseType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#warehouseType">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Warehouse"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:原材料库 / 毛坯库 / 线边库 / 成品库 / 辅料库 / 委外仓。</rdfs:comment>
+        <rdfs:label>仓库类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workOrderCode -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workOrderCode">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>系统自动编号,格式 WO{日期}{流水}。是工单的业务身份。</rdfs:comment>
+        <rdfs:label>工单号</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workOrderPriority -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workOrderPriority">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>1 为最高。有限产能排程按优先级与交期排序。</rdfs:comment>
+        <rdfs:label>优先级</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workOrderQty -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workOrderQty">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>计划数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workOrderQtyDone -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workOrderQtyDone">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:comment>由报工汇总,系统只读。</rdfs:comment>
+        <rdfs:label>完工数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workOrderQtyScrap -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workOrderQtyScrap">
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#integer"/>
+        <rdfs:label>报废数量</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workOrderStatus -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workOrderStatus">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#WorkOrder"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:草稿 / 已下达 / 生产中 / 已完工 / 已关闭 / 已取消。由动作驱动,非直接编辑。</rdfs:comment>
+        <rdfs:label>工单状态</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workshopType -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workshopType">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#FunctionalProperty"/>
+        <rdfs:domain rdf:resource="https://example.org/ontology/honeymom#Workshop"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>枚举:铸造 / 机加 / 仓储 / 其他。</rdfs:comment>
+        <rdfs:label>车间类型</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#workstationGroup -->
+
+    <owl:DatatypeProperty rdf:about="https://example.org/ontology/honeymom#workstationGroup">
+        <rdfs:domain rdf:resource="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+        <rdfs:comment>同组工位可互相替代(如 CNC、MOLD1)。排产时按工位组整体分配设备与模具。</rdfs:comment>
+        <rdfs:label>工位组</rdfs:label>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.w3.org/2000/01/rdf-schema#Resource -->
+
+    <owl:Class rdf:about="http://www.w3.org/2000/01/rdf-schema#Resource"/>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Alarm -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Alarm">
+        <rdfs:comment>设备报警及其确认与处理,时长计入设备损失。</rdfs:comment>
+        <rdfs:label>报警记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Andon -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Andon">
+        <rdfs:comment>现场异常呼叫,分设备/质量/物料/安全等类型,状态从待响应到处理中到已关闭。可由人工发起或由设备自动触发。</rdfs:comment>
+        <rdfs:label>安灯</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Attendance -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Attendance">
+        <rdfs:comment>员工按班次的出勤记录,是工时与人工成本的基础。</rdfs:comment>
+        <rdfs:label>上下工记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#AuxiliaryMaterial -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#AuxiliaryMaterial">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#Consumable"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#FinishedProduct"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#RawMaterial"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#SemiFinishedMaterial"/>
+        <rdfs:comment>物料类型取值之一:辅料。参与生产但不构成产品主体。</rdfs:comment>
+        <rdfs:label>辅料</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#BillOfMaterials -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#BillOfMaterials">
+        <rdfs:comment>物料清单:一个产品由哪些子件按多少用量组成。多层 BOM 展开是 MRP 运算(netting)的基础。</rdfs:comment>
+        <rdfs:label>BOM</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Changeover -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Changeover">
+        <rdfs:comment>设备由前一产品切换到后一产品所需的准备时长。排产时在上一单产品不同时追加该时长,并产出「换型」提示。</rdfs:comment>
+        <rdfs:label>换型时间</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Consumable -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Consumable">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#FinishedProduct"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#RawMaterial"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#SemiFinishedMaterial"/>
+        <rdfs:comment>物料类型取值之一:易耗品。如刀具、砂料等按消耗扣减的物料。</rdfs:comment>
+        <rdfs:label>易耗品</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Customer -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Customer">
+        <rdfs:comment>销售对象,带信用额度与结算方式;信用检查是销售订单状态流转的一环。</rdfs:comment>
+        <rdfs:label>客户</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#DataSource -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#DataSource">
+        <rdfs:comment>现场设备接入点,协议含 MQTT(UNS)、OPC UA、Modbus TCP。</rdfs:comment>
+        <rdfs:label>数据源</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#DefectCode -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#DefectCode">
+        <rdfs:comment>缺陷字典,带类别(铸造/机加/外观/其他)与严重度(致命/严重/轻微),可绑定责任工序用于根因追溯。</rdfs:comment>
+        <rdfs:label>缺陷代码</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#DeliverySchedule -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#DeliverySchedule">
+        <rdfs:comment>订单行下的分批交货安排,交期是排产的时间锚点。</rdfs:comment>
+        <rdfs:label>交货计划</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#DemandForecast -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#DemandForecast">
+        <rdfs:comment>物料在某日期的预测需求量,可关联客户。</rdfs:comment>
+        <rdfs:label>需求预测</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#DowntimePlan -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#DowntimePlan">
+        <rdfs:comment>已登记的设备不可用时段(计划保养、维修、放假停产、试制调试),排产时作为硬约束。</rdfs:comment>
+        <rdfs:label>设备停机计划</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Employee -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Employee">
+        <rdfs:comment>作业人员。能否操作某工序由 OperatorSkill 决定,不由岗位名称决定。</rdfs:comment>
+        <rdfs:label>员工</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Equipment -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Equipment">
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://example.org/ontology/honeymom#equipmentCode"/>
+        </owl:hasKey>
+        <rdfs:comment>设备台账。带理想节拍(ideal_cycle_s),这是 OEE 性能率的计算基准;额定功率用于能耗分析。设备状态(运行/待机/换型/停机/离线/报废)由采集数据推导。</rdfs:comment>
+        <rdfs:label>设备</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#EquipmentStateRecord -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#EquipmentStateRecord">
+        <rdfs:comment>设备状态的时间区间记录(运行/待机/换型/停机),是 OEE 与损失分析的原始依据。
+OEE = 可用率 A × 性能率 P × 质量率 Q:
+A = 运行时间 / 计划时间;
+P = min(1, 理想节拍 × 总产量 / 运行时间);
+Q = 合格数 / 总数。
+损失分为:停机、换型换刀、待机等待、运行。</rdfs:comment>
+        <rdfs:label>设备状态记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#FinalInspection -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#FinalInspection">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#FirstArticleInspection"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#InProcessInspection"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#IncomingInspection"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#PatrolInspection"/>
+        <rdfs:comment>检验类型取值之一:出货。成品发货前的最终检验。</rdfs:comment>
+        <rdfs:label>出货检验</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#FinishedProduct -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#FinishedProduct">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#RawMaterial"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#SemiFinishedMaterial"/>
+        <rdfs:comment>物料类型取值之一:成品。可入库、发运并对应销售订单行。</rdfs:comment>
+        <rdfs:label>成品</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#FirstArticleInspection -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#FirstArticleInspection">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#InProcessInspection"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#IncomingInspection"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#PatrolInspection"/>
+        <rdfs:comment>检验类型取值之一:首件。首检放行单的证据来源。</rdfs:comment>
+        <rdfs:label>首件检验</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#FirstArticleRelease -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#FirstArticleRelease">
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://example.org/ontology/honeymom#firstArticleCode"/>
+        </owl:hasKey>
+        <rdfs:comment>首检单。触发场景:开工、换型、换刀、换班、维修后。工艺步骤勾选「首检放行」时,该工序在放行前不得量产报工;首检判定不合格则不放行并登记 NCR。</rdfs:comment>
+        <rdfs:label>首检放行</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Gauge -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Gauge">
+        <rdfs:comment>量具/检具台账。带校准到期状态:检验记录要求引用一把在有效期内的量具,过期量具不能用于出具有效检验结论。</rdfs:comment>
+        <rdfs:label>量检具</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#GaugeCalibration -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#GaugeCalibration">
+        <rdfs:comment>量检具的一次校准,含校准日期、结果与到期日;到期后量具不可用于检验。</rdfs:comment>
+        <rdfs:label>校准记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#InProcessInspection -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#InProcessInspection">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#IncomingInspection"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#PatrolInspection"/>
+        <rdfs:comment>检验类型取值之一:过程。生产过程中在检验点执行。</rdfs:comment>
+        <rdfs:label>过程检验</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#IncomingInspection -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#IncomingInspection">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#PatrolInspection"/>
+        <rdfs:comment>检验类型取值之一:来料。对应采购收货时的进货检验。</rdfs:comment>
+        <rdfs:label>来料检验</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#InspectionItem -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#InspectionItem">
+        <rdfs:comment>模板下的一条待检项:特性代码、量具类型、上下限、关键/特殊特性标记。首检放行的判定依据即这些项目的上下限。</rdfs:comment>
+        <rdfs:label>检验项目</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#InspectionRecord -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#InspectionRecord">
+        <rdfs:comment>一次检验的执行结果,结论为合格/不合格/待判。检验类型为单值枚举,故其子类互斥。</rdfs:comment>
+        <rdfs:label>检验记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#InspectionTemplate -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#InspectionTemplate">
+        <rdfs:comment>检验的模板定义,按物料或工序适用,含抽样规则。模板下挂检验项目,项目带上下限与关键特性标记。</rdfs:comment>
+        <rdfs:label>检验模板</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#InspectionValue -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#InspectionValue">
+        <rdfs:comment>单个检验项的实测值,绑定量具。合格判定按上下限,判定结论回写到检验记录。</rdfs:comment>
+        <rdfs:label>检验值</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#KittingRecord -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#KittingRecord">
+        <rdfs:comment>工单各物料的齐套状态(齐套/部分/缺料)与预计到料时间。缺料工单在预计到料时间之后才能开工,这是排产的主要输入之一。</rdfs:comment>
+        <rdfs:label>物料齐套</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#LotHold -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#LotHold">
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://example.org/ontology/honeymom#lotHoldCode"/>
+        </owl:hasKey>
+        <rdfs:comment>对某个批次(炉次)的冻结单。冻结期间:该批次零件禁止报工、禁止出库/移库;解冻时按冻结后的事件流恢复零件真实状态。</rdfs:comment>
+        <rdfs:label>批次冻结</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MaintenancePlan -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MaintenancePlan">
+        <rdfs:comment>点检/保养/润滑计划,带周期天数与下次到期日,指定负责人。</rdfs:comment>
+        <rdfs:label>点检保养计划</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MaintenanceRecord -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MaintenanceRecord">
+        <rdfs:comment>计划的一次执行结果(正常/异常)。</rdfs:comment>
+        <rdfs:label>点检保养记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Material -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Material">
+        <rdfs:comment>可被生产消耗或对外销售的对象,承载规格、单位、安全库存、单价、单重。物料类型(mtype)在系统中为单值枚举,故其子类互斥。</rdfs:comment>
+        <rdfs:label>物料</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MaterialIssue -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MaterialIssue">
+        <rdfs:comment>工单领用或退回物料的流水,带批次维度。批次冻结期间,出库方向会被拦截。</rdfs:comment>
+        <rdfs:label>领料退料</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MaterialPlan -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MaterialPlan">
+        <rdfs:comment>物料的采购/制造属性:自制或外购、提前期、最小批量、批量倍数、安全库存、损耗率、默认供应商与默认仓库。MRP 运算按这些参数净算需求。</rdfs:comment>
+        <rdfs:label>物料计划参数</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MaterialRequest -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MaterialRequest">
+        <rdfs:comment>缺料时的请领单,挂在工单与仓库上。</rdfs:comment>
+        <rdfs:label>物料申请</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MrpRun -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MrpRun">
+        <rdfs:comment>一次物料需求计划运算,带计划期与运算状态;新运算取代旧运算。</rdfs:comment>
+        <rdfs:label>MRP 运算</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#MrpSuggestion -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#MrpSuggestion">
+        <rdfs:comment>MRP 净算后的建议(计划生产/计划采购/提前/推迟),带需求 pegging 溯源与产能检查结果。可下发为生产工单或采购订单。</rdfs:comment>
+        <rdfs:label>MRP 建议</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#NonconformanceReport -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#NonconformanceReport">
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://example.org/ontology/honeymom#ncrCode"/>
+        </owl:hasKey>
+        <rdfs:comment>不合格品报告(NCR),带处置(待处置/返修/报废/让步接收/退供应商)与状态(待处理/评审中/已关闭)。首检不合格时自动登记 NCR 且不予放行。</rdfs:comment>
+        <rdfs:label>不合格品</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#OperatorSkill -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#OperatorSkill">
+        <rdfs:comment>员工在某工序/工位组上的技能等级(学徒/熟练/骨干/可带教),带有效期。排产时若某工序在某个班次内没有合格操作工,产出约束标记「无合格操作工」。</rdfs:comment>
+        <rdfs:label>人员技能</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Part -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Part">
+        <rdfs:comment>一件一码的实物追踪对象。状态流转:毛坯库 → 在制 → 检验合格 → 成品入库 → 已发运,旁路有返修中、冻结、报废。
+铸造场景下携带炉次、浇包、砂型、型腔、浇注温度、残镁、型砂水分等追溯参数;机加场景下携带加工机床。</rdfs:comment>
+        <rdfs:label>在制品</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#PartEvent -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#PartEvent">
+        <rdfs:comment>零件在现场的时序事件流(流转、检验、冻结等),与 Part 一对多,按时间回放可重建当前状态。</rdfs:comment>
+        <rdfs:label>零件事件</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#PatrolInspection -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#PatrolInspection">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#InspectionRecord"/>
+        <rdfs:comment>检验类型取值之一:巡检。班中周期性抽查。</rdfs:comment>
+        <rdfs:label>巡检</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Plant -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Plant">
+        <rdfs:comment>制造实体,是车间与销售订单/采购订单的收货与发货主体。</rdfs:comment>
+        <rdfs:label>工厂</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Process -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Process">
+        <rdfs:comment>可被排产与报工的最小制造步骤(如熔炼、造型浇注、机加工)。工序带标准节拍,是 OEE 性能率与排产时长的计算基准。</rdfs:comment>
+        <rdfs:label>工序</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ProductionLine -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#ProductionLine">
+        <rdfs:comment>车间下的连续生产单元,工位与设备挂靠其上;工单可在产线上排产。</rdfs:comment>
+        <rdfs:label>产线</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ProductionReport -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#ProductionReport">
+        <rdfs:comment>现场产出记录,来源含设备自动、人工、手机扫码、扫码枪、工位终端。系统实际执行的放行闸门( services/gates.py submit_report )依次为:
+(1) 幂等键 idem_key 重复提交 → 识别为重复提交,不重复计数;
+(2) 零件所属批次处于冻结中 → 阻断;
+(3) 本次合格数+不良数必须大于 0;
+(4) 不得超过上道工序转来的合格数减去本道已报数(跳序/超量);
+(5) 不得超过工序计划量 ×(1+report_over_pct/100)(超计划);
+(6) 工序标记首检放行时,须已首检放行;
+(7) ECN 停工中的工单 → 阻断。
+以上为运行时规则,本体仅记录其语义,不以 OWL 公理表达为可执行约束。</rdfs:comment>
+        <rdfs:label>报工记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#PurchaseOrder -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#PurchaseOrder">
+        <rdfs:comment>对供应商的采购承诺,收货时转入库并触发来料检验。</rdfs:comment>
+        <rdfs:label>采购订单</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#PurchaseOrderLine -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#PurchaseOrderLine">
+        <rdfs:comment>采购明细,带已收/合格入库/不合格数量,不合格部分可退供。</rdfs:comment>
+        <rdfs:label>采购订单行</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#PurchaseRequisition -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#PurchaseRequisition">
+        <rdfs:comment>采购需求,可由 MRP 建议生成。</rdfs:comment>
+        <rdfs:label>请购单</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Quotation -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Quotation">
+        <rdfs:comment>对外报价,可转为销售订单。</rdfs:comment>
+        <rdfs:label>报价单</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#RawMaterial -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#RawMaterial">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <owl:disjointWith rdf:resource="https://example.org/ontology/honeymom#SemiFinishedMaterial"/>
+        <rdfs:comment>物料类型取值之一:原材料。与其他物料类型子类互斥(mtype 单值枚举)。</rdfs:comment>
+        <rdfs:label>原材料</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#RepairOrder -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#RepairOrder">
+        <rdfs:comment>维修工单,状态:已报修 → 已派工 → 维修中 → 已修复 → 已验收。未修复完成的工单所涉设备在排产时视为不可用。</rdfs:comment>
+        <rdfs:label>维修工单</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ReworkOrder -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#ReworkOrder">
+        <rdfs:comment>返修单,必须处于「进行中」才能流转结果;返修完成后须复检(引用一条检验记录)并给出复检结论,复检不合格则返修不合格。</rdfs:comment>
+        <rdfs:label>返修记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Routing -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Routing">
+        <rdfs:comment>产品的工艺版本,带生效/作废状态;一条路线由若干有序工艺步骤构成,工单下达时冻结引用某一版本。</rdfs:comment>
+        <rdfs:label>工艺路线</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#RoutingStep -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#RoutingStep">
+        <rdfs:comment>工艺路线上的一道工序。携带决定现场行为的三个开关:是否检验点、是否首检放行、报工方式(设备自动/人工/扫码);并指定工位组与标准节拍。</rdfs:comment>
+        <rdfs:label>工艺步骤</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#SalesOrder -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#SalesOrder">
+        <rdfs:comment>客户订单。状态:草稿 → 信用待批 → 已确认 → 部分发货 → 已发完 → 已关闭。按单生产(mto)时,订单行会派生生产工单。</rdfs:comment>
+        <rdfs:label>销售订单</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#SalesOrderLine -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#SalesOrderLine">
+        <rdfs:comment>订单的产品明细行,带数量、单价、交期与已发/已退数量;按单生产时关联到具体工单。</rdfs:comment>
+        <rdfs:label>销售订单行</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#ScheduleProposal -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#ScheduleProposal">
+        <rdfs:comment>what-if 排产假设(设备停机、到料推迟、模具保养、优先级调整)落成的建议,带受影响工单与原因。采纳后写入主数据并重排。</rdfs:comment>
+        <rdfs:label>排程调整建议</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#SemiFinishedMaterial -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#SemiFinishedMaterial">
+        <rdfs:subClassOf rdf:resource="https://example.org/ontology/honeymom#Material"/>
+        <rdfs:comment>物料类型取值之一:半成品。经一道或多道工序加工后进入下一工序的中间件。</rdfs:comment>
+        <rdfs:label>半成品</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Shift -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Shift">
+        <rdfs:comment>排产与考勤使用的时间段。active=false 的班次不参与排产,设备只在启用班次内工作。</rdfs:comment>
+        <rdfs:label>班次</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Shipment -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Shipment">
+        <rdfs:comment>成品发运,对应工单与客户。</rdfs:comment>
+        <rdfs:label>发运记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Stock -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Stock">
+        <rdfs:comment>物料在仓库/库位上的当前数量,按批次(lot)分列。冻结批次仍占用库存,但不可出库。</rdfs:comment>
+        <rdfs:label>库存</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#StockTransaction -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#StockTransaction">
+        <rdfs:comment>库存流水:入库/出库/移库/盘点调整。移库含调入仓库。出库与移库方向受批次冻结拦截。</rdfs:comment>
+        <rdfs:label>出入库记录</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#StorageLocation -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#StorageLocation">
+        <rdfs:comment>仓库内的库位,带容量。库存精确到库位。</rdfs:comment>
+        <rdfs:label>库位</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Supplier -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Supplier">
+        <rdfs:comment>供货方,带资格(合格/试用/停用)与绩效得分;停用供应商不能下采购订单。</rdfs:comment>
+        <rdfs:label>供应商</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#TagPoint -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#TagPoint">
+        <rdfs:comment>设备点位定义,带地址、类型、量程缩放、采集周期与报警上下限。用途(运行状态/报警/功率/产量/主轴负载/温度/质量值)决定该点位被映射成哪类业务记录;接入时逐点确认语义,确认前不可投产。</rdfs:comment>
+        <rdfs:label>采集点</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Team -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Team">
+        <rdfs:comment>人员的组织单元,归属某个班次,班组长是排产技能覆盖判断的组织边界。</rdfs:comment>
+        <rdfs:label>班组</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Tooling -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Tooling">
+        <rdfs:comment>模具/芯盒/夹具/检具。带当前模次与寿命模次。排产约束:同一套模具同一时间只能在一台设备上;保养中的模具要到预计可用时间才能占用;剩余模次不足以完成本单时产出「模具寿命不足」提示。</rdfs:comment>
+        <rdfs:label>模具夹具</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#UserAccount -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#UserAccount">
+        <rdfs:comment>登录账号,绑定员工身份与角色权限;数据范围(工厂/车间/产线)决定其可见对象集合。</rdfs:comment>
+        <rdfs:label>系统用户</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Warehouse -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Warehouse">
+        <rdfs:comment>按类型区分原材料库、毛坯库、线边库、成品库、辅料库;委外仓表示供应商处库存。</rdfs:comment>
+        <rdfs:label>仓库</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#WorkOrder -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#WorkOrder">
+        <owl:hasKey rdf:parseType="Collection">
+            <rdf:Description rdf:about="https://example.org/ontology/honeymom#workOrderCode"/>
+        </owl:hasKey>
+        <rdfs:comment>生产工单是计划与现场的交接口。状态机:草稿 → 已下达 → 生产中 → 已完工 → 已关闭(可转已取消)。
+业务约束:工单可因 ECN(工艺变更)被判停工,停工未解除时禁止报工(见 services/exec_doc.py 的 report_gate);该 ECN 模型不在本次本体范围内。</rdfs:comment>
+        <rdfs:label>生产工单</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#WorkOrderOperation -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#WorkOrderOperation">
+        <rdfs:comment>工单在工艺路线上的展开,记录计划量/合格量/不良量与实际起止。顺序(seq)是有业务含义的:上一道工序未转来足量合格品时,本道不得超量报工。</rdfs:comment>
+        <rdfs:label>工单工序</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Workshop -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Workshop">
+        <rdfs:comment>工厂下的生产单元,按类型区分铸造、机加、仓储等;车间类型决定下辖产线的工艺属性。</rdfs:comment>
+        <rdfs:label>车间</rdfs:label>
+    </owl:Class>
+    
+
+
+    <!-- https://example.org/ontology/honeymom#Workstation -->
+
+    <owl:Class rdf:about="https://example.org/ontology/honeymom#Workstation">
+        <rdfs:comment>产线上的作业点,可绑定设备。工位组(group)表示可互相替代的同类工位(如 CNC 群组),是排产时并行分配设备与模具的单位。</rdfs:comment>
+        <rdfs:label>工位</rdfs:label>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+
